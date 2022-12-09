@@ -70,6 +70,12 @@ export const ConversationSidebarStyle = styled.aside`
     overflow-y: scroll;
     &::-webkit-scrollbar {
       display: none;
+      //width: 10px;
+      //height: 5px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      //background-color: #2d2d2d;
     }
 `;
 
@@ -82,6 +88,7 @@ export const ConversationSidebarHeader = styled.header`
       justify-content: space-between;
       align-items: center;
       padding: 0 32px;
+      box-sizing: border-box;
       background-color: #151515;
       height: 100px;
       border-bottom: 1px solid #5454543d;
