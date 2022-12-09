@@ -1,12 +1,13 @@
 import {Outlet, useParams} from "react-router-dom";
 import { Page } from '../utils/styles';
-import { ConversationSidebar } from "../components/conversation/ConversationSidebar";
-import { ConversationPanel } from "../components/conversation/ConversationPanel";
+import { ConversationSidebar } from "../components/conversations/ConversationSidebar";
+import { ConversationPanel } from "../components/conversations/ConversationPanel";
+import mockConversations from "../__mocks__/conversations";
 
 export const ConversationPage = () => {
     const { id } = useParams();
     return <Page>
-        <ConversationSidebar />
+        <ConversationSidebar conversations={mockConversations}/>
         {!id && <ConversationPanel />}
         <Outlet />
     </Page>
