@@ -2,19 +2,26 @@ import { InputContainer, InputField, InputLabel, Button } from "../../utils/styl
 import { useForm } from "react-hook-form";
 
 import styles from './index.module.scss';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import React from "react";
+import { CreateUserParams } from "../../utils/types";
+import { postRegisterUser } from "../../utils/api";
 export const RegisterForm = () => {
 
     const {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm();
+    } = useForm<CreateUserParams>();
     console.log(errors)
-    const onSubmit = (data : any) => {
+    const onSubmit = async (data : CreateUserParams) => {
         // event.preventDefault();
         console.log(data)
+      try {
+          await postRegisterUser(data);
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     return (

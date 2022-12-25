@@ -1,18 +1,27 @@
 import { InputContainer, InputField, InputLabel, Button } from "../../utils/styles";
 
 import styles from './index.module.scss';
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { UserCredentialsParams } from "../../utils/types";
+import {postLoginUser} from "../../utils/api";
 export const LoginForm = () => {
     const {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm();
+    } = useForm<UserCredentialsParams>();
+    const navigate = useNavigate();
 
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: UserCredentialsParams) => {
         // event.preventDefault();
+        try {
+          await postLoginUser(data);
+          navigate('/conversations');
+        } catch (e) {
+          console.log(e);
+        }
     }
 
     return (
