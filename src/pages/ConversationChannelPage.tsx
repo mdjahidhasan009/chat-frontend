@@ -1,7 +1,10 @@
 import { ConversationChannelPageStyle } from "../utils/styles";
+import {useContext} from "react";
+import {AuthContext} from "../utils/context/AuthContext";
 
 export const ConversationChannelPage = () => {
+    const { user } = useContext(AuthContext);
     return <ConversationChannelPageStyle>
-        Channel Page
+        {user && user.email}
     </ConversationChannelPageStyle>
 };
