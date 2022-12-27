@@ -7,7 +7,7 @@ import mockConversations from "../__mocks__/conversations";
 export const ConversationPage = () => {
     const { id } = useParams();
     return <Page>
-        <ConversationSidebar conversations={mockConversations}/>
+        <ConversationSidebar conversations={[]}/>
         {!id && <ConversationPanel />}
         <Outlet />
     </Page>
