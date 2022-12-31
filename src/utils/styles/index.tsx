@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { PageProps } from "./styleTypes";
+import {InputContainerProps, PageProps} from "./styleTypes";
 
 export const SIDEBAR_WIDTH = 400;
 export const InputField = styled.input`
   font-family: 'Inter', serif;
-  background: inherit;
   outline: none;
   border: none;
+  background-color: inherit;
   color: #FFF;
   font-size: 18px;
   width: 100%;
@@ -15,8 +15,8 @@ export const InputField = styled.input`
   margin: 4px 0;
 `;
 
-export const InputContainer = styled.div`
-  background-color: #131313;
+export const InputContainer = styled.div<InputContainerProps>`
+  background-color: ${(props) => props.backgroundColor || "#131313" };
   padding: 12px 16px;
   border-radius: 10px;
   width: 100%;
@@ -131,12 +131,40 @@ export const ModalContainerStyle = styled.div`
   background-color: #121212;
   width: 650px;
   box-sizing: border-box;
+  border-radius: 10px;
 `;
 
 export const ModalHeaderStyle = styled.header`
-    width: 100%;
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 28px;
+  & h2 {
+    font-weight: 500;
+    margin: 0;
+  }
 `;
 
 export const ModalContentBodyStyle = styled.div`
-    
+    padding: 24px;
+`;
+
+export const TextField = styled.textarea`
+  font-family: 'Inter', serif;
+  outline: none;
+  border: none;
+  background-color: inherit;
+  color: #FFF;
+  font-size: 18px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 4px 0;
+  resize: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
