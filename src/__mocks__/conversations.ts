@@ -61,4 +61,5 @@ export default [
         name: "Conner McGregor",
         lastMessage: "How are you??"
     },
-] as ConversationType[];
+];
+// ] as ConversationType[];

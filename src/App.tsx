@@ -6,7 +6,7 @@ import { ConversationPage } from "./pages/ConversationPage";
 import { ConversationChannelPage } from "./pages/ConversationChannelPage";
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import { AuthContext } from "./utils/context/AuthContext";
-import {User} from "./utils/types";
+import { User } from "./utils/types";
 
 function App() {
   const [ user, setUser ] = useState<User>();
