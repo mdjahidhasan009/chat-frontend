@@ -18,3 +18,6 @@ export const getAuthUser = () =>
 
 export const getConversations = () =>
   axios.get(`${API_URL}/conversations`, config);
+
+export const getConversationMessages = (id: number) =>
+  axios.get(`${API_URL}/messages/${id}`, config);
