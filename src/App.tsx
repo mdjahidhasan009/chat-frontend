@@ -7,26 +7,29 @@ import { ConversationChannelPage } from "./pages/ConversationChannelPage";
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import { AuthContext } from "./utils/context/AuthContext";
 import { User } from "./utils/types";
+import {socket, SocketContext} from "./utils/context/SocketContext";
 
 function App() {
   const [ user, setUser ] = useState<User>();
 
   return (
     <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
-    <Routes>
-      <Route path="/register" element={<RegisterPage />}></Route>
-      <Route path="/login" element={<LoginPage />}></Route>
-      <Route
-        path="conversations"
-        element={
-          <AuthenticatedRoute>
-            <ConversationPage />
-          </AuthenticatedRoute>
-        }
-      >
-        <Route path=":id" element={<ConversationChannelPage />} />
-      </Route>
-    </Routes>
+      <SocketContext.Provider value={socket}>
+        <Routes>
+          <Route path="/register" element={<RegisterPage />}></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route
+            path="conversations"
+            element={
+              <AuthenticatedRoute>
+                <ConversationPage />
+              </AuthenticatedRoute>
+            }
+          >
+            <Route path=":id" element={<ConversationChannelPage />} />
+          </Route>
+        </Routes>
+      </SocketContext.Provider>
     </AuthContext.Provider>
   );
 }

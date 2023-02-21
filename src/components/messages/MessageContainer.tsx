@@ -28,7 +28,7 @@ export const FormattedMessage: FC<FormattedMessageProps> = ({ user, message}) =>
           <span
             className="authorName"
             style={{
-              color: user?.id === message.author.id ? '#757575' : '#5E8BFF',
+              color: user?.id === message.author.id ? '#989898' : '#5E8BFF',
             }}
           >
             {message.author.firstName} {message.author.lastName}
@@ -37,7 +37,9 @@ export const FormattedMessage: FC<FormattedMessageProps> = ({ user, message}) =>
             {formatRelative(new Date(message.createdAt), new Date())}
           </span>
         </MessageItemHeader>
-        <MessageItemContent>{message.content}</MessageItemContent>
+        <MessageItemContent padding="8px 0 0 0">
+          {message.content}
+        </MessageItemContent>
       </MessageItemDetails>
     </MessageItemContainer>
   );
@@ -48,13 +50,10 @@ export const MessageContainer: FC<Props> = ({ messages }) => {
 
   const formatMessages = () => {
     return messages.map((m, index, arr) => {
-      console.log(index);
+      const nextIndex = index + 1;
       const currentMessage = arr[index];
-      const nextMessage = arr[index + 1];
-      console.log(currentMessage);
-      console.log(nextMessage);
-      if (arr.length === index + 1) {
-        console.log('At the end');
+      const nextMessage = arr[nextIndex];
+      if (arr.length === nextIndex) {
         return <FormattedMessage user={user} message={m} />;
       }
       if (currentMessage.author.id === nextMessage.author.id) {
