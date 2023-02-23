@@ -18,6 +18,7 @@ type Props = {
 type FormattedMessageProps = {
   user?: User;
   message: MessageType;
+  key: number;
 };
 export const FormattedMessage: FC<FormattedMessageProps> = ({ user, message}) => {
   return (
@@ -49,29 +50,29 @@ export const MessageContainer: FC<Props> = ({ messages }) => {
   const { user } = useContext(AuthContext);
 
   const formatMessages = () => {
+    if(messages.length === 0) return;
     return messages.map((m, index, arr) => {
       const nextIndex = index + 1;
       const currentMessage = arr[index];
       const nextMessage = arr[nextIndex];
-      if (arr.length === nextIndex) {
-        return <FormattedMessage user={user} message={m} />;
-      }
+      if (arr.length === nextIndex)
+        return <FormattedMessage key={m.id} user={user} message={m} />;
       if (currentMessage.author.id === nextMessage.author.id) {
         return (
-          <MessageItemContainer>
+          <MessageItemContainer key={m.id}>
             <MessageItemContent padding="0 0 0 70px">
               {m.content}
             </MessageItemContent>
           </MessageItemContainer>
         );
       }
-      return <FormattedMessage user={user} message={m} />;
+      return <FormattedMessage key={m.id} user={user} message={m} />;
     });
   };
 
   useEffect(() => {
     formatMessages();
-  });
+  }, []);
 
   return <MessageContainerStyle>{formatMessages()}</MessageContainerStyle>;
 };

@@ -1,36 +1,54 @@
-import React, { useState } from 'react';
+import React, { FC, PropsWithChildren, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { RegisterPage } from "./pages/RegisterPage";
-import { LoginPage } from "./pages/LoginPage";
-import { ConversationPage } from "./pages/ConversationPage";
-import { ConversationChannelPage } from "./pages/ConversationChannelPage";
-import AuthenticatedRoute from './components/AuthenticatedRoute';
-import { AuthContext } from "./utils/context/AuthContext";
-import { User } from "./utils/types";
-import {socket, SocketContext} from "./utils/context/SocketContext";
+import { Socket } from 'socket.io-client';
+import { AuthenticatedRoute } from './components/AuthenticatedRoute';
+import { ConversationChannelPage } from './pages/ConversationChannelPage';
+import { ConversationPage } from './pages/ConversationPage';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
+import { AuthContext } from './utils/context/AuthContext';
+import { socket, SocketContext } from './utils/context/SocketContext';
+import { User } from './utils/types';
+import { Provider as ReduxProvider } from 'react-redux';
+import { store } from './store';
+
+type Props = {
+  user?: User;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  socket: Socket;
+};
+
+function AppWithProviders({ children, user, setUser }: PropsWithChildren & Props) {
+  return (
+    <ReduxProvider store={store}>
+      <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
+        <SocketContext.Provider value={socket}>
+          {children}
+        </SocketContext.Provider>
+      </AuthContext.Provider>
+    </ReduxProvider>
+  );
+}
 
 function App() {
-  const [ user, setUser ] = useState<User>();
-
+  const [user, setUser] = useState<User>();
   return (
-    <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
-      <SocketContext.Provider value={socket}>
-        <Routes>
-          <Route path="/register" element={<RegisterPage />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
-          <Route
-            path="conversations"
-            element={
-              <AuthenticatedRoute>
-                <ConversationPage />
-              </AuthenticatedRoute>
-            }
-          >
-            <Route path=":id" element={<ConversationChannelPage />} />
-          </Route>
-        </Routes>
-      </SocketContext.Provider>
-    </AuthContext.Provider>
+    <AppWithProviders user={user} setUser={setUser} socket={socket}>
+      <Routes>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="conversations"
+          element={
+            <AuthenticatedRoute>
+              <ConversationPage />
+            </AuthenticatedRoute>
+          }
+        >
+          <Route path=":id" element={<ConversationChannelPage />} />
+        </Route>
+      </Routes>
+    </AppWithProviders>
   );
 }
 
