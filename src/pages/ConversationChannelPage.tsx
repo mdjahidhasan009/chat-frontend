@@ -9,6 +9,7 @@ import { ConversationChannelPageStyle } from '../utils/styles';
 import { MessageEventPayload, MessageType } from '../utils/types';
 import { AppDispatch, RootState } from '../store';
 import { addMessage, fetchMessagesThunk } from '../store/messageSlice';
+import { updateConversation } from '../store/conversationSlice';
 
 export const ConversationChannelPage = () => {
   const { user } = useContext(AuthContext);
@@ -26,8 +27,9 @@ export const ConversationChannelPage = () => {
     socket.on('connected', () => console.log('Connected'));
     socket.on('onMessage', (payload: MessageEventPayload) => {
       console.log('Message Received');
-      const { conversation, ...message } = payload;
+      const { conversation, message } = payload;
       dispatch(addMessage(payload));
+      dispatch(updateConversation(conversation));
     });
     return () => {
       socket.off('connected');

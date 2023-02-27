@@ -68,7 +68,9 @@ export const ConversationSidebar: FC<Props> = () => {
                   <span className={styles.conversationName}>
                     {`${getDisplayUser(conversation).firstName} ${getDisplayUser(conversation).lastName}`}
                   </span>
-                    <span className={styles.conversationLastMessage}>Sample Text</span>
+                    <span className={styles.conversationLastMessage}>
+                      {conversation.lastMessageSent?.content}
+                    </span>
                   </div>
                 </ConversationSidebarItem>
               )
