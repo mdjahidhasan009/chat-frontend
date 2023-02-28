@@ -22,7 +22,7 @@ export const CreateConversationModal:FC<Props> = ({ setShowModal }) => {
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { current } = ref;
     if(current === e.target) {
-      console.log('closeMOdal')
+      console.log('closeModal')
       setShowModal(false);
     }
   }
@@ -36,7 +36,7 @@ export const CreateConversationModal:FC<Props> = ({ setShowModal }) => {
           <MdClose size={32} onClick={() => setShowModal(false)}/>
         </ModalHeader>
         <ModalContentBody>
-          <CreateConversationForm />
+          <CreateConversationForm setShowModal={setShowModal} />
         </ModalContentBody>
       </ModalContainer>
     </OverlayStyle>
