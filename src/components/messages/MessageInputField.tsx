@@ -10,13 +10,16 @@ type Props = {
 };
 
 export const MessageInputField: FC<Props> = ({ content, setContent, sendMessage, sendTypingStatus }) => {
+  const updateContent = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setContent(e.target.value);
+
   return (
     <>
       <MessageInputContainer>
         <form onSubmit={sendMessage} className={styles.form}>
           <MessageInput
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={updateContent}
             onKeyDown={sendTypingStatus}
           />
         </form>
