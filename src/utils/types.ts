@@ -53,7 +53,6 @@ export type MessageEventPayload = {
 
 export type CreateMessageParams = {
     content: string;
-    conversationId: number;
 };
 
 export type ConversationMessage = {
