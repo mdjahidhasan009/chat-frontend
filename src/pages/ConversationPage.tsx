@@ -4,7 +4,7 @@ import { Outlet, useParams } from 'react-router-dom';
 import { ConversationPanel } from '../components/conversations/ConversationPanel';
 import { ConversationSidebar } from '../components/conversations/ConversationSidebar';
 import { AppDispatch, RootState } from '../store';
-import {fetchConversationsThunk, updateConversation} from '../store/conversationSlice';
+import {addConversation, fetchConversationsThunk, updateConversation} from '../store/conversationSlice';
 import { Page } from '../utils/styles';
 import {ConversationType, MessageEventPayload} from '../utils/types';
 import {addMessage} from "../store/messageSlice";
@@ -36,10 +36,14 @@ export const ConversationPage = () => {
       const { conversation, message } = payload;
       dispatch(addMessage(payload));
       dispatch(updateConversation(conversation));
+      socket.on('onConversation', (payload: ConversationType) => {
+        dispatch(addConversation(payload));
+      })
     });
     return () => {
       socket.off('connected');
       socket.off('onMessage');
+      socket.off('onConversation');
     };
   }, [id]);
 
