@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '../store';
 import {addConversation, fetchConversationsThunk, updateConversation} from '../store/conversationSlice';
 import { Page } from '../utils/styles';
 import {ConversationType, MessageEventPayload} from '../utils/types';
-import {addMessage} from "../store/messageSlice";
+import {addMessage, deleteMessage} from "../store/messageSlice";
 import {SocketContext} from "../utils/context/SocketContext";
 
 export const ConversationPage = () => {
@@ -38,12 +38,16 @@ export const ConversationPage = () => {
       dispatch(updateConversation(conversation));
       socket.on('onConversation', (payload: ConversationType) => {
         dispatch(addConversation(payload));
+      });
+      socket.on('onMessageDelete', (payload) => {
+        dispatch(deleteMessage(payload));
       })
     });
     return () => {
       socket.off('connected');
       socket.off('onMessage');
       socket.off('onConversation');
+      socket.off('onMessageDelete');
     };
   }, [id]);
 
