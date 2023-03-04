@@ -22,15 +22,10 @@ export const ConversationPage = () => {
   );
 
   useEffect(() => {
-    console.log('Fetching Conversations in ConversationPage');
-    console.log(conversationsState.find((c) => c.id === 15));
     dispatch(fetchConversationsThunk());
   }, []);
 
   useEffect(() => {
-    socket.emit('onClientConnect', {
-      conversationId: parseInt(id!),
-    });
     socket.on('onMessage', (payload: MessageEventPayload) => {
       console.log('Message Received');
       const { conversation, message } = payload;

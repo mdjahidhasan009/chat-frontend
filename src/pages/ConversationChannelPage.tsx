@@ -15,6 +15,9 @@ export const ConversationChannelPage = () => {
   const { user } = useContext(AuthContext);
   const socket = useContext(SocketContext);
   const { id } = useParams();
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
+  const [isTyping, setIsTyping] = useState(false);
+  const [isRecipientTyping, setIsRecipientTyping] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -23,15 +26,57 @@ export const ConversationChannelPage = () => {
     dispatch(fetchMessagesThunk(conversationId));
   }, [id]);
 
+  useEffect(() => {
+    const conversationId = parseInt(id!);
+    socket.emit('onConversation', { conversationId });
+    socket.on('userJoin', () => {
+      console.log('User joined');
+    });
+    socket.on('userLeave', () => {
+      console.log('userLeave');
+    });
+
+    socket.on('onTypingStart', () => {
+      console.log('onTypingStart: User has started typing...');
+      setIsRecipientTyping(true);
+    });
+
+    socket.on('onTypingStop', () => {
+      console.log('onTypingStop: User has stopped typing...');
+      setIsRecipientTyping(false);
+    });
+
+    return () => {
+      socket.emit('onConversationLeave', { conversationId });
+      socket.off('userJoin');
+      socket.off('userLeave');
+      socket.off('onTypingStart');
+      socket.off('onTypingStop');
+    };
+  }, []);
+
 
   const sendTypingStatus = () => {
-    console.log('You are typing');
-    socket.emit('onUserTyping', { conversationId: id });
+    if(isTyping) {
+      clearTimeout(timer!);
+      setTimer(
+        setTimeout(() => {
+          setIsTyping(false);
+          socket.emit('onTypingStop');
+        }, 2000)
+      );
+    } else {
+      setIsTyping(true);
+      socket.emit('onTypingStart', { conversationId: parseInt(id!) });
+    }
   };
 
   return (
     <ConversationChannelPageStyle>
-      <MessagePanel sendTypingStatus={sendTypingStatus}></MessagePanel>
+      <MessagePanel
+        sendTypingStatus={sendTypingStatus}
+        isRecipientTyping={isRecipientTyping}
+      ></MessagePanel>
     </ConversationChannelPageStyle>
   );
 };

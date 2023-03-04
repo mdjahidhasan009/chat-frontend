@@ -27,6 +27,7 @@ type FormattedMessageProps = {
   onContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 export const FormattedMessage: FC<FormattedMessageProps> = ({ user, message, onContextMenu}) => {
+  console.log(message);
   return (
     <MessageItemContainer onContextMenu={onContextMenu}>
       <MessageItemAvatar />
