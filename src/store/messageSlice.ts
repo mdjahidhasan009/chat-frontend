@@ -92,6 +92,16 @@ export const messagesSlice = createSlice({
         );
         conversationMessages?.messages.splice(messageIndex, 1);
       })
+      .addCase(editMessageThunk.fulfilled, (state, action) => {
+        const { data: message } = action.payload;
+        const { id } = message.conversation;
+        const conversationMessage = state.messages.find((cm) => cm.id === id);
+        if (!conversationMessage) return;
+        const messageIndex = conversationMessage.messages.findIndex(
+          (m) => m.id === message.id
+        );
+        conversationMessage.messages[messageIndex] = message;
+      })
     ;
   },
 });

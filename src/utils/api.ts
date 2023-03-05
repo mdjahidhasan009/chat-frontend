@@ -6,7 +6,7 @@ import {
   CreateUserParams,
   DeleteMessageParams,
   DeleteMessageResponse, EditMessagePayload,
-  FetchMessagePayload,
+  FetchMessagePayload, MessageType,
   User,
   UserCredentialsParams,
 } from './types';
@@ -53,7 +53,7 @@ export const editMessage = ({
   conversationId,
   messageId,
 }: EditMessagePayload) =>
-  axios.patch(
+  axios.patch<MessageType>(
     `${API_URL}/conversations/${conversationId}/messages/${messageId}`,
     { content },
     config
