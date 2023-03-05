@@ -8,7 +8,7 @@ import { SocketContext } from '../utils/context/SocketContext';
 import { ConversationChannelPageStyle } from '../utils/styles';
 import { MessageEventPayload, MessageType } from '../utils/types';
 import { AppDispatch, RootState } from '../store';
-import { addMessage, fetchMessagesThunk } from '../store/messageSlice';
+import {addMessage, editMessage, fetchMessagesThunk} from '../store/messageSlice';
 import { updateConversation } from '../store/conversationSlice';
 
 export const ConversationChannelPage = () => {
@@ -46,12 +46,17 @@ export const ConversationChannelPage = () => {
       setIsRecipientTyping(false);
     });
 
+    socket.on('onMessageUpdate', (message) => {
+      dispatch(editMessage(message));
+    })
+
     return () => {
       socket.emit('onConversationLeave', { conversationId });
       socket.off('userJoin');
       socket.off('userLeave');
       socket.off('onTypingStart');
       socket.off('onTypingStop');
+      socket.off('onMessageUpdate');
     };
   }, []);
 
