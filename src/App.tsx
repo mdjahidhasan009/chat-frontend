@@ -50,6 +50,16 @@ function App() {
         >
           <Route path=":id" element={<ConversationChannelPage />} />
         </Route>
+        <Route
+          path='groups'
+          element={
+            <AuthenticatedRoute>
+              <ConversationPage />
+            </AuthenticatedRoute>
+          }
+        >
+          <Route path=":id" element={<ConversationChannelPage />} />
+        </Route>
       </Routes>
     </AppWithProviders>
   );

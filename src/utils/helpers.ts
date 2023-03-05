@@ -1,7 +1,7 @@
-import { ConversationType, User } from "./types";
+import { Conversation, User } from "./types";
 
 export const getRecipientFromConversation = (
-    conversation: ConversationType | undefined,
+    conversation: Conversation | undefined,
     user?: User
 ) => {
   if(!conversation) return;

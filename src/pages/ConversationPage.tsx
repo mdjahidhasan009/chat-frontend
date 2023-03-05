@@ -6,20 +6,15 @@ import { ConversationSidebar } from '../components/conversations/ConversationSid
 import { AppDispatch, RootState } from '../store';
 import {addConversation, fetchConversationsThunk, updateConversation} from '../store/conversationSlice';
 import { Page } from '../utils/styles';
-import {ConversationType, MessageEventPayload} from '../utils/types';
+import {Conversation, MessageEventPayload} from '../utils/types';
 import {addMessage, deleteMessage} from "../store/messageSlice";
 import {SocketContext} from "../utils/context/SocketContext";
+import { fetchGroupsThunk } from '../store/groupSlice';
 
 export const ConversationPage = () => {
   const { id } = useParams();
-  const [conversations, setConversations] = useState<ConversationType[]>([]);
   const dispatch = useDispatch<AppDispatch>();
-
   const socket = useContext(SocketContext);
-
-  const conversationsState = useSelector(
-    (state: RootState) => state.conversation.conversations
-  );
 
   useEffect(() => {
     dispatch(fetchConversationsThunk());
@@ -27,11 +22,10 @@ export const ConversationPage = () => {
 
   useEffect(() => {
     socket.on('onMessage', (payload: MessageEventPayload) => {
-      console.log('Message Received');
       const { conversation, message } = payload;
       dispatch(addMessage(payload));
       dispatch(updateConversation(conversation));
-      socket.on('onConversation', (payload: ConversationType) => {
+      socket.on('onConversation', (payload: Conversation) => {
         dispatch(addConversation(payload));
       });
       socket.on('onMessageDelete', (payload) => {
@@ -48,7 +42,7 @@ export const ConversationPage = () => {
 
   return (
     <Page>
-      <ConversationSidebar conversations={conversations} />
+      <ConversationSidebar />
       {!id && <ConversationPanel />}
       <Outlet />
     </Page>
