@@ -18,8 +18,6 @@ import { ConversationSidebarItem } from './ConversationSidebarItem';
 import { GroupSidebarItem } from '../groups/GroupSidebarItem';
 
 export const ConversationSidebar: FC = () => {
-  const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
 
   const conversations = useSelector(

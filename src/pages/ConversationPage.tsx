@@ -10,6 +10,7 @@ import {Conversation, MessageEventPayload} from '../utils/types';
 import {addMessage, deleteMessage} from "../store/messageSlice";
 import {SocketContext} from "../utils/context/SocketContext";
 import { fetchGroupsThunk } from '../store/groupSlice';
+import {updateType} from "../store/selectedSlice";
 
 export const ConversationPage = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ export const ConversationPage = () => {
   const socket = useContext(SocketContext);
 
   useEffect(() => {
+    dispatch(updateType('private'));
     dispatch(fetchConversationsThunk());
   }, []);
 
