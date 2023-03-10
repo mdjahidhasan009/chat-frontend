@@ -2,8 +2,8 @@ import React, { FC, PropsWithChildren, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { AuthenticatedRoute } from './components/AuthenticatedRoute';
-import { ConversationChannelPage } from './pages/ConversationChannelPage';
-import { ConversationPage } from './pages/ConversationPage';
+import { ConversationChannelPage } from './pages/conversations/ConversationChannelPage';
+import { ConversationPage } from './pages/conversations/ConversationPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AuthContext } from './utils/context/AuthContext';
@@ -14,6 +14,7 @@ import { store } from './store';
 import { enableMapSet } from 'immer';
 import {GroupPage} from "./pages/group/GroupPage";
 import {GroupChannelPage} from "./pages/group/GroupChannelPage";
+import {AppPage} from "./pages/AppPage";
 
 enableMapSet();
 
@@ -43,24 +44,18 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
-          path="conversations"
           element={
             <AuthenticatedRoute>
-              <ConversationPage />
+              <AppPage />
             </AuthenticatedRoute>
           }
         >
-          <Route path=":id" element={<ConversationChannelPage />} />
-        </Route>
-        <Route
-          path='groups'
-          element={
-            <AuthenticatedRoute>
-              <GroupPage />
-            </AuthenticatedRoute>
-          }
-        >
-          <Route path=":id" element={<GroupChannelPage />} />
+          <Route path="conversations" element={<ConversationPage /> }>
+            <Route path=":id" element={<ConversationChannelPage /> } />
+          </Route>
+          <Route path="groups" element={<GroupPage />}>
+            <Route path=":id" element={<GroupChannelPage />} />
+          </Route>
         </Route>
       </Routes>
     </AppWithProviders>

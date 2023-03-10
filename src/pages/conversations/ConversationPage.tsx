@@ -1,16 +1,16 @@
 import { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useParams } from 'react-router-dom';
-import { ConversationPanel } from '../components/conversations/ConversationPanel';
-import { ConversationSidebar } from '../components/conversations/ConversationSidebar';
-import { AppDispatch, RootState } from '../store';
-import {addConversation, fetchConversationsThunk, updateConversation} from '../store/conversationSlice';
-import { Page } from '../utils/styles';
-import {Conversation, MessageEventPayload} from '../utils/types';
-import {addMessage, deleteMessage} from "../store/messageSlice";
-import {SocketContext} from "../utils/context/SocketContext";
-import { fetchGroupsThunk } from '../store/groupSlice';
-import {updateType} from "../store/selectedSlice";
+import { ConversationPanel } from '../../components/conversations/ConversationPanel';
+import { ConversationSidebar } from '../../components/conversations/ConversationSidebar';
+import { AppDispatch, RootState } from '../../store';
+import {addConversation, fetchConversationsThunk, updateConversation} from '../../store/conversationSlice';
+import { Page } from '../../utils/styles';
+import {Conversation, MessageEventPayload} from '../../utils/types';
+import {addMessage, deleteMessage} from "../../store/messageSlice";
+import {SocketContext} from "../../utils/context/SocketContext";
+import { fetchGroupsThunk } from '../../store/groupSlice';
+import {updateType} from "../../store/selectedSlice";
 
 export const ConversationPage = () => {
   const { id } = useParams();
@@ -44,7 +44,7 @@ export const ConversationPage = () => {
 
   return (
     <Page>
-      <ConversationSidebar />
+      {/*<ConversationSidebar />*/}
       {!id && <ConversationPanel />}
       <Outlet />
     </Page>

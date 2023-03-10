@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { MessagePanel } from '../components/messages/MessagePanel';
-import { getConversationMessages } from '../utils/api';
-import { AuthContext } from '../utils/context/AuthContext';
-import { SocketContext } from '../utils/context/SocketContext';
-import { ConversationChannelPageStyle } from '../utils/styles';
-import { MessageEventPayload, MessageType } from '../utils/types';
-import { AppDispatch, RootState } from '../store';
-import {addMessage, editMessage, fetchMessagesThunk} from '../store/messageSlice';
-import { updateConversation } from '../store/conversationSlice';
+import { MessagePanel } from '../../components/messages/MessagePanel';
+import { getConversationMessages } from '../../utils/api';
+import { AuthContext } from '../../utils/context/AuthContext';
+import { SocketContext } from '../../utils/context/SocketContext';
+import { ConversationChannelPageStyle } from '../../utils/styles';
+import { MessageEventPayload, MessageType } from '../../utils/types';
+import { AppDispatch, RootState } from '../../store';
+import {addMessage, editMessage, fetchMessagesThunk} from '../../store/messageSlice';
+import { updateConversation } from '../../store/conversationSlice';
 
 export const ConversationChannelPage = () => {
   const { user } = useContext(AuthContext);

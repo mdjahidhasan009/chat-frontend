@@ -21,7 +21,7 @@ export const GroupPage = () => {
 
   return (
     <Page>
-      <ConversationSidebar />
+      {/*<ConversationSidebar />*/}
       {!id && <ConversationPanel />}
       <Outlet />
     </Page>
