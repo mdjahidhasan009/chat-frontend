@@ -105,7 +105,8 @@ export const ConversationSidebarHeader = styled.header`
 
 export const ConversationChannelPageStyle = styled.div`
   height: 100%;
-  margin-left: ${SIDEBAR_WIDTH + 90}px;
+  //margin-left: ${SIDEBAR_WIDTH + 90}px;
+  margin-left: ${SIDEBAR_WIDTH}px;
 `;
 
 export const ConversationSidebarContainer = styled.div`
@@ -118,7 +119,6 @@ export const ConversationSidebarItemStyle = styled.div`
   gap: 20px;
   padding: 10px 32px;
   box-sizing: border-box;
-  background-color: #131313;
 `;
 
 export const OverlayStyle = styled.div`

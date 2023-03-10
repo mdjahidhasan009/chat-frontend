@@ -41,9 +41,22 @@ export type MessageType = {
     conversation: Conversation;
 };
 
+export type GroupMessageType = {
+    id: number;
+    content: string;
+    createdAt: string;
+    author: User;
+    group: Group;
+};
+
 export type FetchMessagePayload = {
     id: number;
     messages: MessageType[];
+};
+
+export type FetchGroupMessagePayload = {
+    id: number;
+    messages: GroupMessageType[];
 };
 
 export type MessageEventPayload = {
@@ -58,6 +71,11 @@ export type CreateMessageParams = {
 export type ConversationMessage = {
     id: number;
     messages: MessageType[];
+};
+
+export type GroupMessage = {
+    id: number;
+    messages: GroupMessageType[];
 };
 
 export type DeleteMessageParams = {
@@ -96,4 +114,9 @@ export type Group = {
     createdAt: number;
     lastMessageSent: MessageType;
     lastMessageSentAt: Date;
+};
+
+export type GroupMessageEventPayload = {
+    message: GroupMessageType;
+    group: Group;
 };

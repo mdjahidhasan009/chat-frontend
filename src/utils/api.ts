@@ -6,7 +6,7 @@ import {
   CreateUserParams,
   DeleteMessageParams,
   DeleteMessageResponse,
-  EditMessagePayload,
+  EditMessagePayload, FetchGroupMessagePayload,
   FetchMessagePayload,
   Group,
   MessageType,
@@ -64,3 +64,9 @@ export const editMessage = ({
 
 export const fetchGroups = () =>
   axios.get<Group[]>(`${API_URL}/groups`, config);
+
+export const fetchGroupMessages = (id: number) =>
+  axios.get<FetchGroupMessagePayload>(
+    `${API_URL}/groups/${id}/messages`,
+    config
+  );

@@ -6,6 +6,7 @@ import {AppDispatch} from "../../store";
 import {fetchMessagesThunk} from "../../store/messageSlice";
 import {ConversationChannelPageStyle} from "../../utils/styles";
 import {MessagePanel} from "../../components/messages/MessagePanel";
+import {fetchGroupMessagesThunk} from "../../store/groupMessageSlice";
 
 export const GroupChannelPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,12 +17,17 @@ export const GroupChannelPage = () => {
   const [isRecipientsTyping, setIsRecipientsTyping] = useState(false);
 
   useEffect(() => {
-    const conversationId = parseInt(id!);
-    dispatch(fetchMessagesThunk(conversationId));
+    const groupId = parseInt(id!);
+    dispatch(fetchGroupMessagesThunk(groupId));
   }, [id]);
 
   useEffect(() => {
-    const conversationId = parseInt(id!);
+    const groupId = parseInt(id!);
+    socket.emit('onGroupJoin', { groupId });
+
+    return () => {
+      socket.emit('onGroupLeave', { groupId });
+    }
   }, [id]);
 
   const sendTypingStatus = () => {};
