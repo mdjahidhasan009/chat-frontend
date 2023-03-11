@@ -2,10 +2,11 @@ import { InputContainer, InputField, InputLabel, Button } from "../../utils/styl
 
 import styles from './index.module.scss';
 import {Link, useNavigate} from "react-router-dom";
-import React from "react";
+import React, {useContext} from "react";
 import { useForm } from "react-hook-form";
 import { UserCredentialsParams } from "../../utils/types";
 import {postLoginUser} from "../../utils/api";
+import {SocketContext} from "../../utils/context/SocketContext";
 export const LoginForm = () => {
     const {
         register,
@@ -13,11 +14,13 @@ export const LoginForm = () => {
         formState: { errors }
     } = useForm<UserCredentialsParams>();
     const navigate = useNavigate();
+    const socket = useContext(SocketContext);
 
     const onSubmit = async (data: UserCredentialsParams) => {
         // event.preventDefault();
         try {
           await postLoginUser(data);
+          socket.connect()
           navigate('/conversations');
         } catch (e) {
           console.log(e);
