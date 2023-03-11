@@ -1,44 +1,45 @@
-import {EditMessagePayload, MessageType} from "../../utils/types";
-import React, { Dispatch, FC, SetStateAction } from "react";
-import {AppDispatch} from "../../store";
-import {useDispatch} from "react-redux";
-import {useParams} from "react-router-dom";
-import {editMessageThunk} from "../../store/messageSlice";
-import {EditMessageActionsContainer, EditMessageInputField} from "../../utils/styles";
+import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { AppDispatch, RootState } from '../../store';
+import { setIsEditing } from '../../store/messageContainerSlice';
+import { editMessageThunk } from '../../store/messageSlice';
+import {
+  EditMessageActionsContainer,
+  EditMessageInputField,
+} from '../../utils/styles';
+import { EditMessagePayload } from '../../utils/types';
 
 type Props = {
-  selectedEditMessage: MessageType;
-  setIsEditing: Dispatch<SetStateAction<boolean>>;
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
-
-export const EditMessageContainer:FC<Props> = ({
-  selectedEditMessage,
-  setIsEditing,
-  onEditMessageChange,
-}) => {
-  const dispatch = useDispatch<AppDispatch>();
+export const EditMessageContainer: FC<Props> = ({ onEditMessageChange }) => {
   const { id } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const { messageBeingEdited } = useSelector(
+    (state: RootState) => state.messageContainer
+  );
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!messageBeingEdited) {
+      return;
+    }
     const params: EditMessagePayload = {
       conversationId: parseInt(id!),
-      messageId: selectedEditMessage.id,
-      content: selectedEditMessage.content,
+      messageId: messageBeingEdited.id,
+      content: messageBeingEdited.content,
     };
-    dispatch(editMessageThunk(params))
-      .then(() => {
-        setIsEditing(false);
-      })
-      .catch((err) => {
-        setIsEditing(false);
-      })
-  }
+    dispatch(editMessageThunk(params)).finally(() =>
+      dispatch(setIsEditing(false))
+    );
+  };
 
   return (
     <div style={{ width: '100%' }}>
       <form onSubmit={onSubmit}>
         <EditMessageInputField
-          value={selectedEditMessage.content}
+          value={messageBeingEdited?.content}
           onChange={onEditMessageChange}
         />
       </form>

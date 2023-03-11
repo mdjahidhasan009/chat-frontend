@@ -1,6 +1,7 @@
 import {GroupMessage, GroupMessageEventPayload} from "../utils/types";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { fetchGroupMessages as fetchGroupMessagesAPI } from '../utils/api';
+import {RootState} from "./index";
 
 export interface GroupMessagesState {
   messages: GroupMessage[];
@@ -39,6 +40,14 @@ export const groupMessagesSlice = createSlice({
     });
   },
 });
+
+const selectGroupMessages = (state: RootState) => state.groupMessages.messages;
+const selectGroupMessageId = (state: RootState, id: number) => id;
+
+export const selectGroupMessage = createSelector(
+  [selectGroupMessages, selectGroupMessageId],
+  (groupMessages, id) => groupMessages.find((gm) => gm.id === id)
+);
 
 export const { addGroupMessage } = groupMessagesSlice.actions;
 
