@@ -30,6 +30,12 @@ export const InputContainer = styled.div<InputContainerProps>`
   box-sizing: border-box;
 `;
 
+export const RecipientChipContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+`;
+
 export const InputLabel = styled.label`
   display: block;
   color: #8f8f8f;
@@ -130,10 +136,11 @@ export const OverlayStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 9999;
 `;
 
 export const ModalContainerStyle = styled.div`
+  position: relative;
   background-color: #121212;
   width: 650px;
   box-sizing: border-box;
@@ -156,6 +163,7 @@ export const ModalHeaderStyle = styled.header`
 
 export const ModalContentBodyStyle = styled.div`
   padding: 24px;
+  position: relative;
 `;
 
 export const TextField = styled.textarea`
@@ -429,7 +437,7 @@ export const ConversationSidebarHeaderStyle = styled.header`
   width: ${SIDEBAR_WIDTH}px;
   top: 0;
   left: 90px;
-  z-index: 9999;
+  z-index: 9;
   background-color: inherit;
 `;
 
@@ -490,5 +498,63 @@ export const SidebarContainerItemContent = styled.div`
     font-size: 16px;
     color: #797979;
     font-weight: 500;
+  }
+`;
+
+export const RecipientResultContainerStyle = styled.div`
+  position: absolute;
+  background-color: #161616;
+  right: 0;
+  left: 0;
+  margin: 4px 24px;
+`;
+
+export const RecipientScrollableItemContainer = styled.div`
+  height: 190px;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const RecipientBottomSection = styled.div`
+  border-top: 1px solid #fff;
+  margin: 4px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 0;
+`;
+
+export const RecipientResultItem = styled.div`
+  padding: 20px 28px;
+  transition: 100ms background-color ease;
+  box-sizing: border-box;
+  &:hover {
+    cursor: pointer;
+    background-color: #0c0c0c;
+  }
+`;
+
+export const SelectedRecipientPillStyle = styled.div`
+  margin-top: 10px;
+  background-color: #111;
+  border-radius: 14px;
+  width: fit-content;
+  padding: 8px 18px;
+  & .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+  & .icon {
+    margin-left: 10px;
+    color: #656565;
+    cursor: pointer;
+    transition: 300ms color ease;
+    :hover {
+      color: #c62d2d;
+    }
   }
 `;
