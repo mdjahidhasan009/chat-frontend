@@ -6,23 +6,16 @@ import {
   RecipientResultItem,
   RecipientScrollableItemContainer
 } from "../../utils/styles";
+import {type} from "os";
 
 type Props = {
   userResults: User[];
-  type: ConversationType;
   handleUserSelect: (user: User) => void;
-  handleMultipleUserSelect: (user: User) => void;
-  removeAllSelectedUsers: () => void;
-  saveResults: () => void;
 };
 
 export const RecipientResultContainer: FC<Props> = ({
-  type,
   userResults,
   handleUserSelect,
-  handleMultipleUserSelect,
-  removeAllSelectedUsers,
-  saveResults,
 }) => {
   return (
     <RecipientResultContainerStyle>
@@ -30,20 +23,12 @@ export const RecipientResultContainer: FC<Props> = ({
         {userResults.map((user) => (
           <RecipientResultItem
             key={user.id}
-            onClick={() => {
-              type !== 'group'
-                ? handleUserSelect(user)
-                : handleMultipleUserSelect(user)
-            }}
+            onClick={() => handleUserSelect(user)}
           >
             <span>{user.email}</span>
           </RecipientResultItem>
         ))}
       </RecipientScrollableItemContainer>
-      <RecipientBottomSection>
-        <span onClick={() => removeAllSelectedUsers()}>cancel</span>
-        <span onClick={() => saveResults()}>save</span>
-      </RecipientBottomSection>
     </RecipientResultContainerStyle>
   )
 }
