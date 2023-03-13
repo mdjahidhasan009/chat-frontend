@@ -43,10 +43,10 @@ export const ConversationPage = () => {
   }, [id]);
 
   return (
-    <Page>
-      {/*<ConversationSidebar />*/}
+    <>
+      <ConversationSidebar />
       {!id && <ConversationPanel />}
       <Outlet />
-    </Page>
+    </>
   );
 };

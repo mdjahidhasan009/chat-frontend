@@ -33,10 +33,10 @@ export const GroupPage = () => {
   }, [id]);
 
   return (
-    <Page>
-      {/*<ConversationSidebar />*/}
+    <>
+      <ConversationSidebar />
       {!id && <ConversationPanel />}
       <Outlet />
-    </Page>
+    </>
   );
 }
