@@ -3,7 +3,7 @@ import {
   Conversation,
   CreateConversationParams, CreateGroupParams,
   CreateMessageParams,
-  CreateUserParams,
+  CreateUserParams, DeleteGroupMessageParams, DeleteGroupMessageResponse,
   DeleteMessageParams,
   DeleteMessageResponse,
   EditMessagePayload,
@@ -14,6 +14,7 @@ import {
   User,
   UserCredentialsParams,
 } from './types';
+import {id} from "date-fns/locale";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -43,14 +44,8 @@ export const postNewMessage = ({ id, content }: CreateMessageParams) =>
 export const postNewConversation = (data: CreateConversationParams) =>
   axiosClient.post<Conversation>(`/conversations`, data, config);
 
-export const deleteMessage = ({
-  conversationId,
-  messageId,
-}: DeleteMessageParams) =>
-  axiosClient.delete<DeleteMessageResponse>(
-    `/conversations/${conversationId}/messages/${messageId}`,
-    config
-  );
+export const deleteMessage = ({ id, messageId }: DeleteMessageParams) =>
+  axiosClient.delete<DeleteMessageResponse>(`/conversations/${id}/messages/${messageId}`, config);
 
 export const editMessage = ({
   content,
@@ -76,3 +71,6 @@ export const searchUsers = (query: string) =>
 
 export const createGroup = (params: CreateGroupParams) =>
   axiosClient.post(`/groups`, params, config);
+
+export const deleteGroupMessage = ({ id, messageId }: DeleteGroupMessageParams) =>
+  axiosClient.delete<DeleteGroupMessageResponse>(`/groups/${id}/messages/${messageId}`, config);

@@ -1,6 +1,9 @@
-import {GroupMessage, GroupMessageEventPayload} from "../utils/types";
+import {DeleteMessageParams, GroupMessage, GroupMessageEventPayload} from "../utils/types";
 import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { fetchGroupMessages as fetchGroupMessagesAPI } from '../utils/api';
+import {
+  deleteGroupMessage as deleteGroupMessageAPI,
+  fetchGroupMessages as fetchGroupMessagesAPI,
+} from '../utils/api';
 import {RootState} from "./index";
 
 export interface GroupMessagesState {
@@ -14,6 +17,11 @@ export const initialState: GroupMessagesState = {
 export const fetchGroupMessagesThunk = createAsyncThunk(
   'groupMessages/fetch',
   (id: number) => fetchGroupMessagesAPI(id)
+);
+
+export const deleteGroupMessageThunk = createAsyncThunk(
+  'groupMessages/delete',
+  (params: DeleteMessageParams) => deleteGroupMessageAPI(params)
 );
 
 export const groupMessagesSlice = createSlice({
@@ -30,14 +38,26 @@ export const groupMessagesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchGroupMessagesThunk.fulfilled, (state, action) => {
-      const { id } = action.payload.data;
-      const index = state.messages.findIndex((gm) => gm.id === id);
-      const exists = state.messages.find((gm) => gm.id === id);
-      exists
-        ? (state.messages[index] = action.payload.data)
-        : (state.messages.push(action.payload.data))
-    });
+    builder
+      .addCase(fetchGroupMessagesThunk.fulfilled, (state, action) => {
+        const { id } = action.payload.data;
+        const index = state.messages.findIndex((gm) => gm.id === id);
+        const exists = state.messages.find((gm) => gm.id === id);
+        exists
+          ? (state.messages[index] = action.payload.data)
+          : (state.messages.push(action.payload.data))
+      })
+      .addCase(deleteGroupMessageThunk.fulfilled, (state, action) => {
+        const { data } = action.payload;
+        const groupMessages = state.messages.find(
+          (gm) => gm.id === data.groupId
+        );
+        if (!groupMessages) return;
+        const messageIndex = groupMessages.messages.findIndex(
+          (m) => m.id === data.messageId
+        );
+        groupMessages?.messages.splice(messageIndex, 1);
+      });
   },
 });
 
