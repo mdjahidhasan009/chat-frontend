@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { fadeInUpwards } from './keyframes';
 import {
   ContextMenuProps,
   ConversationSelectedProps,
@@ -65,6 +66,11 @@ export const Button = styled.button`
   &:active {
     background-color: #3a1cff;
   }
+  &:disabled {
+    background-color: #4937bc7c;
+    color: #878787a2;
+    cursor: not-allowed;
+  }
 `;
 
 export const Page = styled.div<PageProps>`
@@ -96,20 +102,27 @@ export const ConversationSidebarItemStyle = styled.div`
 export const OverlayStyle = styled.div`
   height: 100%;
   width: 100%;
-  background-color: #000000c4;
+  background-color: #000000e3;
   position: fixed;
   display: flex;
+  top: 0;
+  left: 0;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 `;
 
-export const ModalContainerStyle = styled.div`
+type ModalProps = Partial<{
+  showModal: boolean;
+}>;
+
+export const ModalContainerStyle = styled.div<ModalProps>`
   position: relative;
   background-color: #121212;
   width: 650px;
   box-sizing: border-box;
   border-radius: 10px;
+  animation: ${fadeInUpwards} 500ms ease;
 `;
 
 export const ModalHeaderStyle = styled.header`
@@ -331,10 +344,10 @@ export const ConversationSelectedItem = styled.div<ConversationSelectedProps>`
   background-color: #212121;
   color: #f0f0f0;
   ${(props) =>
-          props.selected &&
-          css`
-            background-color: #444444;
-          `};
+  props.selected &&
+  css`
+      background-color: #444444;
+    `};
 `;
 export const UserAvatar = styled.img`
   width: 55px;
@@ -408,10 +421,10 @@ export const ConversationTabItemStyle = styled.section<ConversationSelectedProps
   padding: 8px 18px;
   border-radius: 5px;
   ${({ selected }) =>
-          selected &&
-          css`
-            background-color: #383838;
-          `};
+  selected &&
+  css`
+      background-color: #383838;
+    `};
 `;
 
 export const SidebarContainerStyle = styled.div``;

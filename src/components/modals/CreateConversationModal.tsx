@@ -1,6 +1,6 @@
 import { OverlayStyle } from "../../utils/styles";
 import { CreateConversationForm } from "../forms/CreateConversationForm";
-import { ModalContainer, ModalContentBody, ModalHeader } from "./Index";
+import { ModalContainer, ModalContentBody, ModalHeader } from "./index";
 import React, {createRef, Dispatch, FC, useEffect, useState} from "react";
 import { MdClose } from "react-icons/md";
 import {ConversationTypeForm} from "../forms/ConversationTypeForm";

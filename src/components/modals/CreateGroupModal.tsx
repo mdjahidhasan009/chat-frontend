@@ -1,7 +1,7 @@
 import React, {createRef, Dispatch, FC, useEffect, useState} from "react";
 import {ConversationType} from "../../utils/types";
 import {OverlayStyle} from "../../utils/styles";
-import {ModalContainer, ModalContentBody, ModalHeader} from "./Index";
+import {ModalContainer, ModalContentBody, ModalHeader} from "./index";
 import {MdClose} from "react-icons/md";
 import {CreateGroupForm} from "../forms/CreateGroupForm";
 

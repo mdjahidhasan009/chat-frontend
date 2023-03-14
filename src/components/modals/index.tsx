@@ -19,9 +19,16 @@ export const ModalContentBody: FC<PropsWithChildren> = ({ children }) => {
   )
 }
 
-export const ModalContainer: FC<PropsWithChildren> = ({ children }) => {
+type ModalContainerProps = {
+  showModal?: boolean;
+};
+
+export const ModalContainer: FC<PropsWithChildren & ModalContainerProps> = ({
+  children,
+  showModal
+}) => {
   return (
-    <ModalContainerStyle>
+    <ModalContainerStyle showModal={showModal}>
       {children}
     </ModalContainerStyle>
   )
