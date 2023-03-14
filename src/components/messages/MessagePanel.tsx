@@ -14,6 +14,7 @@ import {
 import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
 import { MessagePanelHeader } from './MessagePanelHeader';
+import {selectGroupById} from "../../store/groupSlice";
 
 type Props = {
   sendTypingStatus: () => void;
@@ -30,6 +31,11 @@ export const MessagePanel: FC<Props> = ({
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(routeId!))
   );
+
+  const group = useSelector((state: RootState) =>
+    selectGroupById(state, parseInt(routeId!))
+  );
+
   const selectedType = useSelector(
     (state: RootState) => state.selectedConversationType.type
   );
@@ -64,6 +70,11 @@ export const MessagePanel: FC<Props> = ({
             setContent={setContent}
             sendMessage={sendMessage}
             sendTypingStatus={sendTypingStatus}
+            placeholderName={
+              selectedType === 'group'
+                ? group?.title || 'Group'
+                : recipient?.firstName || 'user'
+            }
           />
           <MessageTypingStatus>
             {isRecipientTyping ? `${recipient?.firstName} is typing...` : ''}

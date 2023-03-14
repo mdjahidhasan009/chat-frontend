@@ -7,9 +7,10 @@ type Props = {
   setContent: Dispatch<SetStateAction<string>>;
   sendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
   sendTypingStatus: () => void;
+  placeholderName: string;
 };
 
-export const MessageInputField: FC<Props> = ({ content, setContent, sendMessage, sendTypingStatus }) => {
+export const MessageInputField: FC<Props> = ({ content, setContent, sendMessage, sendTypingStatus, placeholderName }) => {
   const updateContent = (e: React.ChangeEvent<HTMLInputElement>) =>
     setContent(e.target.value);
 
@@ -21,6 +22,7 @@ export const MessageInputField: FC<Props> = ({ content, setContent, sendMessage,
             value={content}
             onChange={updateContent}
             onKeyDown={sendTypingStatus}
+            placeholder={`Send a message to ${placeholderName}`}
           />
         </form>
       </MessageInputContainer>

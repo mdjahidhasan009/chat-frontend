@@ -9,6 +9,8 @@ import {
   EditMessageInputField,
 } from '../../utils/styles';
 import { EditMessagePayload } from '../../utils/types';
+import {selectType} from "../../store/selectedSlice";
+import {editGroupMessageThunk} from "../../store/groupMessageSlice";
 
 type Props = {
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -19,20 +21,27 @@ export const EditMessageContainer: FC<Props> = ({ onEditMessageChange }) => {
   const { messageBeingEdited } = useSelector(
     (state: RootState) => state.messageContainer
   );
+  const conversationType = useSelector((state: RootState) => selectType(state));
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!messageBeingEdited) {
       return;
     }
+
     const params: EditMessagePayload = {
-      conversationId: parseInt(id!),
+      id: parseInt(id!),
       messageId: messageBeingEdited.id,
       content: messageBeingEdited.content,
     };
-    dispatch(editMessageThunk(params)).finally(() =>
-      dispatch(setIsEditing(false))
-    );
+    
+    conversationType === 'private'
+      ? dispatch(editMessageThunk(params)).finally(() =>
+        dispatch(setIsEditing(false))
+      )
+      : dispatch(editGroupMessageThunk(params)).finally(() =>
+        dispatch(setIsEditing(false))
+      )
   };
 
   return (
