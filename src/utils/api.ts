@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import {
   Conversation,
-  CreateConversationParams,
+  CreateConversationParams, CreateGroupParams,
   CreateMessageParams,
   CreateUserParams,
   DeleteMessageParams,
@@ -74,5 +74,5 @@ export const postGroupMessage = ({ id, content }: CreateMessageParams) =>
 export const searchUsers = (query: string) =>
   axiosClient.get<User[]>(`/users/search?query=${query}`, config);
 
-export const createGroup = (users: string[]) =>
-  axiosClient.post(`/groups`, { users }, config);
+export const createGroup = (params: CreateGroupParams) =>
+  axiosClient.post(`/groups`, params, config);

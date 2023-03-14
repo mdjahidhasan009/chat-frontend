@@ -3,6 +3,7 @@ import {ConversationType} from "../../utils/types";
 import {OverlayStyle} from "../../utils/styles";
 import {ModalContainer, ModalContentBody, ModalHeader} from "./Index";
 import {MdClose} from "react-icons/md";
+import {CreateGroupForm} from "../forms/CreateGroupForm";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +35,7 @@ export const CreateGroupModal: FC<Props> = ({ setShowModal }) => {
           <MdClose size={32} onClick={() => setShowModal(false)} />
         </ModalHeader>
         <ModalContentBody>
-          <CreateGroupModal setShowModal={setShowModal} />
+          <CreateGroupForm setShowModal={setShowModal} />
         </ModalContentBody>
       </ModalContainer>
     </OverlayStyle>

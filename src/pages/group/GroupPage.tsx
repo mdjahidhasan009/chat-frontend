@@ -3,12 +3,12 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store";
 import {useContext, useEffect} from "react";
 import {updateType} from "../../store/selectedSlice";
-import {fetchGroupsThunk} from "../../store/groupSlice";
+import {addGroup, fetchGroupsThunk} from "../../store/groupSlice";
 import {Page} from "../../utils/styles";
 import {ConversationSidebar} from "../../components/conversations/ConversationSidebar";
 import {ConversationPanel} from "../../components/conversations/ConversationPanel";
 import {SocketContext} from "../../utils/context/SocketContext";
-import {GroupMessageEventPayload} from "../../utils/types";
+import {Group, GroupMessageEventPayload} from "../../utils/types";
 import {addGroupMessage} from "../../store/groupMessageSlice";
 
 export const GroupPage = () => {
@@ -27,8 +27,13 @@ export const GroupPage = () => {
       dispatch(addGroupMessage(payload));
     });
 
+    socket.on('onGroupCreate', (payload: Group) => {
+      dispatch(addGroup(payload));
+    });
+
     return () => {
       socket.off('onGroupMessage');
+      socket.off('onGroupCreate');
     };
   }, [id]);
 
