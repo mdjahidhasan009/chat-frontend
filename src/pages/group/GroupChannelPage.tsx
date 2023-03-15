@@ -1,8 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {SocketContext} from "../../utils/context/SocketContext";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../store";
 import {fetchMessagesThunk} from "../../store/messageSlice";
 import {ConversationChannelPageStyle} from "../../utils/styles";
 import {MessagePanel} from "../../components/messages/MessagePanel";
@@ -14,9 +14,11 @@ export const GroupChannelPage = () => {
   const { id } = useParams<{ id: string }>();
   const socket = useContext(SocketContext);
   const dispatch = useDispatch<AppDispatch>();
-  const [time, setTimer] = useState<ReturnType<typeof setTimeout>>();
-  const [isTyping, setIsTyping] = useState(false);
   const [isRecipientsTyping, setIsRecipientsTyping] = useState(false);
+
+  const showSidebar = useSelector(
+    (state: RootState) => state.groupSidebar.showSidebar
+  );
 
   useEffect(() => {
     const groupId = parseInt(id!);
@@ -46,7 +48,7 @@ export const GroupChannelPage = () => {
           isRecipientTyping={isRecipientsTyping}
         />
       </ConversationChannelPageStyle>
-      <GroupRecipientsSidebar />
+      {showSidebar && <GroupRecipientsSidebar />}
     </>
 
   );

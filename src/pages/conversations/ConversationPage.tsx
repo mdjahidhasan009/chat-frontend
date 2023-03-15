@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useParams } from 'react-router-dom';
 import { ConversationPanel } from '../../components/conversations/ConversationPanel';
-import { ConversationSidebar } from '../../components/conversations/ConversationSidebar';
+import { ConversationSidebar } from '../../components/sidebars/ConversationSidebar';
 import { AppDispatch, RootState } from '../../store';
 import {addConversation, fetchConversationsThunk, updateConversation} from '../../store/conversationSlice';
 import { Page } from '../../utils/styles';

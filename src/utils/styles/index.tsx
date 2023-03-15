@@ -175,8 +175,7 @@ export const MessagePanelHeaderStyle = styled.header`
   box-sizing: border-box;
   width: 100%;
   flex-shrink: 0;
-  border-bottom: 1px solid #22222256;
-  box-shadow: 5px 0 5px 1px #000;
+  border-bottom: 1px solid #49494925;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -268,29 +267,31 @@ export const MessageItemContent = styled.div<MessageItemContentProps>`
   width: 100%;
 `;
 
-export const ContextMenuStyle = styled.div<ContextMenuProps>`
+export const ContextMenu = styled.ul<ContextMenuProps>`
   border-radius: 8px;
   box-sizing: border-box;
   position: fixed;
-  width: 200px;
-  background-color: #252525;
+  width: 220px;
+  background-color: #1a1a1a;
   ${(props) => css`
     top: ${props.top}px;
     left: ${props.left}px;
   `}
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+`;
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 10px;
-  }
-
-  ul li {
-    padding: 14px 16px;
-    border-radius: 8px;
-  }
-
-  ul li:hover {
+export const ContextMenuItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 6px 0;
+  &:hover {
     cursor: pointer;
     background-color: #1f1f1f;
   }
@@ -344,8 +345,8 @@ export const ConversationSelectedItem = styled.div<ConversationSelectedProps>`
   background-color: #212121;
   color: #f0f0f0;
   ${(props) =>
-  props.selected &&
-  css`
+          props.selected &&
+          css`
       background-color: #444444;
     `};
 `;
@@ -529,6 +530,7 @@ export const ConversationSidebarStyle = styled.div`
   height: 100%;
   width: 400px;
   background-color: #111111;
+  flex: 0 0 auto;
 `;
 
 export const ConversationSidebarHeader = styled.header`
@@ -536,8 +538,7 @@ export const ConversationSidebarHeader = styled.header`
   padding: 10px 30px;
   box-sizing: border-box;
   flex-shrink: 0;
-  border-bottom: 1px solid #22222256;
-  box-shadow: 5px 0 5px 1px #000;
+  border-bottom: 1px solid #49494925;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -587,9 +588,9 @@ export const GroupRecipientsSidebarStyle = styled.aside`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 400px;
-  background-color: #141414;
-  border-left: 1px solid #22222256;
+  width: 350px;
+  background-color: #111111;
+  flex: 0 0 auto;
 `;
 
 export const GroupRecipientsSidebarHeader = styled.div`
@@ -598,8 +599,7 @@ export const GroupRecipientsSidebarHeader = styled.div`
   box-sizing: border-box;
   width: 100%;
   flex-shrink: 0;
-  border-bottom: 1px solid #22222256;
-  box-shadow: 5px 0 5px 1px #000;
+  border-bottom: 1px solid #49494925;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -610,7 +610,7 @@ export const GroupRecipientsSidebarHeader = styled.div`
 `;
 
 export const GroupRecipientSidebarItemContainer = styled.div`
-  padding: 10px 0 0 20px;
+  padding: 30px 0 0 30px;
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
@@ -626,4 +626,20 @@ export const GroupRecipientSidebarItem = styled.div`
   font-size: 18px;
   font-weight: 500;
   margin: 10px 0;
+`;
+
+export const GroupHeaderIcons = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: center;
+`;
+
+export const TestContextMenu = styled.div<ContextMenuProps>`
+  ${({ top, left }) => css`
+    top: ${top}px;
+    left: ${left}px;
+  `}
+
+  width: 200px;
+  background-color: #000;
 `;

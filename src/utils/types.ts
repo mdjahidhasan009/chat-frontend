@@ -136,3 +136,26 @@ export type CreateGroupParams = {
     users: string[];
     title: string;
 };
+
+export type AddGroupRecipientParams = {
+    id: number;
+    email: string;
+};
+
+export type Points = {
+    x: number;
+    y: number;
+};
+
+export type UserContextMenuActionType = 'kick' | 'transfer_owner'| 'profile';
+export type ContextMenuItemType = {
+    label: string;
+    action: UserContextMenuActionType;
+    color: string;
+    ownerOnly: boolean;
+};
+
+export type AddGroupUserMessagePayload = {
+    group: Group;
+    user: User;
+};

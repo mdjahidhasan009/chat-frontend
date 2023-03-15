@@ -5,6 +5,7 @@ import selectedTypeReducer from './selectedSlice';
 import groupsReducer from './groupSlice';
 import groupMessagesReducer from './groupMessageSlice';
 import groupContainerReducer from './messageContainerSlice';
+import groupSidebarReducer from './groupRecipientsSidebarSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     selectedConversationType: selectedTypeReducer,
     groups: groupsReducer,
     groupMessages: groupMessagesReducer,
-    messageContainer: groupContainerReducer
+    messageContainer: groupContainerReducer,
+    groupSidebar: groupSidebarReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

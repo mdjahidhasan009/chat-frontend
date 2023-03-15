@@ -5,24 +5,37 @@ import {
   GroupRecipientsSidebarStyle,
   MessageItemAvatar,
 } from '../../utils/styles';
-import { PeopleGroup } from 'akar-icons';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '../../store';
 import { selectGroupById } from '../../store/groupSlice';
 import { useParams } from 'react-router-dom';
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {User} from "../../utils/types";
 import {SocketContext} from "../../utils/context/SocketContext";
+import {setContextMenuLocation, setSelectedUser, toggleContextMenu} from "../../store/groupRecipientsSidebarSlice";
+import {SelectedParticipantContextMenu} from "../context-menus/SelectedParticipantContextMenu";
 
 export const GroupRecipientsSidebar = () => {
   const { id: groupId } = useParams();
+
+  const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const socket = useContext(SocketContext);
+
   const group = useSelector((state: RootState) =>
     selectGroupById(state, parseInt(groupId!))
   );
 
-  const socket = useContext(SocketContext);
-  const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
-  const [offlineUsers, setOfflineUsers] = useState<User[]>([]);
+  const groupSidebarState = useSelector(
+    (state: RootState) => state.groupSidebar
+  );
+
+  useEffect(() => {
+    const handleClick = () => dispatch(toggleContextMenu(false));
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, [groupId]);
 
   useEffect(() => {
     socket.emit('getOnlineGroupUsers', { groupId });
@@ -31,35 +44,60 @@ export const GroupRecipientsSidebar = () => {
     }, 10000);
     socket.on('onlineGroupUsersReceived', (payload) => {
       setOnlineUsers(payload.onlineUsers);
-      setOfflineUsers(payload.offlineUsers);
     });
     return () => {
       clearInterval(interval);
       socket.off('onlineGroupUsersReceived');
     };
-  }, [groupId]);
+  }, [groupId, groupId]);
+
+  useEffect(() => {
+    const handleResize = (e: UIEvent) => dispatch(toggleContextMenu(false));
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const onUserContextMenu = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    user: User
+  ) => {
+    e.preventDefault();
+    dispatch(toggleContextMenu(true));
+    dispatch(setContextMenuLocation({ x: e.pageX, y: e.pageY }));
+    dispatch(setSelectedUser(user));
+  };
 
   return (
     <GroupRecipientsSidebarStyle>
       <GroupRecipientsSidebarHeader>
         <span>Participants</span>
-        <PeopleGroup />
+        {/*<PeopleGroup />*/}
       </GroupRecipientsSidebarHeader>
       <GroupRecipientSidebarItemContainer>
         <span>Online Users</span>
         {onlineUsers.map((user) => (
-          <GroupRecipientSidebarItem>
+          <GroupRecipientSidebarItem
+            onContextMenu={(e) => onUserContextMenu(e, user)}
+          >
             <MessageItemAvatar />
             <span>{user.firstName}</span>
           </GroupRecipientSidebarItem>
         ))}
         <span>Offline Users</span>
-        {offlineUsers.map((user) => (
-          <GroupRecipientSidebarItem>
-            <MessageItemAvatar />
-            <span>{user.firstName}</span>
-          </GroupRecipientSidebarItem>
-        ))}
+        {group?.users
+          .filter(
+            (user) =>
+              !onlineUsers.find((onlineUser) => onlineUser.id === user.id)
+          )
+          .map((user) => (
+            <GroupRecipientSidebarItem>
+              <MessageItemAvatar />
+              <span>{user.firstName}</span>
+            </GroupRecipientSidebarItem>
+          ))}
+        {groupSidebarState.showUserContextMenu && (
+          <SelectedParticipantContextMenu points={groupSidebarState.points} />
+        )}
       </GroupRecipientSidebarItemContainer>
     </GroupRecipientsSidebarStyle>
   );

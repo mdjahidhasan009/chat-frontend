@@ -1,19 +1,21 @@
-import { MessagePanelHeaderStyle } from '../../utils/styles';
+import {GroupHeaderIcons, MessagePanelHeaderStyle} from '../../utils/styles';
 import {useContext, useState} from "react";
 import {AuthContext} from "../../utils/context/AuthContext";
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectConversationById} from "../../store/conversationSlice";
-import {RootState} from "../../store";
+import {AppDispatch, RootState} from "../../store";
 import {selectType} from "../../store/selectedSlice";
 import {selectGroupById} from "../../store/groupSlice";
-import { PersonAdd } from 'akar-icons';
+import {PeopleGroup, PersonAdd} from 'akar-icons';
 import {AddGroupRecipientModal} from "../modals/AddGroupRecipientModal";
+import {toggleSidebar} from "../../store/groupRecipientsSidebarSlice";
 
 export const MessagePanelHeader = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const type = useSelector(selectType);
   const conversation = useSelector((state: RootState) =>
@@ -42,9 +44,22 @@ export const MessagePanelHeader = () => {
         <div>
           <span>{headerTitle}</span>
         </div>
-        {type === 'group' && user?.id === group?.creator?.id && (
-          <PersonAdd size={30} onClick={() => setShowModal(true)} />
-        )}
+        <GroupHeaderIcons>
+          {type === 'group' && user?.id === group?.creator?.id && (
+            <PersonAdd
+              cursor="pointer"
+              size={30}
+              onClick={() => setShowModal(true)}
+            />
+          )}
+          {type === 'group' && (
+            <PeopleGroup
+              cursor="pointer"
+              size={30}
+              onClick={() => dispatch(toggleSidebar())}
+            />
+          )}
+        </GroupHeaderIcons>
       </MessagePanelHeaderStyle>
     </>
   );

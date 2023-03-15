@@ -3,12 +3,12 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store";
 import {useContext, useEffect} from "react";
 import {updateType} from "../../store/selectedSlice";
-import {addGroup, fetchGroupsThunk} from "../../store/groupSlice";
+import {addGroup, fetchGroupsThunk, updateGroup} from "../../store/groupSlice";
 import {Page} from "../../utils/styles";
-import {ConversationSidebar} from "../../components/conversations/ConversationSidebar";
+import {ConversationSidebar} from "../../components/sidebars/ConversationSidebar";
 import {ConversationPanel} from "../../components/conversations/ConversationPanel";
 import {SocketContext} from "../../utils/context/SocketContext";
-import {Group, GroupMessageEventPayload} from "../../utils/types";
+import {AddGroupUserMessagePayload, Group, GroupMessageEventPayload} from "../../utils/types";
 import {addGroupMessage} from "../../store/groupMessageSlice";
 
 export const GroupPage = () => {
@@ -31,9 +31,20 @@ export const GroupPage = () => {
       dispatch(addGroup(payload));
     });
 
+    socket.on('onGroupUserAdd', (payload: AddGroupUserMessagePayload) => {
+      dispatch(addGroup(payload.group));
+    });
+
+    socket.on('onGroupReceivedNewUser', (payload: AddGroupUserMessagePayload) => {
+        dispatch(updateGroup(payload.group));
+      }
+    );
+
     return () => {
       socket.off('onGroupMessage');
       socket.off('onGroupCreate');
+      socket.off('onGroupUserAdd');
+      socket.off('onGroupReceivedNewUser');
     };
   }, [id]);
 
