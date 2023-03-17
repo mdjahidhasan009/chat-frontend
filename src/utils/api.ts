@@ -11,11 +11,10 @@ import {
   FetchGroupMessagePayload,
   FetchMessagePayload,
   Group, GroupMessageType,
-  MessageType,
+  MessageType, RemoveGroupRecipientParams,
   User,
   UserCredentialsParams,
 } from './types';
-import {id} from "date-fns/locale";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -32,6 +31,9 @@ export const getAuthUser = () => axiosClient.get<User>(`/auth/status`, config);
 
 export const getConversations = () =>
   axiosClient.get<Conversation[]>(`/conversations`, config);
+
+export const getConversationById = (id: number) =>
+  axiosClient.get<Conversation>(`/conversations/${id}`, config);
 
 export const getConversationMessages = (conversationId: number) =>
   axiosClient.get<FetchMessagePayload>(
@@ -57,6 +59,9 @@ export const editMessage = ({ content, id, messageId }: EditMessagePayload) =>
 
 export const fetchGroups = () => axiosClient.get<Group[]>(`/groups`, config);
 
+export const fetchGroupById = (id: number) =>
+  axiosClient.get<Group>(`/groups/${id}`, config);
+
 export const fetchGroupMessages = (id: number) =>
   axiosClient.get<FetchGroupMessagePayload>(`/groups/${id}/messages`, config);
 
@@ -77,3 +82,6 @@ export const editGroupMessage = ({ content, id, messageId,}: EditMessagePayload)
 
 export const addGroupRecipient = ({ id, email }: AddGroupRecipientParams) =>
   axiosClient.post(`/groups/${id}/recipients`, { email }, config);
+
+export const removeGroupRecipient = ({ id, userId }: RemoveGroupRecipientParams) =>
+  axiosClient.delete<Group>(`/groups/${id}/recipients/${userId}`, config);

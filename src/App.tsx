@@ -15,6 +15,8 @@ import { enableMapSet } from 'immer';
 import {GroupPage} from "./pages/group/GroupPage";
 import {GroupChannelPage} from "./pages/group/GroupChannelPage";
 import {AppPage} from "./pages/AppPage";
+import {ConversationPageGuard} from "./guards/ConversationPageGuard";
+import {GroupPageGuard} from "./guards/GroupPageGuard";
 
 enableMapSet();
 
@@ -43,18 +45,12 @@ function App() {
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route
-          element={
-            <AuthenticatedRoute>
-              <AppPage />
-            </AuthenticatedRoute>
-          }
-        >
+        <Route element={<AuthenticatedRoute children={<AppPage />} />}>
           <Route path="conversations" element={<ConversationPage /> }>
-            <Route path=":id" element={<ConversationChannelPage /> } />
+            <Route path=":id" element={<ConversationPageGuard children={<ConversationChannelPage />} />} />
           </Route>
           <Route path="groups" element={<GroupPage />}>
-            <Route path=":id" element={<GroupChannelPage />} />
+            <Route path=":id" element={<GroupPageGuard children={<GroupChannelPage />} />} />
           </Route>
         </Route>
       </Routes>

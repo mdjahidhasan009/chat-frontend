@@ -142,6 +142,11 @@ export type AddGroupRecipientParams = {
     email: string;
 };
 
+export type RemoveGroupRecipientParams = {
+    id: number;
+    userId: number;
+};
+
 export type Points = {
     x: number;
     y: number;
@@ -156,6 +161,11 @@ export type ContextMenuItemType = {
 };
 
 export type AddGroupUserMessagePayload = {
+    group: Group;
+    user: User;
+};
+
+export type RemoveGroupUserMessagePayload = {
     group: Group;
     user: User;
 };
