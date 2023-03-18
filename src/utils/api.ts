@@ -11,7 +11,7 @@ import {
   FetchGroupMessagePayload,
   FetchMessagePayload,
   Group, GroupMessageType,
-  MessageType, RemoveGroupRecipientParams,
+  MessageType, RemoveGroupRecipientParams, UpdateGroupOwnerParams,
   User,
   UserCredentialsParams,
 } from './types';
@@ -85,3 +85,9 @@ export const addGroupRecipient = ({ id, email }: AddGroupRecipientParams) =>
 
 export const removeGroupRecipient = ({ id, userId }: RemoveGroupRecipientParams) =>
   axiosClient.delete<Group>(`/groups/${id}/recipients/${userId}`, config);
+
+export const updateGroupOwner = ({ id, newOwnerId }: UpdateGroupOwnerParams) =>
+  axiosClient.patch(`/groups/${id}/owner`, { newOwnerId }, config);
+
+export const leaveGroup = (id: number) =>
+  axiosClient.delete(`/groups/${id}/recipients/leave`, config);

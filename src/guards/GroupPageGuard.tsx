@@ -10,6 +10,6 @@ export const GroupPageGuard: FC<React.PropsWithChildren> = ({ children }) => {
     ? (
       <Navigate to="/groups" state={{ from: location }} replace />
     ) : (
-      <>children</>
+      <>{children}</>
     );
 };

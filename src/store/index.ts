@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import conversationReducer from './conversationSlice';
 import messageReducer from './messageSlice';
 import selectedTypeReducer from './selectedSlice';
-import groupsReducer from './groupSlice';
+import groupsReducer from './groupsSlice';
 import groupMessagesReducer from './groupMessageSlice';
 import groupContainerReducer from './messageContainerSlice';
 import groupSidebarReducer from './groupRecipientsSidebarSlice';

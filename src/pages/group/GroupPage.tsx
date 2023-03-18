@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store";
 import {useContext, useEffect} from "react";
 import {updateType} from "../../store/selectedSlice";
-import {addGroup, fetchGroupsThunk, removeGroup, updateGroup} from "../../store/groupSlice";
+import {addGroup, fetchGroupsThunk, removeGroup, updateGroup} from "../../store/groupsSlice";
 import {Page} from "../../utils/styles";
 import {ConversationSidebar} from "../../components/sidebars/ConversationSidebar";
 import {ConversationPanel} from "../../components/conversations/ConversationPanel";
@@ -54,17 +54,25 @@ export const GroupPage = () => {
     );
 
     socket.on('onGroupRemoved', (payload: RemoveGroupUserMessagePayload) => {
-      navigate('/groups');
       dispatch(removeGroup(payload.group));
+      if (id && parseInt(id) === payload.group.id) {
+        navigate('/groups');
+      }
     });
+
+    socket.on('onGroupParticipantLeft', (payload) => {
+      dispatch(updateGroup(payload.group));
+      if (payload.userId === user?.id) {
+        navigate('/groups');
+      }
+    });
+
+    socket.on('onGroupOwnerUpdate', (payload: Group) => {
+      dispatch(updateGroup(payload));
+    })
 
     return () => {
       socket.removeAllListeners();
-      // socket.off('onGroupMessage');
-      // socket.off('onGroupCreate');
-      // socket.off('onGroupUserAdd');
-      // socket.off('onGroupReceivedNewUser');
-      // socket.off('onGroupRemovedUser');
     };
   }, [id]);
 

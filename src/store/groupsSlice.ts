@@ -1,18 +1,25 @@
-import {CreateGroupParams, Group, RemoveGroupRecipientParams} from "../utils/types";
+import {CreateGroupParams, Group, Points, RemoveGroupRecipientParams, UpdateGroupOwnerParams} from "../utils/types";
 import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
   fetchGroups as fetchGroupsAPI,
   createGroup as createGroupAPI,
   removeGroupRecipient as removeGroupRecipientAPI,
+  updateGroupOwner as updateGroupOwnerAPI,
+  leaveGroup as leaveGroupAPI,
 } from '../utils/api';
 import {RootState} from "./index";
 
 export interface GroupState {
   groups: Group[];
+  showGroupContextMenu: boolean;
+  selectedGroupContextMenu?: Group;
+  points: Points;
 }
 
 const initialState: GroupState = {
   groups: [],
+  showGroupContextMenu: false,
+  points: { x: 0, y: 0 },
 };
 
 export const fetchGroupsThunk = createAsyncThunk('groups/fetch', () => {
@@ -29,7 +36,16 @@ export const removeGroupRecipientThunk = createAsyncThunk(
   (params: RemoveGroupRecipientParams) => removeGroupRecipientAPI(params)
 );
 
-export const groupSlice = createSlice({
+export const updateGroupOwnerThunk = createAsyncThunk(
+  'groups/owner/update',
+  (params: UpdateGroupOwnerParams) => updateGroupOwnerAPI(params)
+);
+
+export const leaveGroupThunk = createAsyncThunk('groups/leave', (id: number) =>
+  leaveGroupAPI(id)
+);
+
+export const groupsSlice = createSlice({
   name: 'groups',
   initialState,
   reducers: {
@@ -50,6 +66,15 @@ export const groupSlice = createSlice({
       if (!group) return;
       state.groups.splice(index, 1);
     },
+    toggleContextMenu: (state, action: PayloadAction<boolean>) => {
+      state.showGroupContextMenu = action.payload;
+    },
+    setSelectedGroup: (state, action: PayloadAction<Group>) => {
+      state.selectedGroupContextMenu = action.payload;
+    },
+    setContextMenuLocation: (state, action: PayloadAction<Points>) => {
+      state.points = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -66,6 +91,12 @@ export const groupSlice = createSlice({
           state.groups[index] = updatedGroup;
         }
       })
+      .addCase(updateGroupOwnerThunk.fulfilled, (state, action) => {
+
+      })
+      .addCase(leaveGroupThunk.fulfilled, (state, action) => {
+
+      })
     ;
   },
 });
@@ -78,6 +109,12 @@ export const selectGroupById = createSelector(
   (groups, groupId) => groups.find((group) => group.id === groupId)
 )
 
-export const { addGroup, updateGroup, removeGroup } = groupSlice.actions;
-
-export default groupSlice.reducer;
+export const {
+  addGroup,
+  updateGroup,
+  removeGroup,
+  toggleContextMenu,
+  setContextMenuLocation,
+  setSelectedGroup,
+} = groupsSlice.actions;
+export default groupsSlice.reducer;

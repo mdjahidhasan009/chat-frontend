@@ -17,7 +17,7 @@ import { AppDispatch } from '../../store';
 import { searchUsers } from '../../utils/api';
 import { RecipientResultContainer } from '../recipients/RecipientResultContainer';
 import { SelectedGroupRecipientChip } from '../recipients/SelectedGroupRecipientChip';
-import { createGroupThunk } from '../../store/groupSlice';
+import { createGroupThunk } from '../../store/groupsSlice';
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;

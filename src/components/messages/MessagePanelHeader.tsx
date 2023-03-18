@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectConversationById} from "../../store/conversationSlice";
 import {AppDispatch, RootState} from "../../store";
 import {selectType} from "../../store/selectedSlice";
-import {selectGroupById} from "../../store/groupSlice";
+import {selectGroupById} from "../../store/groupsSlice";
 import {PeopleGroup, PersonAdd} from 'akar-icons';
 import {AddGroupRecipientModal} from "../modals/AddGroupRecipientModal";
 import {toggleSidebar} from "../../store/groupRecipientsSidebarSlice";
@@ -45,7 +45,7 @@ export const MessagePanelHeader = () => {
           <span>{headerTitle}</span>
         </div>
         <GroupHeaderIcons>
-          {type === 'group' && user?.id === group?.creator?.id && (
+          {type === 'group' && user?.id === group?.owner?.id && (
             <PersonAdd
               cursor="pointer"
               size={30}

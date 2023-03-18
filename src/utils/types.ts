@@ -1,4 +1,5 @@
 import { Message } from 'react-hook-form';
+import React from "react";
 
 export type CreateUserParams = {
     email: string;
@@ -121,6 +122,7 @@ export type Group = {
     title?: string;
     users: User[];
     creator: User;
+    owner: User;
     messages: GroupMessageType[];
     createdAt: number;
     lastMessageSent: MessageType;
@@ -169,3 +171,10 @@ export type RemoveGroupUserMessagePayload = {
     group: Group;
     user: User;
 };
+
+export type UpdateGroupOwnerParams = {
+    id: number;
+    newOwnerId: number;
+};
+
+export type ContextMenuEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;

@@ -14,7 +14,7 @@ import {
 import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
 import { MessagePanelHeader } from './MessagePanelHeader';
-import {selectGroupById} from "../../store/groupSlice";
+import {selectGroupById} from "../../store/groupsSlice";
 
 type Props = {
   sendTypingStatus: () => void;

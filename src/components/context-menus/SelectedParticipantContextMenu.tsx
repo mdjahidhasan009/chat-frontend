@@ -2,10 +2,9 @@ import {FC, useContext} from 'react';
 import { ContextMenu, ContextMenuItem } from '../../utils/styles';
 import {getUserContextMenuIcon, isGroupOwner} from "../../utils/helpers";
 import {UserContextMenuActionType} from "../../utils/types";
-import {userContextMenuItems} from "../../utils/constants";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {removeGroupRecipientThunk, selectGroupById} from "../../store/groupSlice";
+import {removeGroupRecipientThunk, selectGroupById, updateGroupOwnerThunk} from "../../store/groupsSlice";
 import {AuthContext} from "../../utils/context/AuthContext";
 import {AppDispatch, RootState} from "../../store";
 import { Person, PersonCross, Crown } from 'akar-icons';
@@ -46,6 +45,13 @@ export const SelectedParticipantContextMenu: FC<Props> = ({ points }) => {
     );
   };
 
+  const transferGroupOwner = () => {
+    if (!selectedUser) return;
+    dispatch(
+      updateGroupOwnerThunk({ id: parseInt(id!), newOwnerId: selectedUser.id })
+    );
+  };
+
   const isOwner = isGroupOwner(user, group);
 
   return (
@@ -60,7 +66,7 @@ export const SelectedParticipantContextMenu: FC<Props> = ({ points }) => {
             <PersonCross size={20} color="#ff0000" />
             <span style={{ color: '#ff0000' }}>Kick User</span>
           </ContextMenuItem>
-          <ContextMenuItem>
+          <ContextMenuItem onClick={transferGroupOwner}>
             <Crown size={20} color="#FFB800" />
             <span style={{ color: '#FFB800' }}>Transfer Owner</span>
           </ContextMenuItem>

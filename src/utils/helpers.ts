@@ -24,5 +24,5 @@ export const getUserContextMenuIcon = (type: UserContextMenuActionType) => {
 };
 
 export const isGroupOwner = (user?: User, group?:Group) =>
-  user?.id === group?.creator.id;
+  user?.id === group?.owner.id;
 

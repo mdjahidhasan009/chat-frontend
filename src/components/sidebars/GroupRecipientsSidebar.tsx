@@ -7,7 +7,7 @@ import {
 } from '../../utils/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store';
-import { selectGroupById } from '../../store/groupSlice';
+import { selectGroupById } from '../../store/groupsSlice';
 import { useParams } from 'react-router-dom';
 import React, {useContext, useEffect, useState} from "react";
 import {User} from "../../utils/types";
