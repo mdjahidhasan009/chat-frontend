@@ -5,6 +5,7 @@ import {
   GroupRecipientsSidebarStyle,
   MessageItemAvatar,
 } from '../../utils/styles';
+import { Crown, PeopleGroup } from 'akar-icons';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store';
 import { selectGroupById } from '../../store/groupsSlice';
@@ -79,8 +80,11 @@ export const GroupRecipientsSidebar = () => {
           <GroupRecipientSidebarItem
             onContextMenu={(e) => onUserContextMenu(e, user)}
           >
-            <MessageItemAvatar />
-            <span>{user.firstName}</span>
+            <div className='left'>
+              <MessageItemAvatar />
+              <span>{user.firstName}</span>
+            </div>
+            {user.id === group?.owner.id && <Crown size={20} color='#fff' />}
           </GroupRecipientSidebarItem>
         ))}
         <span>Offline Users</span>
@@ -90,9 +94,14 @@ export const GroupRecipientsSidebar = () => {
               !onlineUsers.find((onlineUser) => onlineUser.id === user.id)
           )
           .map((user) => (
-            <GroupRecipientSidebarItem>
-              <MessageItemAvatar />
-              <span>{user.firstName}</span>
+            <GroupRecipientSidebarItem
+              onContextMenu={(e) => onUserContextMenu(e, user)}
+            >
+              <div className='left'>
+                <MessageItemAvatar />
+                <span>{user.firstName}</span>
+              </div>
+              {user.id === group?.owner.id && (<Crown color='#ffbf00' />)}
             </GroupRecipientSidebarItem>
           ))}
         {groupSidebarState.showUserContextMenu && (

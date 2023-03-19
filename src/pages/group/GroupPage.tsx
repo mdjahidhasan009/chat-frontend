@@ -63,6 +63,7 @@ export const GroupPage = () => {
     socket.on('onGroupParticipantLeft', (payload) => {
       dispatch(updateGroup(payload.group));
       if (payload.userId === user?.id) {
+        dispatch(removeGroup(payload.group));
         navigate('/groups');
       }
     });

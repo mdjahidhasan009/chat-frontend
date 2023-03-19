@@ -3,11 +3,15 @@ import { fadeInUpwards } from './keyframes';
 import {
   ContextMenuProps,
   ConversationSelectedProps,
+  ConversationSidebarItemProps,
   InputContainerProps,
+  MessageInputContainerProps,
   MessageItemContentProps,
   PageProps,
   SidebarItemProps,
 } from './styleTypes';
+
+import { CharacterLimitProps } from './styleTypes';
 
 export const SIDEBAR_WIDTH = 400;
 
@@ -90,13 +94,19 @@ export const ConversationSidebarContainer = styled.div`
   margin-top: 100px;
 `;
 
-export const ConversationSidebarItemStyle = styled.div`
+export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemProps>`
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 10px 32px;
+  padding: 20px 32px;
   box-sizing: border-box;
   width: 100%;
+  background-color: ${({ selected }) => selected && '#1a1a1a'};
+  cursor: pointer;
+  transition: 150ms background-color ease;
+  &:hover {
+    background-color: #222222;
+  }
 `;
 
 export const OverlayStyle = styled.div`
@@ -202,12 +212,16 @@ export const MessageContainerStyle = styled.div`
   }
 `;
 
-export const MessageInputContainer = styled.div`
+export const MessageInputContainer = styled.div<MessageInputContainerProps>`
   box-sizing: border-box;
   background-color: #101010;
   border-radius: 5px;
   width: 100%;
-  padding: 24px 32px;
+  padding: 18px 32px;
+  display: flex;
+  gap: 20px;
+  align-items: ${({ isMultiLine }) => (isMultiLine ? 'top' : 'center')};
+  position: relative;
 `;
 
 export const MessagePanelFooter = styled.footer`
@@ -233,7 +247,7 @@ export const MessageItemContainer = styled.div`
   gap: 20px;
   align-items: center;
   padding: 5px 0;
-  word-break: break-all;
+  word-break: break-word;
 `;
 
 export const MessageItemAvatar = styled.div`
@@ -265,6 +279,7 @@ export const MessageItemHeader = styled.div`
 export const MessageItemContent = styled.div<MessageItemContentProps>`
   padding: ${({ padding }) => padding};
   width: 100%;
+  white-space: pre-wrap;
 `;
 
 export const ContextMenu = styled.ul<ContextMenuProps>`
@@ -280,6 +295,7 @@ export const ContextMenu = styled.ul<ContextMenuProps>`
   list-style-type: none;
   margin: 0;
   padding: 10px;
+  z-index: 99;
 `;
 
 export const ContextMenuItem = styled.li`
@@ -626,6 +642,11 @@ export const GroupRecipientSidebarItem = styled.div`
   font-size: 18px;
   font-weight: 500;
   margin: 10px 0;
+  & .left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
 `;
 
 export const GroupHeaderIcons = styled.div`
@@ -642,4 +663,14 @@ export const TestContextMenu = styled.div<ContextMenuProps>`
 
   width: 200px;
   background-color: #000;
+`;
+
+export const CharacterLimit = styled.span<CharacterLimitProps>`
+  position: absolute;
+  bottom: 8px;
+  right: 36px;
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ atMaxLength }) =>
+    atMaxLength ? '#ff0000' : 'rgb(129, 129, 129)'};
 `;

@@ -16,14 +16,17 @@ export const GroupSidebarContextMenu: FC = () => {
 
   const group = useSelector((state: RootState) => selectGroupById(state, parseInt(id!)));
 
+  const contextMenuGroup = useSelector((state: RootState) => state.groups.selectedGroupContextMenu);
+
   const isOwner = isGroupOwner(user, group);
 
   const leaveGroup = () => {
-    dispatch(leaveGroupThunk(parseInt(id!)))
+    if (!contextMenuGroup) return;
+    dispatch(leaveGroupThunk(contextMenuGroup.id))
       .finally(() => {
         dispatch(toggleContextMenu(false))
       })
-  };
+  }; 
 
   return (
     <ContextMenu top={points.y} left={points.x}>

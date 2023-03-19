@@ -24,3 +24,15 @@ export type ConversationSelectedProps = {
 export type SidebarItemProps = Partial<{
     active: boolean;
 }>;
+
+export type CharacterLimitProps = {
+    atMaxLength: boolean;
+};
+  
+  export type MessageInputContainerProps = {
+    isMultiLine: boolean;
+};
+
+export type ConversationSidebarItemProps = {
+    selected: boolean;
+};
