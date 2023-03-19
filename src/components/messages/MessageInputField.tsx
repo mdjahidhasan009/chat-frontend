@@ -7,7 +7,7 @@ import { CirclePlusFill, FaceVeryHappy } from 'akar-icons';
 type Props = {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
-  sendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
+  sendMessage: () => void;
   sendTypingStatus: () => void;
   placeholderName: string;
 };
