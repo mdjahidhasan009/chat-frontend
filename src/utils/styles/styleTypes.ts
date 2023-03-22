@@ -36,3 +36,7 @@ export type CharacterLimitProps = {
 export type ConversationSidebarItemProps = {
     selected: boolean;
 };
+
+export type FriendsNavbarItemProps = {
+    active: boolean;
+};

@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useState } from 'react';
+import React, { FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { AuthenticatedRoute } from './components/AuthenticatedRoute';
@@ -8,15 +8,21 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AuthContext } from './utils/context/AuthContext';
 import { socket, SocketContext } from './utils/context/SocketContext';
-import { User } from './utils/types';
-import { Provider as ReduxProvider } from 'react-redux';
-import { store } from './store';
+import { FriendRequest, User } from './utils/types';
+import { Provider as ReduxProvider, useDispatch } from 'react-redux';
+import { AppDispatch, store } from './store';
 import { enableMapSet } from 'immer';
 import {GroupPage} from "./pages/group/GroupPage";
 import {GroupChannelPage} from "./pages/group/GroupChannelPage";
 import {AppPage} from "./pages/AppPage";
 import {ConversationPageGuard} from "./guards/ConversationPageGuard";
 import {GroupPageGuard} from "./guards/GroupPageGuard";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import { FriendsPage } from './pages/friends/FriendsPage';
+import { FriendsLayoutPage } from './pages/friends/FriendsLayoutPage';
+import { FriendRequestPage } from './pages/friends/FriendRequestPage';
+import { addFriendRequest } from './store/friends/friendsSlice';
 
 enableMapSet();
 
@@ -40,6 +46,19 @@ function AppWithProviders({ children, user, setUser }: PropsWithChildren & Props
 
 function App() {
   const [user, setUser] = useState<User>();
+
+  const socket = useContext(SocketContext);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    socket.on('onFriendRequestReceived', (payload: FriendRequest) => {
+      dispatch(addFriendRequest(payload));
+    });
+
+    return () => {
+      socket.removeAllListeners();
+    };
+  }, []);
+
   return (
     <AppWithProviders user={user} setUser={setUser} socket={socket}>
       <Routes>
@@ -52,8 +71,13 @@ function App() {
           <Route path="groups" element={<GroupPage />}>
             <Route path=":id" element={<GroupPageGuard children={<GroupChannelPage />} />} />
           </Route>
+          <Route path="friends" element={<FriendsLayoutPage />}>
+            <Route path="requests" element={<FriendRequestPage/>} />
+            <Route path="blocked" element={<div>Blocked</div>} />
+          </Route>
         </Route>
       </Routes>
+      <ToastContainer theme="dark" />
     </AppWithProviders>
   );
 }

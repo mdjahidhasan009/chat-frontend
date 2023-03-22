@@ -6,6 +6,7 @@ import groupsReducer from './groupsSlice';
 import groupMessagesReducer from './groupMessageSlice';
 import groupContainerReducer from './messageContainerSlice';
 import groupSidebarReducer from './groupRecipientsSidebarSlice';
+import friendsReducer from './friends/friendsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     groupMessages: groupMessagesReducer,
     messageContainer: groupContainerReducer,
     groupSidebar: groupSidebarReducer,
+    friends: friendsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
