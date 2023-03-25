@@ -47,18 +47,6 @@ function AppWithProviders({ children, user, setUser }: PropsWithChildren & Props
 function App() {
   const [user, setUser] = useState<User>();
 
-  const socket = useContext(SocketContext);
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    socket.on('onFriendRequestReceived', (payload: FriendRequest) => {
-      dispatch(addFriendRequest(payload));
-    });
-
-    return () => {
-      socket.removeAllListeners();
-    };
-  }, []);
-
   return (
     <AppWithProviders user={user} setUser={setUser} socket={socket}>
       <Routes>
