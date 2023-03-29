@@ -196,3 +196,19 @@ export type FriendRequest = {
 };
 
 export type HandleFriendRequestAction = 'accept' | 'reject' | 'cancel';
+
+export type CancelFriendRequestResponse = {
+    id: number;
+};
+
+export type AcceptFriendRequestResponse = {
+    friend: Friend;
+    friendRequest: FriendRequest;
+};
+
+export type UserSidebarRouteType = 'conversations' | 'friends' | 'connections';
+
+export type UserSidebarItemType = {
+  id: UserSidebarRouteType;
+  pathname: string;
+};

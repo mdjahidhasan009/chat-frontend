@@ -1,10 +1,14 @@
 import { toast, ToastOptions } from "react-toastify";
 
-export const useToast = (options?: ToastOptions<{}>) => {
+export const useToast = (defaultOptions?: ToastOptions<{}>) => {
   const success = (data: string) =>
-    toast(data, { type: "success", ...options });
-  const error = (data: string) =>
-    toast(data, { type: "error", ...options });
+    toast(data, { type: "success", ...defaultOptions });
 
-  return { success, error };
+  const error = (data: string) =>
+    toast(data, { type: "error", ...defaultOptions });
+
+  const info = (data: string, options?: ToastOptions<{}>) =>
+    toast(data, { ...defaultOptions, ...options, type: 'info' });
+
+  return { success, error, info };
 }

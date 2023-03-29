@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { Friend, FriendRequest } from '../../utils/types';
-import { fetchFriendRequestThunk, fetchFriendsThunk, createFriendRequestThunk } from './friendsThunk';
+import { fetchFriendRequestThunk, fetchFriendsThunk, createFriendRequestThunk, cancelFriendRequestThunk, acceptFriendRequestThunk, rejectFriendRequestThunk } from './friendsThunk';
 
 export interface FriendsState {
   friends: Friend[];
@@ -21,6 +21,12 @@ export const friendsSlice = createSlice({
     addFriendRequest: (state, action: PayloadAction<FriendRequest>) => {
       state.friendRequests.push(action.payload);
     },
+    removeFriendRequest: (state, action: PayloadAction<FriendRequest>) => {
+      const { id } = action.payload;
+      state.friendRequests = state.friendRequests.filter(
+        (friendRequest) => friendRequest.id !== id
+      );
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -32,9 +38,27 @@ export const friendsSlice = createSlice({
     })
     .addCase(createFriendRequestThunk.fulfilled, (state, action) => {
       state.friendRequests.push(action.payload.data);
-    }),
+    })
+    .addCase(cancelFriendRequestThunk.fulfilled, (state, action) => {
+      const { id } = action.payload.data;
+      state.friendRequests = state.friendRequests.filter(
+        (friendRequest) => friendRequest.id !== id
+      );
+    })
+    .addCase(acceptFriendRequestThunk.fulfilled, (state, action) => {
+      const { friend, friendRequest: { id } } = action.payload.data;
+      state.friendRequests = state.friendRequests.filter(
+        (friendRequest) => friendRequest.id !== id
+      );
+    })
+    .addCase(rejectFriendRequestThunk.fulfilled, (state, action) => {
+      const { id } = action.payload.data;
+      state.friendRequests = state.friendRequests.filter(
+        friendRequest => friendRequest.id !== id
+      );
+    })
 });
 
-export const { addFriendRequest } = friendsSlice.actions;
+export const { addFriendRequest, removeFriendRequest } = friendsSlice.actions;
 
 export default friendsSlice.reducer;

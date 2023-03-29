@@ -15,7 +15,9 @@ import {
   User,
   UserCredentialsParams,
   Friend,
-  FriendRequest
+  FriendRequest,
+  CancelFriendRequestResponse,
+  AcceptFriendRequestResponse
 } from './types';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -100,7 +102,19 @@ export const fetchFriendRequests = () =>
   axiosClient.get<FriendRequest[]>('/friends/requests', config);
 
 export const createFriendRequest = (email: string) =>
-axiosClient.post<FriendRequest>('/friends/requests', { email }, config);  
+  axiosClient.post<FriendRequest>('/friends/requests', { email }, config);  
 
 export const cancelFriendRequest = (id: number) =>
-axiosClient.delete(`/friends/requests/${id}/cancel`, config);
+  axiosClient.delete<CancelFriendRequestResponse>(`/friends/requests/${id}/cancel`, config);
+
+export const acceptFriendRequest = (id: number) => axiosClient.patch<AcceptFriendRequestResponse>(
+  `/friends/requests/${id}/accept`,
+  {},
+  config
+);
+
+export const rejectFriendRequest = (id: number) => axiosClient.patch<FriendRequest>(
+  `/friends/requests/${id}/reject`,
+  {},
+  config
+);

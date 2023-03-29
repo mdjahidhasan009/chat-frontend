@@ -5,7 +5,7 @@ import { FriendRequest, HandleFriendRequestAction } from '../../utils/types';
 import { MdCheck, MdClose } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { cancelFriendRequestThunk } from '../../store/friends/friendsThunk';
+import { acceptFriendRequestThunk, cancelFriendRequestThunk, rejectFriendRequestThunk } from '../../store/friends/friendsThunk';
 
 type Props = {
   friendRequest: FriendRequest;
@@ -21,9 +21,9 @@ export const FriendRequestItem: FC<Props> = ({ friendRequest }) => {
   const handleFriendRequest = (type?: HandleFriendRequestAction) => {
     switch(type) {
       case 'accept':
-        return;
+        return dispatch(acceptFriendRequestThunk(friendRequest.id));
       case 'reject':
-        return;
+        return dispatch(rejectFriendRequestThunk(friendRequest.id));
       default: {
         return dispatch(cancelFriendRequestThunk(friendRequest.id));
       }    
@@ -35,11 +35,17 @@ export const FriendRequestItem: FC<Props> = ({ friendRequest }) => {
       <div className="user">
         <div className="avatar"></div>
         <div className="name">
-          <span>{`${friendRequest.receiver.firstName} ${friendRequest.receiver.lastName}`}</span>
+          
           {isIncomingRequest() ? (
-            <span className="status">Incoming Friend Request</span>
+            <>
+              <span>{`${friendRequest.sender.firstName} ${friendRequest.sender.lastName}`}</span>
+              <span className="status">Incoming Friend Request</span>
+            </>
           ) : (
-            <span className="status">Outgoing Friend Request</span>
+            <>
+              <span>{`${friendRequest.receiver.firstName} ${friendRequest.receiver.lastName}`}</span>
+              <span className="status">Outgoing Friend Request</span>
+            </>
           )}
         </div>
       </div>
