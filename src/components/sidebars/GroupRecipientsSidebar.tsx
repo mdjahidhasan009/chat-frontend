@@ -99,7 +99,7 @@ export const GroupRecipientsSidebar = () => {
             >
               <div className='left'>
                 <MessageItemAvatar />
-                <span>{user.firstName}</span>
+                <span>{user?.firstName}</span>
               </div>
               {user.id === group?.owner.id && (<Crown color='#ffbf00' />)}
             </GroupRecipientSidebarItem>
