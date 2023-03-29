@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '../../store';
 import {addConversation, fetchConversationsThunk, updateConversation} from '../../store/conversationSlice';
 import { Page } from '../../utils/styles';
 import {Conversation, MessageEventPayload} from '../../utils/types';
-import {addMessage, deleteMessage} from "../../store/messageSlice";
+import {addMessage, deleteMessage} from "../../store/messages/messageSlice";
 import {SocketContext} from "../../utils/context/SocketContext";
 import { fetchGroupsThunk } from '../../store/groupsSlice';
 import {updateType} from "../../store/selectedSlice";

@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import conversationReducer from './conversationSlice';
-import messageReducer from './messageSlice';
+import messageReducer from './messages/messageSlice';
 import selectedTypeReducer from './selectedSlice';
 import groupsReducer from './groupsSlice';
 import groupMessagesReducer from './groupMessageSlice';
 import groupContainerReducer from './messageContainerSlice';
 import groupSidebarReducer from './groupRecipientsSidebarSlice';
 import friendsReducer from './friends/friendsSlice';
+import rateLimitReducer from './rate-limit/rateLimitSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     messageContainer: groupContainerReducer,
     groupSidebar: groupSidebarReducer,
     friends: friendsReducer,
+    rateLimit: rateLimitReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

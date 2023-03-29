@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {AuthContext} from "../../utils/context/AuthContext";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../store";
-import {deleteMessageThunk} from "../../store/messageSlice";
+import {deleteMessageThunk} from "../../store/messages/messageThunk";
 import {ContextMenu, ContextMenuItem} from "../../utils/styles";
 import {setIsEditing, setMessageBeingEdited} from "../../store/messageContainerSlice";
 import {id} from "date-fns/locale";

@@ -212,3 +212,10 @@ export type UserSidebarItemType = {
   id: UserSidebarRouteType;
   pathname: string;
 };
+
+export type RateLimitType = 'group' | 'private';
+
+export type UpdateRateLimitPayload = {
+  type: RateLimitType;
+  status: boolean;
+};

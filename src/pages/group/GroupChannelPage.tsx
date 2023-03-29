@@ -3,7 +3,6 @@ import {useContext, useEffect, useState} from "react";
 import {SocketContext} from "../../utils/context/SocketContext";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../store";
-import {fetchMessagesThunk} from "../../store/messageSlice";
 import {ConversationChannelPageStyle} from "../../utils/styles";
 import {MessagePanel} from "../../components/messages/MessagePanel";
 import {editGroupMessage, fetchGroupMessagesThunk} from "../../store/groupMessageSlice";

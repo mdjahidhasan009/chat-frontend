@@ -8,8 +8,9 @@ import { SocketContext } from '../../utils/context/SocketContext';
 import { ConversationChannelPageStyle } from '../../utils/styles';
 import { MessageEventPayload, MessageType } from '../../utils/types';
 import { AppDispatch, RootState } from '../../store';
-import {addMessage, editMessage, fetchMessagesThunk} from '../../store/messageSlice';
+import {addMessage, editMessage} from '../../store/messages/messageSlice';
 import { updateConversation } from '../../store/conversationSlice';
+import { fetchMessagesThunk } from '../../store/messages/messageThunk';
 
 export const ConversationChannelPage = () => {
   const { user } = useContext(AuthContext);

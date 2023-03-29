@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../store';
 import { setIsEditing } from '../../store/messageContainerSlice';
-import { editMessageThunk } from '../../store/messageSlice';
+import { editMessageThunk } from '../../store/messages/messageThunk';
 import {
   EditMessageActionsContainer,
   EditMessageInputField,
