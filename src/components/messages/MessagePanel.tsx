@@ -1,9 +1,9 @@
 import React, { FC, useContext, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { RootState } from '../../store';
+import { RootState, AppDispatch } from '../../store';
 import { selectConversationById } from '../../store/conversationSlice';
-import {postGroupMessage, postNewMessage} from '../../utils/api';
+import {postGroupMessage, createMessage} from '../../utils/api';
 import { AuthContext } from '../../utils/context/AuthContext';
 import { getRecipientFromConversation } from '../../utils/helpers';
 import {
@@ -15,6 +15,7 @@ import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
 import { MessagePanelHeader } from './MessagePanelHeader';
 import {selectGroupById} from "../../store/groupsSlice";
+import { createMessageThunk } from '../../store/messages/messageThunk';
 
 type Props = {
   sendTypingStatus: () => void;
@@ -27,6 +28,7 @@ export const MessagePanel: FC<Props> = ({
   const [content, setContent] = useState('');
   const { id: routeId } = useParams();
   const { user } = useContext(AuthContext);
+  const dispatch = useDispatch<AppDispatch>();
 
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(routeId!))
@@ -47,14 +49,17 @@ export const MessagePanel: FC<Props> = ({
     if (!routeId || !trimmedContent) return;
     const id = parseInt(routeId);
     const params = { id, content: trimmedContent };
-    if (selectedType === 'private')
-      return postNewMessage(params)
-        .then(() => setContent(''))
-        .catch((err) => console.log(err))
-    else
-      return postGroupMessage(params)
-        .then(() => setContent(''))
-        .catch((err) => console.log(err))
+
+    switch(selectedType) {
+      case 'private':
+        return dispatch(createMessageThunk(params))
+          .then(() => setContent(''))
+          .catch((err) => console.log(err))
+      case 'group':
+        return postGroupMessage(params)
+          .then(() => setContent(''))
+          .catch((err) => console.log(err)) 
+    }
   };
 
   return (

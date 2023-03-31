@@ -2,9 +2,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   deleteMessage as deleteMessageAPI,
   editMessage as editMessageAPI,
+  createMessage as createMessageAPI,
   getConversationMessages,
 } from '../../utils/api';
-import { DeleteMessageParams, EditMessagePayload } from '../../utils/types';
+import { CreateMessageParams, DeleteMessageParams, EditMessagePayload } from '../../utils/types';
 
 export const fetchMessagesThunk = createAsyncThunk(
   'messages/fetch',
@@ -25,4 +26,9 @@ export const editMessageThunk = createAsyncThunk(
   (params: EditMessagePayload) => {
     return editMessageAPI(params);
   }
+);
+
+export const createMessageThunk = createAsyncThunk(
+  'messages/create',
+  (params: CreateMessageParams) => createMessageAPI(params)
 );
