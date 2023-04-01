@@ -2,31 +2,31 @@ import { UpdateRateLimitPayload } from './../../utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface RateLimitState {
-  isGroupMessageRateLimited: boolean;
-  isPrivateMessageRateLimited: boolean;
+  groupRateLimited: boolean;
+  privateRateLimited: boolean;
 };
 
 const initialState: RateLimitState = {
-  isGroupMessageRateLimited: false,
-  isPrivateMessageRateLimited: false,
+  groupRateLimited: false,
+  privateRateLimited: false,
 };
 
-export const RateLimitSlice = createSlice({
+export const rateLimitSlice = createSlice({
   name: 'rateLimit',
   initialState,
   reducers: {
-    updateRateLimitStatus: (state, action: PayloadAction<UpdateRateLimitPayload>) => {
+    setRateLimitStatus: (state, action: PayloadAction<UpdateRateLimitPayload>) => {
       switch(action.payload.type) {
         case 'group':
-          state.isGroupMessageRateLimited = action.payload.status;
+          state.groupRateLimited = action.payload.status;
           return;
         case 'private':
-          state.isPrivateMessageRateLimited = action.payload.status;
+          state.privateRateLimited = action.payload.status;
           return;
       }
     }
   }
 });
 
-export const { updateRateLimitStatus } = RateLimitSlice.actions;
-export default RateLimitSlice.reducer;
+export const { setRateLimitStatus: updateRateLimitStatus } = rateLimitSlice.actions;
+export default rateLimitSlice.reducer;

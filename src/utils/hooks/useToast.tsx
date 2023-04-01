@@ -4,8 +4,8 @@ export const useToast = (defaultOptions?: ToastOptions<{}>) => {
   const success = (data: string) =>
     toast(data, { type: "success", ...defaultOptions });
 
-  const error = (data: string) =>
-    toast(data, { type: "error", ...defaultOptions });
+  const error = (data: string, options?: ToastOptions) =>
+    toast(data, { ...defaultOptions, ...options, type: "error", });
 
   const info = (data: string, options?: ToastOptions<{}>) =>
     toast(data, { ...defaultOptions, ...options, type: 'info' });

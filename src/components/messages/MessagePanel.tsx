@@ -16,6 +16,8 @@ import { MessageInputField } from './MessageInputField';
 import { MessagePanelHeader } from './MessagePanelHeader';
 import {selectGroupById} from "../../store/groupsSlice";
 import { createMessageThunk } from '../../store/messages/messageThunk';
+import { useToast } from '../../utils/hooks/useToast';
+import { AxiosError } from 'axios';
 
 type Props = {
   sendTypingStatus: () => void;
@@ -25,9 +27,11 @@ export const MessagePanel: FC<Props> = ({
   sendTypingStatus,
   isRecipientTyping,
 }) => {
+  const toastId = 'rateLimitToast';
   const [content, setContent] = useState('');
   const { id: routeId } = useParams();
   const { user } = useContext(AuthContext);
+  const { error } = useToast({ theme: 'dark' });
   const dispatch = useDispatch<AppDispatch>();
 
   const conversation = useSelector((state: RootState) =>
@@ -50,15 +54,13 @@ export const MessagePanel: FC<Props> = ({
     const id = parseInt(routeId);
     const params = { id, content: trimmedContent };
 
-    switch(selectedType) {
-      case 'private':
-        return dispatch(createMessageThunk(params))
-          .then(() => setContent(''))
-          .catch((err) => console.log(err))
-      case 'group':
-        return postGroupMessage(params)
-          .then(() => setContent(''))
-          .catch((err) => console.log(err)) 
+    try {
+      selectedType === 'private'
+        ? await createMessage(params)
+        : await postGroupMessage(params); // selectedType = group
+      setContent('');
+    } catch (err) {
+      (err as AxiosError).response?.status === 429 && error('Rate limit exceeded', { toastId }); // toastId is used to prevent multiple toasts from being created
     }
   };
 
