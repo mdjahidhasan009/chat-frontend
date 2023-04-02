@@ -5,9 +5,5 @@ import { AppDispatch } from '../../store';
 import { fetchFriendRequestThunk } from '../../store/friends/friendsThunk';
 
 export const FriendRequestPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(fetchFriendRequestThunk());
-  }, [dispatch]);
   return <FriendRequestList />;
 };

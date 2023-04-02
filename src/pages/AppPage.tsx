@@ -10,6 +10,7 @@ import { addFriendRequest, removeFriendRequest } from "../store/friends/friendsS
 import { useToast } from "../utils/hooks/useToast";
 import { IoMdPersonAdd } from 'react-icons/io';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
+import { fetchFriendRequestThunk } from "../store/friends/friendsThunk";
 
 export const AppPage = () => {
   const socket = useContext(SocketContext);
@@ -46,9 +47,16 @@ export const AppPage = () => {
     });
 
     return () => {
-      socket.removeAllListeners();
+      socket.off('onFriendRequestCancelled');
+      socket.off('onFriendRequestRejected');
+      socket.off('onFriendRequestReceived');
+      socket.off('onFriendRequestAccepted');
     };
-  }, []);
+  }, [socket]);
+
+  useEffect(() => {
+    dispatch(fetchFriendRequestThunk());
+  }, [dispatch]); ////TODO: Why dispatch?
 
   return (
     <LayoutPage>

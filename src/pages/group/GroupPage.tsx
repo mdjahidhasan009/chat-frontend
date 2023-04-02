@@ -73,7 +73,14 @@ export const GroupPage = () => {
     })
 
     return () => {
-      socket.removeAllListeners();
+      socket.off('onGroupMessage');
+      socket.off('onGroupCreate');
+      socket.off('onGroupUserAdd');
+      socket.off('onGroupReceivedNewUser');
+      socket.off('onGroupRecipientRemoved');
+      socket.off('onGroupRemoved');
+      socket.off('onGroupParticipantLeft');
+      socket.off('onGroupOwnerUpdate');
     };
   }, [id]);
 

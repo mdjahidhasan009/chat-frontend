@@ -8,45 +8,7 @@ import { UserSidebarItemStyle, UserSidebarStyle } from '../../utils/styles';
 import { UserSidebarItemType, UserSidebarRouteType } from '../../utils/types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userSidebarItems } from '../../utils/constants';
-
-export const getIcon = (id: UserSidebarRouteType) => {
-  switch (id) {
-    case 'conversations':
-      return ChatDots;
-    case 'friends':
-      return Person;
-    case 'connections':
-      return ArrowCycle;
-    default:
-      return ChatDots;
-  }
-};
-
-type Props = {
-  item: UserSidebarItemType;
-};
-
-export const UserSidebarItem: FC<Props> = ({ item }) => {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const Icon = getIcon(item.id);
-  const ICON_SIZE = 30;
-  const STROKE_WIDTH = 2;
-
-  const isActive = () => {
-    if (pathname.includes('/groups') && item.id === 'conversations')
-      return true;
-    return pathname.includes(item.pathname);
-  };
-  return (
-    <UserSidebarItemStyle
-      onClick={() => navigate(item.pathname)}
-      active={isActive()}
-    >
-      <Icon size={ICON_SIZE} strokeWidth={STROKE_WIDTH} />
-    </UserSidebarItemStyle>
-  );
-};
+import { UserSidebarItem } from './UserSidebarItem';
 
 export const UserSidebar = () => {
   const [showModal, setShowModal] = useState(false);
