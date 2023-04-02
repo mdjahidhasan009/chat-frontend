@@ -118,3 +118,9 @@ export const rejectFriendRequest = (id: number) => axiosClient.patch<FriendReque
   {},
   config
 );
+
+export const removeFriend = (id: number) =>
+  axiosClient.delete<Friend>(`/friends/${id}/delete`, config);
+
+export const checkConversationOrCreate = (recipientId: number) =>
+  axiosClient.get<Conversation>(`/exists/conversations/${recipientId}`, config);

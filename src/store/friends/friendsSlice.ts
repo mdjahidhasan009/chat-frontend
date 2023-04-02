@@ -1,14 +1,17 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Friend, FriendRequest } from '../../utils/types';
-import { fetchFriendRequestThunk, fetchFriendsThunk, createFriendRequestThunk, cancelFriendRequestThunk, acceptFriendRequestThunk, rejectFriendRequestThunk } from './friendsThunk';
+import { Friend, FriendRequest, Points } from '../../utils/types';
+import { fetchFriendRequestThunk, fetchFriendsThunk, createFriendRequestThunk, cancelFriendRequestThunk, acceptFriendRequestThunk, rejectFriendRequestThunk, removeFriendThunk } from './friendsThunk';
 
 export interface FriendsState {
   friends: Friend[];
   friendRequests: FriendRequest[];
   onlineFriends: Friend[];
   offlineFriends: Friend[];
+  showContextMenu: boolean;
+  selectedFriendContextMenu?: Friend;
+  points: Points;
 }
 
 const initialState: FriendsState = {
@@ -16,6 +19,8 @@ const initialState: FriendsState = {
   friendRequests: [],
   onlineFriends: [],
   offlineFriends: [],
+  showContextMenu: false,
+  points: { x: 0, y: 0 },
 };
 
 export const friendsSlice = createSlice({
@@ -31,6 +36,9 @@ export const friendsSlice = createSlice({
         (friendRequest) => friendRequest.id !== id
       );
     },
+    removeFriend: (state, action: PayloadAction<Friend>) => {
+      state.friends = state.friends.filter((friend) => friend.id !== action.payload.id);
+    },
     setOnlineFriends: (state, action: PayloadAction<Friend[]>) => {
       state.onlineFriends = action.payload;      
     },
@@ -40,6 +48,15 @@ export const friendsSlice = createSlice({
           (onlineFriend) => onlineFriend.id === friend.id
         )
       );
+    },
+    toggleContextMenu: (state, action: PayloadAction<boolean>) => {
+      state.showContextMenu = action.payload;
+    },
+    setSelectedFriend: (state, action: PayloadAction<Friend>) => {
+      state.selectedFriendContextMenu = action.payload;
+    },
+    setContextMenuLocation: (state, action: PayloadAction<Points>) => {
+      state.points = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -52,6 +69,9 @@ export const friendsSlice = createSlice({
     })
     .addCase(createFriendRequestThunk.fulfilled, (state, action) => {
       state.friendRequests.push(action.payload.data);
+    })
+    .addCase(createFriendRequestThunk.rejected, (state, action) => {
+      console.log('createFriendRequestThunk.rejected');
     })
     .addCase(cancelFriendRequestThunk.fulfilled, (state, action) => {
       const { id } = action.payload.data;
@@ -71,6 +91,9 @@ export const friendsSlice = createSlice({
         friendRequest => friendRequest.id !== id
       );
     })
+    .addCase(removeFriendThunk.fulfilled, (state, action)=> {
+      state.friends = state.friends.filter((friend) => friend.id !== action.payload.data.id);
+    })
 });
 
 export const { 
@@ -78,6 +101,10 @@ export const {
   removeFriendRequest,
   setOnlineFriends,
   setOfflineFriends, 
+  toggleContextMenu,
+  setSelectedFriend,
+  setContextMenuLocation,
+  removeFriend,
 } = friendsSlice.actions;
 
 export default friendsSlice.reducer;

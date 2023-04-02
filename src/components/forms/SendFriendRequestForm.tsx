@@ -25,11 +25,13 @@ export const SendFriendRequestForm: FC<Props> = ({ setShowModal }) => {
     e.preventDefault();
 
     dispatch(createFriendRequestThunk(email))
+      .unwrap()
       .then(() => {
         setShowModal(false);
         success('Friend Request Sent!');
       })
       .catch((err) => {
+        console.error(err);
         error('Error sending friend request');
       });
   };

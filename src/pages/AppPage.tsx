@@ -34,6 +34,7 @@ export const AppPage = () => {
 
     socket.on('onFriendRequestAccepted', (payload: AcceptFriendRequestResponse) => {
       dispatch(removeFriendRequest(payload.friendRequest));
+      socket.emit('getOnlineFriends');
       info(`${payload.friendRequest.receiver.firstName} accepted your friend request`, {
           position: 'bottom-left',
           icon: BsFillPersonCheckFill,

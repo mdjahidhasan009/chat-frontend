@@ -5,7 +5,7 @@ import { AppDispatch } from '../../store';
 import { fetchFriendsThunk } from '../../store/friends/friendsThunk';
 import { SocketContext } from '../../utils/context/SocketContext';
 import { Friend } from '../../utils/types';
-import { setOfflineFriends, setOnlineFriends } from '../../store/friends/friendsSlice';
+import { removeFriend, setOfflineFriends, setOnlineFriends } from '../../store/friends/friendsSlice';
 
 export const FriendsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +20,13 @@ export const FriendsPage = () => {
     const interval = setInterval(() => {
       socket.emit('getOnlineFriends');
     }, 10000);
+
+    socket.on('onFriendRemoved', (friend: Friend) => {
+      dispatch(removeFriend(friend));
+      socket.emit('getOnlineFriends');
+    });
+
+    socket.off('onFriendRemoved');
 
     return () => {
       clearInterval(interval);
