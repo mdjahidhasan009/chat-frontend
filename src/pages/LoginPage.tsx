@@ -1,5 +1,5 @@
 import { Page } from "../utils/styles";
-import { LoginForm } from "../components/forms/LoginForm";
+import { LoginForm } from "../components/forms/login/index";
 
 export const LoginPage = () => {
     return <Page display="flex" justifyContent="center" alignItems="center">

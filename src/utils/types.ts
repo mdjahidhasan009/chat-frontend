@@ -1,8 +1,7 @@
-import { Message } from 'react-hook-form';
 import React from "react";
 
 export type CreateUserParams = {
-    email: string;
+    username: string;
     firstName: string;
     lastName: string;
     password: string;
@@ -10,12 +9,13 @@ export type CreateUserParams = {
 };
 
 export type UserCredentialsParams = {
-    email: string;
+    username: string;
     password: string;
 };
 
 export type User = {
     id: number;
+    username: string;
     email: string;
     firstName: string;
     lastName: string;
@@ -30,7 +30,7 @@ export type Conversation = {
 };
 
 export type CreateConversationParams = {
-    email: string;
+    username: string;
     message: string;
 };
 
@@ -141,7 +141,7 @@ export type CreateGroupParams = {
 
 export type AddGroupRecipientParams = {
     id: number;
-    email: string;
+    username: string;
 };
 
 export type RemoveGroupRecipientParams = {

@@ -84,8 +84,8 @@ export const deleteGroupMessage = ({ id, messageId }: DeleteGroupMessageParams) 
 export const editGroupMessage = ({ content, id, messageId,}: EditMessagePayload) =>
   axiosClient.patch<GroupMessageType>(`/groups/${id}/messages/${messageId}`, { content }, config);
 
-export const addGroupRecipient = ({ id, email }: AddGroupRecipientParams) =>
-  axiosClient.post(`/groups/${id}/recipients`, { email }, config);
+export const addGroupRecipient = ({ id, username }: AddGroupRecipientParams) =>
+  axiosClient.post(`/groups/${id}/recipients`, { username }, config);
 
 export const removeGroupRecipient = ({ id, userId }: RemoveGroupRecipientParams) =>
   axiosClient.delete<Group>(`/groups/${id}/recipients/${userId}`, config);
@@ -101,8 +101,8 @@ export const fetchFriends = () => axiosClient.get<Friend[]>('/friends', config);
 export const fetchFriendRequests = () =>
   axiosClient.get<FriendRequest[]>('/friends/requests', config);
 
-export const createFriendRequest = (email: string) =>
-  axiosClient.post<FriendRequest>('/friends/requests', { email }, config);  
+export const createFriendRequest = (username: string) =>
+  axiosClient.post<FriendRequest>('/friends/requests', { username }, config);  
 
 export const cancelFriendRequest = (id: number) =>
   axiosClient.delete<CancelFriendRequestResponse>(`/friends/requests/${id}/cancel`, config);
@@ -124,3 +124,13 @@ export const removeFriend = (id: number) =>
 
 export const checkConversationOrCreate = (recipientId: number) =>
   axiosClient.get<Conversation>(`/exists/conversations/${recipientId}`, config);
+
+export const completeUserProfile = (data: FormData) =>
+  axiosClient.post('/users/profiles', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+export const checkUsernameExists = (username: string) =>
+  axiosClient.get(`/users/check?username=${username}`, config);  

@@ -4,17 +4,22 @@ import {
   GroupRecipientsSidebarHeader,
   GroupRecipientsSidebarStyle,
   MessageItemAvatar,
+  TestContextMenu,
 } from '../../utils/styles';
 import { Crown, PeopleGroup } from 'akar-icons';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../store';
-import { selectGroupById } from '../../store/groupsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
 import { useParams } from 'react-router-dom';
-import React, {useContext, useEffect, useState} from "react";
-import {User} from "../../utils/types";
-import {SocketContext} from "../../utils/context/SocketContext";
-import {setContextMenuLocation, setSelectedUser, toggleContextMenu} from "../../store/groupRecipientsSidebarSlice";
-import {SelectedParticipantContextMenu} from "../context-menus/SelectedParticipantContextMenu";
+import { useContext, useEffect, useState } from 'react';
+import { SocketContext } from '../../utils/context/SocketContext';
+import { User } from '../../utils/types';
+import {
+  setContextMenuLocation,
+  setSelectedUser,
+  toggleContextMenu,
+} from '../../store/groupRecipientsSidebarSlice';
+import { SelectedParticipantContextMenu } from '../context-menus/SelectedParticipantContextMenu';
+import { selectGroupById } from '../../store/groupsSlice';
 
 export const GroupRecipientsSidebar = () => {
   const { id: groupId } = useParams();
@@ -23,11 +28,9 @@ export const GroupRecipientsSidebar = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
-
   const group = useSelector((state: RootState) =>
     selectGroupById(state, parseInt(groupId!))
   );
-
   const groupSidebarState = useSelector(
     (state: RootState) => state.groupSidebar
   );
@@ -50,7 +53,7 @@ export const GroupRecipientsSidebar = () => {
       clearInterval(interval);
       socket.off('onlineGroupUsersReceived');
     };
-  }, [groupId, groupId]);
+  }, [group, groupId]);
 
   useEffect(() => {
     const handleResize = (e: UIEvent) => dispatch(toggleContextMenu(false));
@@ -72,7 +75,6 @@ export const GroupRecipientsSidebar = () => {
     <GroupRecipientsSidebarStyle>
       <GroupRecipientsSidebarHeader>
         <span>Participants</span>
-        {/*<PeopleGroup />*/}
       </GroupRecipientsSidebarHeader>
       <GroupRecipientSidebarItemContainer>
         <span>Online Users</span>
@@ -80,11 +82,11 @@ export const GroupRecipientsSidebar = () => {
           <GroupRecipientSidebarItem
             onContextMenu={(e) => onUserContextMenu(e, user)}
           >
-            <div className='left'>
+            <div className="left">
               <MessageItemAvatar />
               <span>{user.firstName}</span>
             </div>
-            {user.id === group?.owner.id && <Crown size={20} color='#fff' />}
+            {user.id === group?.owner.id && <Crown color="#ffbf00" />}
           </GroupRecipientSidebarItem>
         ))}
         <span>Offline Users</span>
@@ -97,11 +99,11 @@ export const GroupRecipientsSidebar = () => {
             <GroupRecipientSidebarItem
               onContextMenu={(e) => onUserContextMenu(e, user)}
             >
-              <div className='left'>
+              <div className="left">
                 <MessageItemAvatar />
-                <span>{user?.firstName}</span>
+                <span>{user.firstName}</span>
               </div>
-              {user.id === group?.owner.id && (<Crown color='#ffbf00' />)}
+              {user.id === group?.owner.id && <Crown color="#ffbf00" />}
             </GroupRecipientSidebarItem>
           ))}
         {groupSidebarState.showUserContextMenu && (

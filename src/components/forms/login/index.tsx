@@ -1,12 +1,11 @@
-import { InputContainer, InputField, InputLabel, Button } from "../../utils/styles";
-
-import styles from './index.module.scss';
+import { InputContainer, InputField, InputLabel, Button } from "../../../utils/styles";
+import styles from '../index.module.scss';
 import {Link, useNavigate} from "react-router-dom";
 import React, {useContext} from "react";
 import { useForm } from "react-hook-form";
-import { UserCredentialsParams } from "../../utils/types";
-import {postLoginUser} from "../../utils/api";
-import {SocketContext} from "../../utils/context/SocketContext";
+import { UserCredentialsParams } from "../../../utils/types";
+import {postLoginUser} from "../../../utils/api";
+import {SocketContext} from "../../../utils/context/SocketContext";
 export const LoginForm = () => {
     const {
         register,
@@ -30,11 +29,11 @@ export const LoginForm = () => {
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <InputContainer>
-                <InputLabel htmlFor="email">Email</InputLabel>
+                <InputLabel htmlFor="username">Username</InputLabel>
                 <InputField
-                    type="email"
-                    id="email"
-                    {...register('email', {
+                    type="text"
+                    id="username"
+                    {...register('username', {
                         required: true
                     })}
                 />

@@ -23,6 +23,7 @@ import { FriendsPage } from './pages/friends/FriendsPage';
 import { FriendsLayoutPage } from './pages/friends/FriendsLayoutPage';
 import { FriendRequestPage } from './pages/friends/FriendRequestPage';
 import { addFriendRequest } from './store/friends/friendsSlice';
+import { OnboardingPage } from './pages/onboarding/OnboardingPage';
 
 enableMapSet();
 
@@ -52,6 +53,10 @@ function App() {
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/onboarding"
+          element={<AuthenticatedRoute children={<OnboardingPage />} />}
+        />
         <Route element={<AuthenticatedRoute children={<AppPage />} />}>
           <Route path="conversations" element={<ConversationPage /> }>
             <Route path=":id" element={<ConversationPageGuard children={<ConversationChannelPage />} />} />

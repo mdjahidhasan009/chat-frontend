@@ -16,7 +16,7 @@ export const SelectedRecipientChip: FC<Props> = ({
   return (
     <SelectedRecipientPillStyle>
       <div className="container">
-        <span>{user.email}</span>
+        <span>{user.username}</span>
         <CircleX
           className="icon"
           size={20}

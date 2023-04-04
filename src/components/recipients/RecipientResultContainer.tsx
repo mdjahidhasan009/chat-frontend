@@ -25,7 +25,7 @@ export const RecipientResultContainer: FC<Props> = ({
             key={user.id}
             onClick={() => handleUserSelect(user)}
           >
-            <span>{user.email}</span>
+            <span>{user.username}</span>
           </RecipientResultItem>
         ))}
       </RecipientScrollableItemContainer>
