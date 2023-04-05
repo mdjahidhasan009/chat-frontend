@@ -8,7 +8,7 @@ import { UserSidebarItemStyle, UserSidebarStyle } from '../../utils/styles';
 import { UserSidebarItemType, UserSidebarRouteType } from '../../utils/types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userSidebarItems } from '../../utils/constants';
-import { UserSidebarItem } from './UserSidebarItem';
+import { UserSidebarItem } from './items/UserSidebarItem';
 
 export const UserSidebar = () => {
   const [showModal, setShowModal] = useState(false);

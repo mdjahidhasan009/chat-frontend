@@ -550,6 +550,10 @@ export const UserSidebarStyle = styled.div`
   flex: 0 0 80px;
   align-items: center;
   flex-direction: column;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const ConversationSidebarStyle = styled.div`

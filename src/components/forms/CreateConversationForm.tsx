@@ -16,7 +16,6 @@ import {AppDispatch} from "../../store";
 import { useNavigate } from 'react-router-dom';
 import {useDebounce} from "../../utils/hooks/useDebounce";
 import {searchUsers} from "../../utils/api";
-import {SelectedRecipientChip} from "../recipients/SelectedRecipientChip";
 import {createGroupThunk} from "../../store/groupsSlice";
 import {RecipientField} from "../recipients/RecipientField";
 import {RecipientResultContainer} from "../recipients/RecipientResultContainer";
