@@ -25,7 +25,7 @@ export const UsernameField: FC<RegisterFormFieldProps> = ({
         type="text"
         id="username"
         {...register('username', {
-          required: 'Username is required',
+          required: 'Username is Required',
           minLength: {
             value: 3,
             message: 'Must be 3 characters long',

@@ -92,9 +92,11 @@ export const Button = styled.button`
 export const Page = styled.div<PageProps>`
   background-color: #1a1a1a;
   height: 100%;
+  width: 100%;
   display: ${(props) => props.display};
   justify-content: ${(props) => props.justifyContent};
   align-items: ${(props) => props.alignItems};
+  overflow: hidden;
 `;
 
 export const ConversationChannelPageStyle = styled.div`
