@@ -4,31 +4,46 @@ import { Page } from "../../utils/styles";
 import { Button } from '../../utils/styles/button';
 import { ProfileAboutSection, ProfileAboutSectionHeader, ProfileDescriptionField, ProfileEditActionBar, ProfileSection, SettingsProfileUserDetails } from "../../utils/styles/settings";
 import { useState } from "react";
+import { updateUserProfile } from "../../utils/api";
 
 export const SettingsProfilePage = () => {
-  const [source] = useState(
+  const [bannerSource] = useState(
     'https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80'
   );
-  const [sourceCopy, setSourceCopy] = useState(source);
+  const [bannerFile, setBannerFile] = useState<File>();
+  const [bannerSourceCopy, setBannerSourceCopy] = useState(bannerSource);
+  const [sourceCopy, setSourceCopy] = useState(bannerSource);
   const [about] = useState('hello world');
-  const [ editedAbout, setEditedAbout ] = useState<string>(about);
+  const [ aboutCopy, setAboutCopy ] = useState<string>(about);
   const [ isEditing, setIsEditing ] = useState<boolean>(false);
 
-  const isChanged = () => editedAbout !== about || source !== sourceCopy;
+  const isChanged = () => aboutCopy !== about || bannerFile;
 
   const reset = () => {
-    setEditedAbout(about);
-    setSourceCopy(source);
-    setIsEditing(false);
-    URL.revokeObjectURL(sourceCopy);
+    setAboutCopy(about);
+    setBannerSourceCopy(bannerSource);
+    setBannerFile(undefined);
+    URL.revokeObjectURL(bannerSourceCopy);
   };
+
+  const save = async () => {
+    const formData = new FormData();
+    bannerFile && formData.append('banner', bannerFile);
+    about !== aboutCopy && formData.append('about', aboutCopy);
+    try {
+      await updateUserProfile(formData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return(
     <Page>
       <UserBanner
-        source={source}
-        sourceCopy={sourceCopy}
-        setSourceCopy={setSourceCopy}
+        bannerSource={bannerSource}
+        bannerSourceCopy={bannerSourceCopy}
+        setBannerSourceCopy={setBannerSourceCopy}
+        setBannerFile={setBannerFile}
       />
       <ProfileSection>
         <SettingsProfileUserDetails>
@@ -48,8 +63,8 @@ export const SettingsProfilePage = () => {
           <ProfileDescriptionField
             maxLength={200}
             disabled={!isEditing}
-            value={editedAbout}
-            onChange={(e) => setEditedAbout(e.target.value)}
+            value={aboutCopy}
+            onChange={(e) => setAboutCopy(e.target.value)}
           />
         </ProfileAboutSection>
       </ProfileSection>
@@ -62,7 +77,12 @@ export const SettingsProfilePage = () => {
           <Button size="md" variant="secondary" onClick={reset}>
               Reset
             </Button>
-            <Button size="md">Save</Button>
+            <Button 
+              size="md"
+              onClick={save}
+            >
+              Save
+            </Button>
           </div>
         </ProfileEditActionBar>
       )}
