@@ -18,6 +18,7 @@ import {selectGroupById} from "../../store/groupsSlice";
 import { createMessageThunk } from '../../store/messages/messageThunk';
 import { useToast } from '../../utils/hooks/useToast';
 import { AxiosError } from 'axios';
+import { MessageAttachmentContainer } from './attachments/MessageAttachmentContainer';
 
 type Props = {
   sendTypingStatus: () => void;
@@ -32,6 +33,7 @@ export const MessagePanel: FC<Props> = ({
   const { id: routeId } = useParams();
   const { user } = useContext(AuthContext);
   const { error } = useToast({ theme: 'dark' });
+  const { attachments } = useSelector((state: RootState) => state.messagePanel);
   const dispatch = useDispatch<AppDispatch>();
 
   const conversation = useSelector((state: RootState) =>
@@ -72,6 +74,7 @@ export const MessagePanel: FC<Props> = ({
           <MessageContainer />
         </MessagePanelBody>
         <MessagePanelFooter>
+          {attachments.length > 0 && <MessageAttachmentContainer />}
           <MessageInputField
             content={content}
             setContent={setContent}
