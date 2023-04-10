@@ -3,7 +3,7 @@ import {
   GroupRecipientSidebarItemContainer,
   GroupRecipientsSidebarHeader,
   GroupRecipientsSidebarStyle,
-  MessageItemAvatar,
+  MessageItemAvatarStyle,
   TestContextMenu,
 } from '../../utils/styles';
 import { Crown, PeopleGroup } from 'akar-icons';
@@ -83,7 +83,7 @@ export const GroupRecipientsSidebar = () => {
             onContextMenu={(e) => onUserContextMenu(e, user)}
           >
             <div className="left">
-              <MessageItemAvatar />
+              <MessageItemAvatarStyle />
               <span>{user.firstName}</span>
             </div>
             {user.id === group?.owner.id && <Crown color="#ffbf00" />}
@@ -100,7 +100,7 @@ export const GroupRecipientsSidebar = () => {
               onContextMenu={(e) => onUserContextMenu(e, user)}
             >
               <div className="left">
-                <MessageItemAvatar />
+                <MessageItemAvatarStyle />
                 <span>{user.firstName}</span>
               </div>
               {user.id === group?.owner.id && <Crown color="#ffbf00" />}

@@ -15,10 +15,10 @@ import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
 import { MessagePanelHeader } from './MessagePanelHeader';
 import {selectGroupById} from "../../store/groupsSlice";
-import { createMessageThunk } from '../../store/messages/messageThunk';
 import { useToast } from '../../utils/hooks/useToast';
 import { AxiosError } from 'axios';
 import { MessageAttachmentContainer } from './attachments/MessageAttachmentContainer';
+import { removeAllAttachments } from '../../store/message-panel/messagePanelSlice';
 
 type Props = {
   sendTypingStatus: () => void;
@@ -52,15 +52,23 @@ export const MessagePanel: FC<Props> = ({
 
   const sendMessage = async () => {
     const trimmedContent = content.trim();
+    if (!routeId) return;
+    if (!trimmedContent && !attachments.length) return;
     if (!routeId || !trimmedContent) return;
     const id = parseInt(routeId);
     const params = { id, content: trimmedContent };
+    const formData = new FormData();
+
+    formData.append('id', routeId);
+    trimmedContent && formData.append('content', trimmedContent);
+    attachments.forEach((attachment) =>
+      formData.append('attachments', attachment.file)
+    );
 
     try {
-      selectedType === 'private'
-        ? await createMessage(params)
-        : await postGroupMessage(params); // selectedType = group
+      await createMessage(routeId, selectedType, formData);
       setContent('');
+      dispatch(removeAllAttachments());
     } catch (err) {
       (err as AxiosError).response?.status === 429 && error('Rate limit exceeded', { toastId }); // toastId is used to prevent multiple toasts from being created
     }

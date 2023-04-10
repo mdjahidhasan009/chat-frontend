@@ -9,12 +9,14 @@ import {
 import { FileInput } from '../../utils/styles/inputs/Textarea';
 import { DivMouseEvent, InputChangeEvent } from '../../utils/types';
 import styles from './index.module.scss';
+import { useToast } from '../../utils/hooks/useToast';
 
 export const MessageAttachmentActionIcon = () => {
   const attachmentIconRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<AppDispatch>();
-  const { attachmentCounter } = useSelector(
+  const { error } = useToast({ theme: 'dark' });
+  const { attachmentCounter, attachments } = useSelector(
     (state: RootState) => state.messagePanel
   );
 
@@ -23,9 +25,15 @@ export const MessageAttachmentActionIcon = () => {
   };
 
   const onChange = (e: InputChangeEvent) => {
-    const file = e.target.files?.item(0);
-    if (file) {
-      dispatch(addAttachment({ id: attachmentCounter, file }));
+    const { files } = e.target;
+    if (!files) return;
+    const maxFilesDropped = 5 - attachments.length;
+    if (maxFilesDropped === 0) return error('Max files reached');
+    const filesArray = Array.from(files);
+    let localCounter = attachmentCounter;
+    for (let i = 0; i < filesArray.length; i++) {
+      if (i === maxFilesDropped) break;
+      dispatch(addAttachment({ id: localCounter++, file: filesArray[i] }));
       dispatch(incrementAttachmentCounter());
     }
   };
@@ -34,6 +42,7 @@ export const MessageAttachmentActionIcon = () => {
     <div ref={attachmentIconRef} onClick={onClick}>
       <CirclePlusFill size={36} className={styles.icon} cursor="pointer" />
       <FileInput
+        multiple
         ref={fileInputRef}
         type="file"
         accept="image/*"

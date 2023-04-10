@@ -42,20 +42,26 @@ export type CreateConversationParams = {
     message: string;
 };
 
+export type MessageAttachment = {
+    key: string;
+};
+
 export type MessageType = {
     id: number;
-    content: string;
+    content?: string;
     createdAt: string;
     author: User;
     conversation: Conversation;
+    attachments?: MessageAttachment[];
 };
 
 export type GroupMessageType = {
     id: number;
-    content: string;
+    content?: string;
     createdAt: string;
     author: User;
     group: Group;
+    attachments?: MessageAttachment[];
 };
 
 export type FetchMessagePayload = {
@@ -188,6 +194,8 @@ export type UpdateGroupOwnerParams = {
 export type ContextMenuEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 export type DivMouseEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
+export type DragEvent = React.DragEvent<HTMLTextAreaElement>;
+export type ClipboardEvent = React.ClipboardEvent<HTMLTextAreaElement>;
 export type FriendRequestStatus = 'accepted' | 'pending' | 'rejected';
 
 export type Friend = {

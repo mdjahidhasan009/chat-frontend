@@ -28,14 +28,14 @@ export const editMessageThunk = createAsyncThunk(
   }
 );
 
-export const createMessageThunk = createAsyncThunk(
-  'messages/create',
-  async (params: CreateMessageParams, thunkAPI) => {
-    try {
-      const response = await createMessageAPI(params);
-      return thunkAPI.fulfillWithValue(response);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+// export const createMessageThunk = createAsyncThunk(
+//   'messages/create',
+//   async (params: CreateMessageParams, thunkAPI) => {
+//     try {
+//       const response = await createMessageAPI(params);
+//       return thunkAPI.fulfillWithValue(response);
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error);
+//     }
+//   }
+// );

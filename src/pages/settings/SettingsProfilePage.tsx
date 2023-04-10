@@ -12,11 +12,11 @@ import { UserAvatar } from "../../components/settings/profile/UserAvatar";
 export const SettingsProfilePage = () => {
   const { user, updateAuthUser } = useContext(AuthContext);
   // const [bannerSource, setBannerSource] = useState(
-  //   CDN_URL.concat(user?.profile?.banner || '')
+  //   CDN_URL.BASE.concat(user?.profile?.banner || '')
   // );
   const [avatarFile, setAvatarFile] = useState<File>();
   // const [avatarSource, setAvatarSource] = useState(
-  //   CDN_URL.concat(user?.profile?.avatar || '')
+  //   CDN_URL.BASE.concat(user?.profile?.avatar || '')
   // );
   const [avatarSource, setAvatarSource] = useState('https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80');
   const [avatarSourceCopy, setAvatarSourceCopy] = useState(avatarSource);
@@ -36,8 +36,8 @@ export const SettingsProfilePage = () => {
   }, [user?.profile?.about]);
 
   // useEffect(() => {
-  //   setBannerSource(CDN_URL.concat(user?.profile?.banner || ''));
-  //   setBannerSourceCopy(CDN_URL.concat(user?.profile?.banner || ''));
+  //   setBannerSource(CDN_URL.BASE.concat(user?.profile?.banner || ''));
+  //   setBannerSourceCopy(CDN_URL.BASE.concat(user?.profile?.banner || ''));
   // }, [user?.profile?.banner]);
 
   const isChanged = () => aboutCopy !== about || bannerFile|| avatarFile;

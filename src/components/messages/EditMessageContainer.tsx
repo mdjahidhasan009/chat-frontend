@@ -32,7 +32,7 @@ export const EditMessageContainer: FC<Props> = ({ onEditMessageChange }) => {
     const params: EditMessagePayload = {
       id: parseInt(id!),
       messageId: messageBeingEdited.id,
-      content: messageBeingEdited.content,
+      content: messageBeingEdited.content || "",
     };
     
     conversationType === 'private'

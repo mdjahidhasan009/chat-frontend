@@ -17,7 +17,8 @@ import {
   Friend,
   FriendRequest,
   CancelFriendRequestResponse,
-  AcceptFriendRequestResponse
+  AcceptFriendRequestResponse,
+  ConversationType
 } from './types';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -45,8 +46,20 @@ export const getConversationMessages = (conversationId: number) =>
     config
   );
 
-export const createMessage = ({ id, content }: CreateMessageParams) =>
-  axiosClient.post(`/conversations/${id}/messages`, { content }, config);
+  export const createMessage = (
+    id: string,
+    type: ConversationType,
+    data: FormData
+  ) => {
+    const url =
+      type === 'private'
+        ? `/conversations/${id}/messages`
+        : `/groups/${id}/messages`;
+    return axiosClient.post(url, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      ...config,
+    });
+  };
 
 export const postNewConversation = (data: CreateConversationParams) =>
   axiosClient.post<Conversation>(`/conversations`, data, config);

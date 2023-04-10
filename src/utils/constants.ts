@@ -96,3 +96,9 @@ export const settingsItems: SettingsItemType[] = [
     pathname: '/settings/appearance',
   },
 ];
+
+export enum CDN_URL {
+  BASE = 'https://chuachat.ams3.cdn.digitaloceanspaces.com/',
+  ORIGINAL = 'https://chuachat.ams3.cdn.digitaloceanspaces.com/original/',
+  PREVIEW = 'https://chuachat.ams3.digitaloceanspaces.com/preview/',
+}
