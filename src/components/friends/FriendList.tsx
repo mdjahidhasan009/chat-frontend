@@ -32,6 +32,7 @@ export const FriendList = () => {
           key={friend.id} 
           friend={friend}
           onContextMenu={onContextMenu} 
+          online={true}
         />
       ))}
       <span>Offline</span>
@@ -44,6 +45,7 @@ export const FriendList = () => {
             key={friend.id}
             friend={friend}
             onContextMenu={onContextMenu}
+            online={true}
           />
         ))}
       {/* {offlineFriends.map((friend) => (

@@ -1,5 +1,5 @@
 import { ArrowCycle, ChatDots, Crown, Minus, Person, PersonCross, Gear } from 'akar-icons';
-import {Conversation, Group, User, UserContextMenuActionType, UserSidebarRouteType, SettingsSidebarRouteType} from "./types";
+import {Conversation, Group, User, UserContextMenuActionType, UserSidebarRouteType, SettingsSidebarRouteType, FriendRequest, FriendRequestDetailsType} from "./types";
 import {
   IoIosPerson,
   IoIosNotifications,
@@ -61,3 +61,21 @@ export const getSettingSidebarIcon = (id: SettingsSidebarRouteType) => {
       return IoMdColorPalette;
   }
 };
+
+export const getFriendRequestDetails = (
+  { receiver, sender }: FriendRequest,
+  user?: User
+): FriendRequestDetailsType =>
+  user?.id === receiver.id
+    ? {
+        status: 'Incoming Friend Request',
+        displayName: `${sender.firstName} ${sender.lastName}`,
+        user: sender,
+        incoming: true,
+      }
+    : {
+        status: 'Outgoing Friend Request',
+        displayName: `${receiver.firstName} ${receiver.lastName}`,
+        user: receiver,
+        incoming: false,
+      };

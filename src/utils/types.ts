@@ -20,6 +20,12 @@ export type Profile = {
   banner?: string;
 };
 
+export type UserPresence = {
+    id: number;
+    statusMessage?: string;
+    showOffline: boolean;
+};
+
 export type User = {
     id: number;
     username: string;
@@ -27,6 +33,7 @@ export type User = {
     firstName: string;
     lastName: string;
     profile?: Profile;
+    presence?: UserPresence;
 };
 
 export type Conversation = {
@@ -224,11 +231,7 @@ export type AcceptFriendRequestResponse = {
     friendRequest: FriendRequest;
 };
 
-export type UserSidebarRouteType =
-  | 'conversations'
-  | 'friends'
-  | 'connections'
-  | 'settings';
+export type UserSidebarRouteType = 'conversations' | 'friends' | 'connections' | 'settings';
 
 export type UserSidebarItemType = {
   id: UserSidebarRouteType;
@@ -264,4 +267,68 @@ export type UpdateProfileParams = Partial<{
 export type Attachment = {
     id: number;
     file: File;
+};
+
+export type FriendRequestDetailsType = {
+    status: string;
+    displayName: string;
+    user: User;
+    incoming: boolean;
+};
+
+export type SystemMessageLevel = 'info' | 'warning' | 'error';
+export type SystemMessageType = {
+  id: number;
+  content: string;
+  level: SystemMessageLevel;
+};
+
+export type UpdateStatusParams = {
+    statusMessage: string;
+};
+
+export type SelectableTheme = 'dark' | 'light';
+
+export type Theme = {
+  userSidebar: {
+    backgroundColor: string;
+    color: string;
+  };
+  conversationSidebar: {
+    backgroundColor: string;
+    color: string;
+    conversationItem: {
+      selected: string;
+      hover: {
+        backgroundColor: string;
+      };
+      title: {
+        color: string;
+        lastMessageColor: string;
+      };
+    };
+  };
+  messagePanel: {
+    backgroundColor: string;
+    color: string;
+    header: {
+      title: string;
+    };
+    body: {
+      content: {
+        color: string;
+      };
+    };
+    inputContainer: {
+      backgroundColor: string;
+      color: string;
+    };
+  };
+  participantSidebar: {
+    backgroundColor: string;
+    color: string;
+  };
+  page: {
+    backgroundColor: string;
+  };
 };

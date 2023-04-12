@@ -1,10 +1,9 @@
 import {Outlet, useNavigate, useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import {updateType} from "../../store/selectedSlice";
 import {addGroup, fetchGroupsThunk, removeGroup, updateGroup} from "../../store/groupsSlice";
-import {Page} from "../../utils/styles";
 import {ConversationSidebar} from "../../components/sidebars/ConversationSidebar";
 import {ConversationPanel} from "../../components/conversations/ConversationPanel";
 import {SocketContext} from "../../utils/context/SocketContext";
@@ -20,6 +19,7 @@ import {AuthContext} from "../../utils/context/AuthContext";
 export const GroupPage = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useContext(AuthContext);
+  const [showSidebar, setShowSidebar] = useState(window.innerWidth > 800);
   const dispatch = useDispatch<AppDispatch>();
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
@@ -27,6 +27,14 @@ export const GroupPage = () => {
   useEffect(() => {
     dispatch(updateType('group'));
     dispatch(fetchGroupsThunk());
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setShowSidebar(window.innerWidth > 800);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -86,8 +94,9 @@ export const GroupPage = () => {
 
   return (
     <>
-      <ConversationSidebar />
-      {!id && <ConversationPanel />}
+      {showSidebar && <ConversationSidebar />}
+      {!id && !showSidebar && <ConversationSidebar />}
+      {!id && showSidebar && <ConversationPanel />}
       <Outlet />
     </>
   );

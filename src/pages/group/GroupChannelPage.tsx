@@ -7,7 +7,7 @@ import {ConversationChannelPageStyle} from "../../utils/styles";
 import {MessagePanel} from "../../components/messages/MessagePanel";
 import {editGroupMessage, fetchGroupMessagesThunk} from "../../store/groupMessageSlice";
 import {GroupMessageType} from "../../utils/types";
-import {GroupRecipientsSidebar} from "../../components/sidebars/GroupRecipientsSidebar";
+import {GroupRecipientsSidebar} from "../../components/sidebars/group-recipients/GroupRecipientsSidebar";
 
 export const GroupChannelPage = () => {
   const { id } = useParams<{ id: string }>();

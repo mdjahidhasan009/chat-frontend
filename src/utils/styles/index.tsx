@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
+import { Theme } from '../types';
 import { fadeInUpwards } from './keyframes';
 import {
+  CharacterLimitProps,
   ContextMenuProps,
   ConversationSelectedProps,
   ConversationSidebarItemProps,
@@ -10,8 +12,6 @@ import {
   PageProps,
   SidebarItemProps,
 } from './styleTypes';
-
-import { CharacterLimitProps } from './styleTypes';
 
 export const SIDEBAR_WIDTH = 400;
 
@@ -116,11 +116,35 @@ export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemPr
   padding: 20px 32px;
   box-sizing: border-box;
   width: 100%;
-  background-color: ${({ selected }) => selected && '#1a1a1a'};
+  background-color: ${({ selected, theme }) =>
+    selected && theme.conversationSidebar.conversationItem.selected};
   cursor: pointer;
   transition: 150ms background-color ease;
   &:hover {
-    background-color: #222222;
+    background-color: ${({ theme }) =>
+      theme.conversationSidebar.conversationItem.hover.backgroundColor};
+  }
+`;
+
+export const ConversationSidebarItemDetails = styled.div`
+  word-break: break-all;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  & .conversationName {
+    display: block;
+    font-weight: 600;
+    font-size: 16px;
+    color: ${({ theme }) =>
+      theme.conversationSidebar.conversationItem.title.color};
+  }
+  & .conversationLastMessage {
+    font-size: 15px;
+    font-weight: 500;
+    color: #868686;
+    color: ${({ theme }) =>
+      theme.conversationSidebar.conversationItem.title.lastMessageColor};
   }
 `;
 
@@ -191,7 +215,7 @@ export const MessagePanelStyle = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: #141414;
+  background-color: ${({ theme }) => theme.messagePanel.backgroundColor};
 `;
 
 export const MessagePanelHeaderStyle = styled.header`
@@ -204,6 +228,7 @@ export const MessagePanelHeaderStyle = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: ${({ theme }) => theme.messagePanel.header.title};
 `;
 
 export const MessagePanelBody = styled.div`
@@ -225,6 +250,7 @@ export const MessageContainerStyle = styled.div`
   &::-webkit-scrollbar {
     width: 8px;
   }
+
   &::-webkit-scrollbar-track {
     background-color: #0e0e0e;
   }
@@ -237,7 +263,8 @@ export const MessageContainerStyle = styled.div`
 
 export const MessageInputContainer = styled.div<MessageInputContainerProps>`
   box-sizing: border-box;
-  background-color: #101010;
+  background-color: ${({ theme }) =>
+    theme.messagePanel.inputContainer.backgroundColor};
   border-radius: 5px;
   width: 100%;
   padding: 18px 32px;
@@ -251,6 +278,7 @@ export const MessagePanelFooter = styled.footer`
   padding: 0 32px 10px 32px;
   margin-top: 0;
 `;
+
 export const MessageInput = styled.input`
   background-color: inherit;
   outline: none;
@@ -273,7 +301,7 @@ export const MessageItemContainer = styled.div`
   word-break: break-word;
 `;
 
-export const MessageItemAvatarStyle = styled.img`
+export const UserAvatarContainer = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -302,6 +330,7 @@ export const MessageItemContent = styled.div<MessageItemContentProps>`
   padding: ${({ padding }) => padding};
   width: 100%;
   white-space: pre-wrap;
+  color: ${({ theme }) => theme.messagePanel.body.content.color};
 `;
 
 export const ContextMenu = styled.ul<ContextMenuProps>`
@@ -383,8 +412,8 @@ export const ConversationSelectedItem = styled.div<ConversationSelectedProps>`
   background-color: #212121;
   color: #f0f0f0;
   ${(props) =>
-          props.selected &&
-          css`
+    props.selected &&
+    css`
       background-color: #444444;
     `};
 `;
@@ -460,8 +489,8 @@ export const ConversationTabItemStyle = styled.section<ConversationSelectedProps
   padding: 8px 18px;
   border-radius: 5px;
   ${({ selected }) =>
-  selected &&
-  css`
+    selected &&
+    css`
       background-color: #383838;
     `};
 `;
@@ -555,7 +584,8 @@ export const LayoutPage = styled.div`
 
 export const UserSidebarStyle = styled.div`
   height: 100%;
-  background-color: #0b0b0b;
+  background-color: ${({ theme }: { theme: Theme }) =>
+    theme.userSidebar.backgroundColor};
   display: flex;
   flex: 0 0 80px;
   align-items: center;
@@ -571,7 +601,8 @@ export const ConversationSidebarStyle = styled.div`
   flex-direction: column;
   height: 100%;
   width: 400px;
-  background-color: #111111;
+  background-color: ${({ theme }: { theme: Theme }) =>
+    theme.conversationSidebar.backgroundColor};
   flex: 0 0 auto;
   @media (max-width: 800px) {
     width: calc(100% - 80px);
@@ -618,25 +649,25 @@ export const UserSidebarItemStyle = styled.div<SidebarItemProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
+  padding: 20px 18px;
   box-sizing: border-box;
   background-color: ${({ active }) => active && '#1e1e1e'};
   position: relative;
-  `;
-  
-  export const IconBadge = styled.div`
-    background-color: #ff3535;
-    height: 20px;
-    width: 20px;
-    border-radius: 5px;
-    position: absolute;
-    top: 2px;
-    right: 4px;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    `;
+`;
+
+export const IconBadge = styled.div`
+  background-color: #ff3535;
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const ConversationCreateButton = styled.div`
   background-color: #1a1a1a;
@@ -679,18 +710,32 @@ export const GroupRecipientSidebarItemContainer = styled.div`
   }
 `;
 
-export const GroupRecipientSidebarItem = styled.div`
+type GroupRecipientSidebarItemProps = {
+  online: boolean;
+};
+
+export const GroupRecipientSidebarItem = styled.div<GroupRecipientSidebarItemProps>`
   display: flex;
   gap: 10px;
   align-items: center;
   font-size: 18px;
   font-weight: 500;
   margin: 10px 0;
+  & .recipientDetails {
+    display: flex;
+    flex-direction: column;
+  }
   & .left {
     display: flex;
     align-items: center;
     gap: 14px;
   }
+  & .status {
+    font-size: 12px;
+    font-weight: 500;
+    color: #929292;
+  }
+  opacity: ${({ online }) => !online && 0.2};
 `;
 
 export const GroupHeaderIcons = styled.div`
@@ -749,4 +794,33 @@ export const MessageAttachmentStyle = styled.div`
   flex-direction: column;
   gap: 20px;
   text-align: center;
+`;
+
+export const SystemMessageContainer = styled.div`
+  width: 80%;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color: #1c1c1c;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  & .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    & .icon {
+      font-size: 20px;
+    }
+    & span {
+      font-weight: bold;
+    }
+  }
+  & .content {
+    font-size: 14px;
+    font-style: italic;
+    padding-left: 28px;
+    color: #656565;
+  }
 `;

@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { CDN_URL, userSidebarItems } from '../../utils/constants';
 import { UserSidebarItem } from './items/UserSidebarItem';
 import { AuthContext } from '../../utils/context/AuthContext';
+import { UpdatePresenceStatusModal } from '../modals/UpdatePresenceStatusModal';
 
 export const UserSidebar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +18,7 @@ export const UserSidebar = () => {
 
   return (
     <>
-      {showModal && <CreateConversationModal setShowModal={setShowModal} />}
+      {showModal && <UpdatePresenceStatusModal setShowModal={setShowModal} />}
       <UserSidebarStyle>
       <UserAvatar
           src={
@@ -27,6 +28,7 @@ export const UserSidebar = () => {
           }
           alt="avatar"
           width="55px"
+          onClick={() => setShowModal(true)}
         />
         <hr className={styles.hr} />
         {userSidebarItems.map((item) => (

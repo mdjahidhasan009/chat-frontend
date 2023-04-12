@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState, AppDispatch } from '../../store';
@@ -19,16 +19,15 @@ import { useToast } from '../../utils/hooks/useToast';
 import { AxiosError } from 'axios';
 import { MessageAttachmentContainer } from './attachments/MessageAttachmentContainer';
 import { removeAllAttachments } from '../../store/message-panel/messagePanelSlice';
+import { addSystemMessage, clearAllMessages } from '../../store/system-messages/systemMessagesSlice';
 
 type Props = {
   sendTypingStatus: () => void;
   isRecipientTyping: boolean;
 };
-export const MessagePanel: FC<Props> = ({
-  sendTypingStatus,
-  isRecipientTyping,
-}) => {
+export const MessagePanel: FC<Props> = ({ sendTypingStatus, isRecipientTyping }) => {
   const toastId = 'rateLimitToast';
+  const { messageCounter } = useSelector((state: RootState) => state.systemMessages);
   const [content, setContent] = useState('');
   const { id: routeId } = useParams();
   const { user } = useContext(AuthContext);
@@ -49,6 +48,11 @@ export const MessagePanel: FC<Props> = ({
   );
 
   const recipient = getRecipientFromConversation(conversation, user);
+  useEffect(() => {
+    return () => {
+      dispatch(clearAllMessages());
+    };
+  }, []);
 
   const sendMessage = async () => {
     const trimmedContent = content.trim();
@@ -69,8 +73,27 @@ export const MessagePanel: FC<Props> = ({
       await createMessage(routeId, selectedType, formData);
       setContent('');
       dispatch(removeAllAttachments());
+      dispatch(clearAllMessages());
     } catch (err) {
-      (err as AxiosError).response?.status === 429 && error('Rate limit exceeded', { toastId }); // toastId is used to prevent multiple toasts from being created
+      const axiosError = err as AxiosError;
+      if (axiosError.response?.status === 429) {
+        error('You are rate limited', { toastId });
+        dispatch(
+          addSystemMessage({
+            id: messageCounter,
+            level: 'error',
+            content: 'You are being rate limited. Slow down.',
+          })
+        );
+      } else if (axiosError.response?.status === 404) {
+        dispatch(
+          addSystemMessage({
+            id: messageCounter,
+            level: 'error',
+            content: 'The recipient is not in your friends list or they may have blocked you.',
+          })
+        );
+      }
     }
   };
 

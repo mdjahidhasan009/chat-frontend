@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
   MessageContainerStyle,
-  MessageItemAvatarStyle,
+  UserAvatarContainer,
   MessageItemContainer,
   MessageItemDetails,
 } from '../../utils/styles';
@@ -24,7 +24,8 @@ import {
 import { MessageItemHeader } from './MessageItemHeader';
 import { MessageItemContainerBody } from './MessageItemContainerBody';
 import { useHandleClick, useKeydown } from '../../utils/hooks';
-import { MessageItemAvatar } from './MessageItemAvatar';
+import { UserAvatar } from '../users/UserAvatar';
+import { SystemMessageList } from './system/SystemMessageList';
 
 export const MessageContainer = () => {
   const { id } = useParams();
@@ -80,7 +81,7 @@ export const MessageContainer = () => {
         key={message.id}
         onContextMenu={(e) => onContextMenu(e, message)}
       >
-        {showMessageHeader && <MessageItemAvatar message={message} />}
+        {showMessageHeader && <UserAvatar user={message.author} />}
         {showMessageHeader ? (
           <MessageItemDetails>
             <MessageItemHeader message={message} />
@@ -112,6 +113,7 @@ export const MessageContainer = () => {
       }}
     >
       <>
+        <SystemMessageList />
         {selectedType === 'private'
           ? conversationMessages?.messages.map(mapMessages)
           : groupMessages?.messages.map(mapMessages)}

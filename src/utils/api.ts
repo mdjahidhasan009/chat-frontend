@@ -18,7 +18,8 @@ import {
   FriendRequest,
   CancelFriendRequestResponse,
   AcceptFriendRequestResponse,
-  ConversationType
+  ConversationType,
+  UpdateStatusParams
 } from './types';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -156,3 +157,6 @@ export const updateUserProfile = (data: FormData) =>
     },
   }
 );
+
+export const updateStatusMessage = (data: UpdateStatusParams) =>
+  axiosClient.patch('/users/presence/status', data, config);
