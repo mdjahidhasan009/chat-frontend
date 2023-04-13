@@ -1,6 +1,70 @@
-import { Theme } from '../types';
+export type Theme = {
+  text: {
+    primary: string;
+    secondary: string;
+  };
+  background: {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+  };
+  userSidebar: {
+    backgroundColor: string;
+    color: string;
+  };
+  conversationSidebar: {
+    backgroundColor: string;
+    color: string;
+    conversationItem: {
+      selected: string;
+      hover: {
+        backgroundColor: string;
+      };
+      title: {
+        color: string;
+        lastMessageColor: string;
+      };
+    };
+  };
+  messagePanel: {
+    backgroundColor: string;
+    color: string;
+    header: {
+      title: string;
+    };
+    body: {
+      content: {
+        color: string;
+      };
+    };
+    inputContainer: {
+      backgroundColor: string;
+      color: string;
+    };
+  };
+  participantSidebar: {
+    backgroundColor: string;
+    color: string;
+  };
+  page: {
+    backgroundColor: string;
+  };
+  input: {
+    backgroundColor: string;
+    color: string;
+  };
+};
 
 export const DarkTheme: Theme = {
+  background: {
+    primary: '#0b0b0b',
+    secondary: '#111',
+    tertiary: '#141414',
+  },
+  text: {
+    primary: '#fff',
+    secondary: '#5f5f5f',
+  },
   userSidebar: {
     backgroundColor: '#0b0b0b',
     color: '#fff',
@@ -42,9 +106,22 @@ export const DarkTheme: Theme = {
   page: {
     backgroundColor: '#1a1a1a',
   },
+  input: {
+    backgroundColor: '#202020',
+    color: '#fff',
+  },
 };
 
 export const LightTheme: Theme = {
+  background: {
+    primary: '#C1C1C1',
+    secondary: '#fff',
+    tertiary: '#ededed',
+  },
+  text: {
+    primary: '#000',
+    secondary: '#636363',
+  },
   userSidebar: {
     backgroundColor: '#15161E',
     color: '#fff',
@@ -85,5 +162,9 @@ export const LightTheme: Theme = {
   },
   page: {
     backgroundColor: '#fff',
+  },
+  input: {
+    backgroundColor: '#ececec',
+    color: '#595959',
   },
 };

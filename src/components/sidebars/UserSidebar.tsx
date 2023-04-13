@@ -1,5 +1,5 @@
 import { UserAvatar } from '../../utils/styles';
-import avatar from '../../ __assets__/avatar_1.png';
+import avatar from '../../__assets__/avatar_1.png';
 import styles from './index.module.scss';
 import {ArrowCycle, ChatDots, Person,} from 'akar-icons';
 import {CreateConversationModal} from "../modals/CreateConversationModal";

@@ -21,8 +21,8 @@ import {
 import { SelectedParticipantContextMenu } from '../../context-menus/SelectedParticipantContextMenu';
 import { selectGroupById } from '../../../store/groupsSlice';
 import { UserAvatar } from '../../users/UserAvatar';
-import { OnlineGroupRecipients } from './OnlineGroupRecipients';
 import { OfflineGroupRecipients } from './OfflineGroupRecipients';
+import { OnlineGroupRecipients } from './OnlineGroupRecipients';
 
 export const GroupRecipientsSidebar = () => {
   const { id: groupId } = useParams();
