@@ -1,11 +1,12 @@
 import { ArrowCycle, ChatDots, Crown, Minus, Person, PersonCross, Gear } from 'akar-icons';
-import {Conversation, Group, User, UserContextMenuActionType, UserSidebarRouteType, SettingsSidebarRouteType, FriendRequest, FriendRequestDetailsType} from "./types";
+import {Conversation, Group, User, UserContextMenuActionType, UserSidebarRouteType, SettingsSidebarRouteType, FriendRequest, FriendRequestDetailsType, Friend} from "./types";
 import {
   IoIosPerson,
   IoIosNotifications,
   IoIosLock,
   IoMdInfinite,
   IoMdColorPalette,
+  IoMdVideocam,
 } from 'react-icons/io';
 
 export const getRecipientFromConversation = (
@@ -42,6 +43,8 @@ export const getUserSidebarIcon = (id: UserSidebarRouteType) => {
       return ArrowCycle;
     case 'settings':
       return Gear;
+    case 'calls':
+      return IoMdVideocam;
     default:
       return ChatDots;
   }
@@ -79,3 +82,11 @@ export const getFriendRequestDetails = (
         user: receiver,
         incoming: false,
       };
+
+export const getUserFriendInstance = (
+  authenticatedUser: User,
+  selectedFriend: Friend
+) =>
+  authenticatedUser?.id === selectedFriend?.sender.id
+    ? selectedFriend?.receiver
+    : selectedFriend?.sender;

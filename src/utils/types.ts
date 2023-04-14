@@ -26,6 +26,10 @@ export type UserPresence = {
     showOffline: boolean;
 };
 
+export type UserPeer = {
+    id: string;
+  };
+
 export type User = {
     id: number;
     username: string;
@@ -34,6 +38,7 @@ export type User = {
     lastName: string;
     profile?: Profile;
     presence?: UserPresence;
+    peer: UserPeer;
 };
 
 export type Conversation = {
@@ -231,7 +236,13 @@ export type AcceptFriendRequestResponse = {
     friendRequest: FriendRequest;
 };
 
-export type UserSidebarRouteType = 'conversations' | 'friends' | 'connections' | 'settings';
+export type UserSidebarRouteType = 
+    | 'conversations' 
+    | 'friends' 
+    | 'connections' 
+    | 'settings'
+    | 'settings'
+    | 'calls';
 
 export type UserSidebarItemType = {
   id: UserSidebarRouteType;
@@ -288,3 +299,22 @@ export type UpdateStatusParams = {
 };
 
 export type SelectableTheme = 'dark' | 'light';
+
+export type VideoCallPayload = {
+    recipientId: number;
+    conversationId: number;
+    caller: User;
+};
+  
+export type HandleCallType = 'accept' | 'reject';
+
+export type AcceptedVideoCallPayload = {
+    acceptor: User;
+    caller: User;
+    conversation: Conversation;
+};
+
+export type SetVideoRefPayload = {
+    localVideoRef?: React.RefObject<HTMLVideoElement>;
+    remoteVideoRef?: React.RefObject<HTMLVideoElement>;
+};

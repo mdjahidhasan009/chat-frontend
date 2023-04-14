@@ -11,6 +11,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <BrowserRouter>
+    {/* ////TODO: Will uncomment this line to enable Strict Mode */}
         <React.StrictMode>
             <App />
         </React.StrictMode>

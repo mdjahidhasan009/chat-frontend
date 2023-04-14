@@ -9,9 +9,9 @@ import { ConversationTab } from '../conversations/ConversationTab';
 import { GroupSidebarItem } from '../groups/GroupSidebarItem';
 import {
   ConversationSearchbar,
-  ConversationSidebarHeader,
-  ConversationSidebarStyle,
-  ConversationsScrollableContainer
+  SidebarHeader,
+  SidebarStyle,
+  ScrollableContainer
 } from "../../utils/styles";
 import {CreateConversationModal} from "../modals/CreateConversationModal";
 import {CreateGroupModal} from "../modals/CreateGroupModal";
@@ -60,8 +60,8 @@ export const ConversationSidebar = () => {
       {showModal && conversationType === 'group' && (
         <CreateGroupModal setShowModal={setShowModal} />
       )}
-      <ConversationSidebarStyle>
-        <ConversationSidebarHeader>
+      <SidebarStyle>
+        <SidebarHeader>
           <ConversationSearchbar placeholder="Search for Conversations" />
           {conversationType === 'private' ? (
             <ChatAdd
@@ -76,9 +76,9 @@ export const ConversationSidebar = () => {
               onClick={() => setShowModal(true)}
             />
           )}
-        </ConversationSidebarHeader>
+        </SidebarHeader>
         <ConversationTab />
-        <ConversationsScrollableContainer>
+        <ScrollableContainer>
           <SidebarContainerStyle>
             {conversationType === 'private'
               ? conversations.map((conversation) => (
@@ -96,9 +96,9 @@ export const ConversationSidebar = () => {
               ))}
             {showGroupContextMenu && <GroupSidebarContextMenu />}
           </SidebarContainerStyle>
-        </ConversationsScrollableContainer>
+        </ScrollableContainer>
         <footer></footer>
-      </ConversationSidebarStyle>
+      </SidebarStyle>
     </>
   );
 };

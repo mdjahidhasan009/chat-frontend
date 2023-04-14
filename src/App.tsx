@@ -29,6 +29,8 @@ import { SettingsProfilePage } from './pages/settings/SettingsProfilePage';
 import { ThemeProvider } from 'styled-components';
 import { DarkTheme } from './utils/themes';
 import { SettingsAppearancePage } from './pages/settings/SettingsAppearancePage';
+import { CallsPage } from './pages/call/CallsPage';
+import { CurrentCallPage } from './pages/call/CurrentCallPage';
 
 enableMapSet();
 
@@ -76,6 +78,9 @@ function App() {
           <Route path="settings" element={<SettingsPage />}>
             <Route path="profile" element={<SettingsProfilePage />} />
             <Route path="appearance" element={<SettingsAppearancePage />} />
+          </Route>
+          <Route path="calls" element={<CallsPage />}>
+            <Route path="current" element={<CurrentCallPage />} />
           </Route>
         </Route>
       </Routes>

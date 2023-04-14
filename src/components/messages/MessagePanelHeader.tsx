@@ -10,6 +10,10 @@ import {selectGroupById} from "../../store/groupsSlice";
 import {PeopleGroup, PersonAdd} from 'akar-icons';
 import {AddGroupRecipientModal} from "../modals/AddGroupRecipientModal";
 import {toggleSidebar} from "../../store/groupRecipientsSidebarSlice";
+import { SocketContext } from '../../utils/context/SocketContext';
+import { getRecipientFromConversation } from '../../utils/helpers';
+import { setLocalStream } from '../../store/call/callSlice';
+import { FaVideo } from 'react-icons/fa';
 
 export const MessagePanelHeader = () => {
   const { user } = useContext(AuthContext);
@@ -25,12 +29,32 @@ export const MessagePanelHeader = () => {
     selectGroupById(state, parseInt(id!))
   );
 
+  const socket = useContext(SocketContext);
+  const { peer, connection, call } = useSelector(
+    (state: RootState) => state.call
+  );
+
+  const recipient = getRecipientFromConversation(conversation, user);
   const displayName =
     user?.id === conversation?.creator.id
       ? `${conversation?.recipient.firstName} ${conversation?.recipient.lastName}`
       : `${conversation?.creator.firstName} ${conversation?.creator.lastName}`;
   const groupName = group?.title || 'Group';
   const headerTitle = type === 'group' ? groupName : displayName;
+
+  const handleVideoCall = async () => {
+    if (!recipient) return;
+    if (!user) return;
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    dispatch(setLocalStream(stream));
+    socket.emit('onVideoCallInitiate', {
+      conversationId: conversation?.id,
+      recipientId: recipient.id,
+    });
+  };
 
   return (
     <>
@@ -45,6 +69,9 @@ export const MessagePanelHeader = () => {
           <span>{headerTitle}</span>
         </div>
         <GroupHeaderIcons>
+          {type === 'private' && (
+            <FaVideo size={30} cursor="pointer" onClick={handleVideoCall} />
+          )}
           {type === 'group' && user?.id === group?.owner?.id && (
             <PersonAdd
               cursor="pointer"
