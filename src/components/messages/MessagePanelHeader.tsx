@@ -12,7 +12,7 @@ import {AddGroupRecipientModal} from "../modals/AddGroupRecipientModal";
 import {toggleSidebar} from "../../store/groupRecipientsSidebarSlice";
 import { SocketContext } from '../../utils/context/SocketContext';
 import { getRecipientFromConversation } from '../../utils/helpers';
-import { setLocalStream } from '../../store/call/callSlice';
+import { setActiveConversationId, setIsCalling, setLocalStream } from '../../store/call/callSlice';
 import { FaVideo } from 'react-icons/fa';
 
 export const MessagePanelHeader = () => {
@@ -42,18 +42,20 @@ export const MessagePanelHeader = () => {
   const groupName = group?.title || 'Group';
   const headerTitle = type === 'group' ? groupName : displayName;
 
-  const handleVideoCall = async () => {
+  const callUser = async () => {
     if (!recipient) return;
     if (!user) return;
+    socket.emit('onVideoCallInitiate', {
+      conversationId: conversation?.id,
+      recipientId: recipient.id,
+    });
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
     dispatch(setLocalStream(stream));
-    socket.emit('onVideoCallInitiate', {
-      conversationId: conversation?.id,
-      recipientId: recipient.id,
-    });
+    dispatch(setIsCalling(true));
+    dispatch(setActiveConversationId(conversation!.id));
   };
 
   return (
@@ -70,7 +72,7 @@ export const MessagePanelHeader = () => {
         </div>
         <GroupHeaderIcons>
           {type === 'private' && (
-            <FaVideo size={30} cursor="pointer" onClick={handleVideoCall} />
+            <FaVideo size={30} cursor="pointer" onClick={callUser} />
           )}
           {type === 'group' && user?.id === group?.owner?.id && (
             <PersonAdd

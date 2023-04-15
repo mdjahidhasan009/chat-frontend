@@ -5,8 +5,6 @@ import { DataConnection, MediaConnection, Peer } from 'peerjs';
 export interface CallState {
   isCalling: boolean;
   isCallInProgress: boolean;
-  isCallAccepted: boolean;
-  recipient?: User;
   caller?: User;
   peer?: Peer;
   call?: MediaConnection;
@@ -14,12 +12,12 @@ export interface CallState {
   isReceivingCall: boolean;
   remoteStream?: MediaStream;
   localStream?: MediaStream;
+  activeConversationId?: number;
 }
 
 const initialState: CallState = {
   isCalling: false,
   isCallInProgress: false,
-  isCallAccepted: false,
   isReceivingCall: false,
 };
 
@@ -51,6 +49,23 @@ export const callSlice = createSlice({
     setLocalStream: (state, action: PayloadAction<MediaStream>) => {
       state.localStream = action.payload;
     },
+    setIsCallInProgress: (state, action: PayloadAction<boolean>) => {
+      state.isCallInProgress = action.payload;
+      state.isCalling = false;      
+    },
+    setActiveConversationId: (state, action: PayloadAction<number>) => {
+      state.activeConversationId = action.payload;
+    },
+    resetState: (state) => {
+      state.isCalling = false;
+      state.isCallInProgress = false;
+      state.caller = undefined;
+      state.connection = undefined;
+      state.isReceivingCall = false;
+      state.remoteStream = undefined;
+      state.localStream = undefined;
+      state.activeConversationId = undefined;
+    }
   },
 });
 
@@ -63,5 +78,8 @@ export const {
   setCaller,
   setRemoteStream,
   setLocalStream,
+  setIsCallInProgress,
+  setActiveConversationId,
+  resetState,
 } = callSlice.actions;
 export default callSlice.reducer;
