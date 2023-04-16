@@ -12,7 +12,7 @@ import {AddGroupRecipientModal} from "../modals/AddGroupRecipientModal";
 import {toggleSidebar} from "../../store/groupRecipientsSidebarSlice";
 import { SocketContext } from '../../utils/context/SocketContext';
 import { getRecipientFromConversation } from '../../utils/helpers';
-import { setActiveConversationId, setIsCalling, setLocalStream } from '../../store/call/callSlice';
+import { setActiveConversationId, setCaller, setIsCalling, setLocalStream, setReceiver } from '../../store/call/callSlice';
 import { FaVideo } from 'react-icons/fa';
 
 export const MessagePanelHeader = () => {
@@ -56,6 +56,8 @@ export const MessagePanelHeader = () => {
     dispatch(setLocalStream(stream));
     dispatch(setIsCalling(true));
     dispatch(setActiveConversationId(conversation!.id));
+    dispatch(setCaller(user));
+    dispatch(setReceiver(recipient));
   };
 
   return (

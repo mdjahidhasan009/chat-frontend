@@ -1,7 +1,7 @@
 import { LayoutPage, Page } from "../utils/styles";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { UserSidebar} from "../components/sidebars/UserSidebar";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SocketContext } from "../utils/context/SocketContext";
 import { AppDispatch, RootState } from "../store";
@@ -15,19 +15,25 @@ import { ThemeProvider } from "styled-components";
 import { DarkTheme, LightTheme } from "../utils/themes";
 import { AuthContext } from "../utils/context/AuthContext";
 import Peer from "peerjs";
-import { setCall, setCaller, setConnection, setIsCallInProgress, setIsReceivingCall, setLocalStream, setPeer, setRemoteStream } from "../store/call/callSlice";
+import { setActiveConversationId, setCall, setCaller, setConnection, setIsCallInProgress, setIsReceivingCall, setLocalStream, setPeer, setReceiver, setRemoteStream } from "../store/call/callSlice";
 import { CallReceiveDialog } from "../components/conversations/CallReceiveDialog";
 import { useVideoCallRejected } from "../utils/hooks/useVideoCallRejected";
+import { useVideoCallHangUp } from "../utils/hooks/sockets/useVideoCallHangUp";
+import { useVideoCallAccept } from "../utils/hooks/sockets/useVideoCallAccept";
+import { useFriendRequestReceived } from "../utils/hooks/sockets/friend-requests/useFriendRequestReceived";
 
 export const AppPage = () => {
   const { user } = useContext(AuthContext);
+  const { pathname } = useLocation();
   const socket = useContext(SocketContext);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { peer, call, isReceivingCall, caller, connection } = useSelector((state: RootState) => state.call);
+  const { peer, call, isReceivingCall, caller, connection } = useSelector(
+    (state: RootState) => state.call
+  );
   const { info } = useToast({ theme: 'dark' });
-  const storageTheme = localStorage.getItem('theme') as SelectableTheme;
   const { theme } = useSelector((state: RootState) => state.settings);
+  const storageTheme = localStorage.getItem('theme') as SelectableTheme;
 
   useEffect(() => {
     dispatch(fetchFriendRequestThunk());
@@ -35,20 +41,24 @@ export const AppPage = () => {
 
   useEffect(() => {
     if(!user) return;
-    const newPeer = new Peer(user.peer.id);
+    const newPeer = new Peer(user.peer.id, {
+      config: {
+        iceServers: [
+          {
+            url: 'stun:stun.l.google.com:19302',
+          },
+          {
+            url: 'stun:stun1.l.google.com:19302',
+          },
+        ],
+      },
+    });
     dispatch(setPeer(newPeer));
   }, []);
 
-  useEffect(() => {
-    socket.on('onFriendRequestReceived', (payload: FriendRequest) => {
-      dispatch(addFriendRequest(payload));
-      info(`Incoming Friend Request from ${payload.sender.firstName}`, {
-        position: 'bottom-left',
-        icon: IoMdPersonAdd,
-        onClick: () => navigate('/friends/requests'),
-      });
-    });
+  useFriendRequestReceived();
 
+  useEffect(() => {
     socket.on('onFriendRequestCancelled', (payload: FriendRequest) => {
       dispatch(removeFriendRequest(payload));
     });
@@ -71,6 +81,7 @@ export const AppPage = () => {
     socket.on('onVideoCall', (data: VideoCallPayload) => {
       if(isReceivingCall) return;
       dispatch(setCaller(data.caller));
+      dispatch(setReceiver(user!));
       dispatch(setIsReceivingCall(true));
     })
 
@@ -93,62 +104,30 @@ export const AppPage = () => {
   useEffect(() => {
     if(!peer) return;
 
-    peer.on('call', (incomingCall) => {
-      navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      })
-      .then((stream) => {
-        incomingCall.answer(stream);
-        dispatch(setLocalStream(stream));
-        dispatch(setCall(incomingCall));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    peer.on('call', async (incomingCall) => {
+      const constraints = { video: true, audio: true };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      incomingCall.answer(stream);
+      dispatch(setLocalStream(stream));
+      dispatch(setCall(incomingCall));
     });
-  }, [peer, call, dispatch]);
+  }, [peer, dispatch]);
 
   useEffect(() => {
     if (!call) return;
-    call.on('stream', (remoteStream) => {
-      dispatch(setRemoteStream(remoteStream));
-    })
+    call.on('stream', (remoteStream) =>
+      dispatch(setRemoteStream(remoteStream))
+    );
+    call.on('close', () => console.log('call was closed'));
+    return () => {
+      call.off('stream');
+      call.off('close');
+    };
   }, [call]);
 
-  /**
-  * This useEffect will only trigger logic for the person who initiated
-  * the call. It will start a peer connection with the person who already
-  * accepted the call.
-  */
-  useEffect(() => {
-    socket.on('onVideoCallAccept', (data: AcceptedVideoCallPayload) => {
-      dispatch(setIsCallInProgress(true));
-      dispatch(setIsReceivingCall(false));
-      if(!peer) return;
-      if(data.caller.id === user!.id) {
-        const connection = peer.connect(data.acceptor.peer.id);
-        dispatch(setConnection(connection));
-        navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        })
-        .then((stream) => {
-          const newCall = peer.call(data.acceptor.peer.id, stream);
-          dispatch(setCall(newCall));
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      }
-    });
-
-    return () => {
-      socket.off('onVideoCallAccept');
-    }
-  }, [peer]);
-
+  useVideoCallAccept();
   useVideoCallRejected();
+  useVideoCallHangUp();
 
   useEffect(() => {
     if(connection) {
@@ -161,6 +140,9 @@ export const AppPage = () => {
       connection.on('data', (data) => {
         console.log('data received', data);
       })
+      connection.on('close', () => {
+        console.log('connection closed');
+      });
     };
     return () => {
       connection?.off('open');

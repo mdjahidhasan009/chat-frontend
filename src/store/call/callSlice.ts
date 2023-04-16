@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../utils/types';
 import { DataConnection, MediaConnection, Peer } from 'peerjs';
-
 export interface CallState {
   isCalling: boolean;
   isCallInProgress: boolean;
   caller?: User;
+  receiver?: User;
   peer?: Peer;
   call?: MediaConnection;
   connection?: DataConnection;
@@ -14,13 +14,11 @@ export interface CallState {
   localStream?: MediaStream;
   activeConversationId?: number;
 }
-
 const initialState: CallState = {
   isCalling: false,
   isCallInProgress: false,
   isReceivingCall: false,
 };
-
 export const callSlice = createSlice({
   name: 'callSlice',
   initialState,
@@ -43,6 +41,9 @@ export const callSlice = createSlice({
     setCaller: (state, action: PayloadAction<User>) => {
       state.caller = action.payload;
     },
+    setReceiver: (state, action: PayloadAction<User>) => {
+      state.receiver = action.payload;
+    },
     setRemoteStream: (state, action: PayloadAction<MediaStream>) => {
       state.remoteStream = action.payload;
     },
@@ -51,7 +52,7 @@ export const callSlice = createSlice({
     },
     setIsCallInProgress: (state, action: PayloadAction<boolean>) => {
       state.isCallInProgress = action.payload;
-      state.isCalling = false;      
+      state.isCalling = false;
     },
     setActiveConversationId: (state, action: PayloadAction<number>) => {
       state.activeConversationId = action.payload;
@@ -60,15 +61,16 @@ export const callSlice = createSlice({
       state.isCalling = false;
       state.isCallInProgress = false;
       state.caller = undefined;
+      state.call = undefined;
       state.connection = undefined;
       state.isReceivingCall = false;
       state.remoteStream = undefined;
       state.localStream = undefined;
       state.activeConversationId = undefined;
-    }
+      state.receiver = undefined;
+    },
   },
 });
-
 export const {
   setIsCalling,
   setPeer,
@@ -81,5 +83,6 @@ export const {
   setIsCallInProgress,
   setActiveConversationId,
   resetState,
+  setReceiver,
 } = callSlice.actions;
 export default callSlice.reducer;
