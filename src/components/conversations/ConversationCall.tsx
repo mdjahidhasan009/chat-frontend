@@ -23,10 +23,10 @@ export const ConversationCall = () => {
   const socket = useContext(SocketContext);
   const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
-  const { localStream, remoteStream, call, caller, receiver } = useSelector(
+  const { localStream, remoteStream, caller, receiver } = useSelector(
     (state: RootState) => state.call
   );
-  const dispatch = useDispatch<AppDispatch>();
+  
   useEffect(() => {
     if (localVideoRef.current && localStream) {
       localVideoRef.current.srcObject = localStream;

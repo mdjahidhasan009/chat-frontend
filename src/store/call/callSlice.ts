@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../../utils/types';
+import { CallInitiatePayload, CallType, User } from '../../utils/types';
 import { DataConnection, MediaConnection, Peer } from 'peerjs';
+
 export interface CallState {
   isCalling: boolean;
   isCallInProgress: boolean;
@@ -13,12 +14,15 @@ export interface CallState {
   remoteStream?: MediaStream;
   localStream?: MediaStream;
   activeConversationId?: number;
+  callType?: CallType;
 }
+
 const initialState: CallState = {
   isCalling: false,
   isCallInProgress: false,
   isReceivingCall: false,
 };
+
 export const callSlice = createSlice({
   name: 'callSlice',
   initialState,
@@ -68,7 +72,12 @@ export const callSlice = createSlice({
       state.localStream = undefined;
       state.activeConversationId = undefined;
       state.receiver = undefined;
+      state.callType = undefined;
     },
+    initiateCallState: (state, action: PayloadAction<CallInitiatePayload>) => ({
+      ...state,
+      ...action.payload,
+    }),
   },
 });
 export const {
@@ -84,5 +93,6 @@ export const {
   setActiveConversationId,
   resetState,
   setReceiver,
+  initiateCallState,
 } = callSlice.actions;
 export default callSlice.reducer;

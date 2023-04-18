@@ -101,12 +101,7 @@ export const MessagePanel: FC<Props> = ({
   return (
     <>
       <MessagePanelStyle>
-      {(callState.isCalling || callState.isCallInProgress) &&
-        callState.activeConversationId === parseInt(routeId!) ? (
-          <ConversationCall />
-        ) : (
-          <MessagePanelHeader />
-        )}
+      <MessagePanelHeader />
         {/* <MessagePanelHeader />
         <ConversationCall /> */}
         <MessagePanelBody>
