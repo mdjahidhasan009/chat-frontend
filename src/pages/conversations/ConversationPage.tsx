@@ -9,7 +9,7 @@ import { Page } from '../../utils/styles';
 import {Conversation, MessageEventPayload} from '../../utils/types';
 import {addMessage, deleteMessage} from "../../store/messages/messageSlice";
 import {SocketContext} from "../../utils/context/SocketContext";
-import { fetchGroupsThunk } from '../../store/groupsSlice';
+import { fetchGroupsThunk } from '../../store/groupSlice';
 import {updateType} from "../../store/selectedSlice";
 
 export const ConversationPage = () => {

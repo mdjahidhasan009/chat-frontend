@@ -3,8 +3,8 @@ import { AppDispatch, RootState } from '../../store';
 import { FriendListContainer } from '../../utils/styles/friends';
 import { FriendListItem } from './FriendListItem';
 import { ContextMenuEvent, Friend } from '../../utils/types';
-import { toggleContextMenu } from '../../store/groupsSlice';
-import { setContextMenuLocation } from '../../store/groupsSlice';
+import { toggleContextMenu } from '../../store/groupSlice';
+import { setContextMenuLocation } from '../../store/groupSlice';
 import { setSelectedFriend } from '../../store/friends/friendsSlice';
 import { useEffect } from 'react';
 

@@ -23,7 +23,7 @@ import { MessageAttachmentContainer } from './attachments/MessageAttachmentConta
 import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
 import { MessagePanelHeader } from './MessagePanelHeader';
-import { selectGroupById } from '../../store/groupsSlice';
+import { selectGroupById } from '../../store/groupSlice';
 import { ConversationAudioCall } from '../conversations/ConversationAudioCall';
 type Props = {
   sendTypingStatus: () => void;

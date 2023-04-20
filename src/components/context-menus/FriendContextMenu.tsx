@@ -4,7 +4,7 @@ import { ContextMenu, ContextMenuItem } from "../../utils/styles";
 import { MdOutlineTextsms, MdPersonRemove } from "react-icons/md";
 import { SocketContext } from "../../utils/context/SocketContext";
 import { useContext } from "react";
-import { toggleContextMenu } from "../../store/groupsSlice";
+import { toggleContextMenu } from "../../store/groupSlice";
 import { removeFriendThunk } from "../../store/friends/friendsThunk";
 import { AuthContext } from "../../utils/context/AuthContext";
 import { useNavigate } from "react-router-dom";

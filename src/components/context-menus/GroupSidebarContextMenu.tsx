@@ -3,10 +3,11 @@ import {useParams} from "react-router-dom";
 import {AuthContext} from "../../utils/context/AuthContext";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../store";
-import {leaveGroupThunk, selectGroupById, toggleContextMenu} from "../../store/groupsSlice";
+import {leaveGroupThunk, selectGroupById, setShowEditGroupModal, toggleContextMenu} from "../../store/groupSlice";
 import {isGroupOwner} from "../../utils/helpers";
 import {ContextMenu, ContextMenuItem} from "../../utils/styles";
 import { IoMdExit, IoIosArchive } from 'react-icons/io';
+import { Edit } from "akar-icons";
 
 export const GroupSidebarContextMenu: FC = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ export const GroupSidebarContextMenu: FC = () => {
 
   const contextMenuGroup = useSelector((state: RootState) => state.groups.selectedGroupContextMenu);
 
-  const isOwner = isGroupOwner(user, group);
+  // const isOwner = isGroupOwner(user, group);
 
   const leaveGroup = () => {
     if (!contextMenuGroup) return;
@@ -34,6 +35,12 @@ export const GroupSidebarContextMenu: FC = () => {
         <IoMdExit size={20} color="#ff0000" />
         <span style={{ color: '#ff0000'}}>Leave Group</span>
       </ContextMenuItem>
+      {user?.id === contextMenuGroup?.owner.id && (
+        <ContextMenuItem onClick={() => dispatch(setShowEditGroupModal(true))}>
+          <Edit size={20} color="#fff" />
+          <span style={{ color: '#fff' }}>Edit Group</span>
+        </ContextMenuItem>
+      )}
       <ContextMenuItem>
         <IoIosArchive size={20} color="#fff" />
         <span style={{ color: '#fff'}}>Archive Group</span>

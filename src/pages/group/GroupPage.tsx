@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store";
 import {useContext, useEffect, useState} from "react";
 import {updateType} from "../../store/selectedSlice";
-import {addGroup, fetchGroupsThunk, removeGroup, updateGroup} from "../../store/groupsSlice";
+import {addGroup, fetchGroupsThunk, removeGroup, updateGroup} from "../../store/groupSlice";
 import {ConversationSidebar} from "../../components/sidebars/ConversationSidebar";
 import {ConversationPanel} from "../../components/conversations/ConversationPanel";
 import {SocketContext} from "../../utils/context/SocketContext";

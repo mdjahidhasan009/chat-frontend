@@ -3,7 +3,7 @@ import { AuthContext } from "../../../utils/context/AuthContext";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
-import { selectGroupById } from "../../../store/groupsSlice";
+import { selectGroupById } from "../../../store/groupSlice";
 import { AddGroupRecipientModal } from "../../modals/AddGroupRecipientModal";
 import { MessagePanelHeaderIcons, MessagePanelHeaderStyle } from "../../../utils/styles";
 import { PersonAdd } from "akar-icons";

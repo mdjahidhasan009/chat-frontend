@@ -19,7 +19,7 @@ import {
   toggleContextMenu,
 } from '../../../store/groupRecipientsSidebarSlice';
 import { SelectedParticipantContextMenu } from '../../context-menus/SelectedParticipantContextMenu';
-import { selectGroupById } from '../../../store/groupsSlice';
+import { selectGroupById } from '../../../store/groupSlice';
 import { UserAvatar } from '../../users/UserAvatar';
 import { OfflineGroupRecipients } from './OfflineGroupRecipients';
 import { OnlineGroupRecipients } from './OnlineGroupRecipients';

@@ -4,7 +4,7 @@ import {getUserContextMenuIcon, isGroupOwner} from "../../utils/helpers";
 import {UserContextMenuActionType} from "../../utils/types";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {removeGroupRecipientThunk, selectGroupById, updateGroupOwnerThunk} from "../../store/groupsSlice";
+import {removeGroupRecipientThunk, selectGroupById, updateGroupOwnerThunk} from "../../store/groupSlice";
 import {AuthContext} from "../../utils/context/AuthContext";
 import {AppDispatch, RootState} from "../../store";
 import { Person, PersonCross, Crown } from 'akar-icons';

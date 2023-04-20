@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectConversationById} from "../../store/conversationSlice";
 import {AppDispatch, RootState} from "../../store";
 import {selectType} from "../../store/selectedSlice";
-import {selectGroupById} from "../../store/groupsSlice";
+import {selectGroupById} from "../../store/groupSlice";
 import {PeopleGroup, PersonAdd} from 'akar-icons';
 import {AddGroupRecipientModal} from "../modals/AddGroupRecipientModal";
 import {toggleSidebar} from "../../store/groupRecipientsSidebarSlice";
