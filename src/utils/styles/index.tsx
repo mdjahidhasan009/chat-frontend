@@ -255,12 +255,13 @@ export const ConversationCallContainer = styled.div`
   background-color: #0e0e0e;
   flex: 1 1 auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  padding: 18px 0;
 `;
 
-export const VideoContainer = styled.div`
+export const MediaContainer = styled.div`
   display: flex;
   gap: 20px;
 `;
@@ -269,11 +270,13 @@ export const VideoContainerItem = styled.div`
   width: 400px;
   height: 400px;
   & video {
-    width: 100%;
-    height: 100%;
+    width: 400px;
+    height: 400px;
     pointer-events: none;
   }
 `;
+
+export const AudioContainerItem = styled.div``;
 
 export const VideoContainerActionButtons = styled.div`
   display: flex;
@@ -888,17 +891,17 @@ export const CallReceiveDialogContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 325px;
+  width: 250px;
   background-color: #1f1f1f;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 30px;
   z-index: 999999999;
   border-radius: 10px;
-  padding: 32px 0;
+  padding: 32px 24px;
   & .content {
     text-align: center;
   }

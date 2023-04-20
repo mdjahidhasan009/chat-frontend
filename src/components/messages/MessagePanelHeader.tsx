@@ -18,6 +18,8 @@ import { SenderEvents } from '../../utils/constants';
 import { CallInitiatePayload } from '../../utils/types';
 import { MessagePanelConversationHeader } from './headers/MessagePanelConversationHeader';
 import { MessagePanelGroupHeader } from './headers/MessagePanelGroupHeader';
+import { ConversationVideoCall } from '../conversations/ConversationVideoCall';
+import { ConversationAudioCall } from '../conversations/ConversationAudioCall';
 
 export const MessagePanelHeader = () => {
   const { id: routeId } = useParams();
@@ -26,6 +28,7 @@ export const MessagePanelHeader = () => {
 
   const type = useSelector(selectType);
   const showCallPanel = isCalling || isCallInProgress;
+  const isRouteActive = activeConversationId === parseInt(routeId!);
   if (!showCallPanel)
     return type === 'private' ? (
       <MessagePanelConversationHeader />
@@ -33,5 +36,9 @@ export const MessagePanelHeader = () => {
       <MessagePanelGroupHeader />
     );
 
-  return null;
+  return isRouteActive && callType === 'video' ? (
+    <ConversationVideoCall />
+  ) : (
+    <ConversationAudioCall />
+  );
 }

@@ -5,7 +5,7 @@ import { useContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SocketContext } from "../utils/context/SocketContext";
 import { AppDispatch, RootState } from "../store";
-import { AcceptFriendRequestResponse, AcceptedVideoCallPayload, FriendRequest, SelectableTheme, VideoCallPayload } from "../utils/types";
+import { AcceptFriendRequestResponse, AcceptedCallPayload, FriendRequest, SelectableTheme, CallPayload } from "../utils/types";
 import { addFriendRequest, removeFriendRequest } from "../store/friends/friendsSlice";
 import { useToast } from "../utils/hooks/useToast";
 import { IoMdPersonAdd } from 'react-icons/io';
@@ -17,11 +17,15 @@ import { AuthContext } from "../utils/context/AuthContext";
 import Peer from "peerjs";
 import { setActiveConversationId, setCall, setCaller, setConnection, setIsCallInProgress, setIsReceivingCall, setLocalStream, setPeer, setReceiver, setRemoteStream } from "../store/call/callSlice";
 import { CallReceiveDialog } from "../components/conversations/CallReceiveDialog";
-import { useVideoCallRejected } from "../utils/hooks/useVideoCallRejected";
+import { useVideoCallRejected } from "../utils/hooks/sockets/useVideoCallRejected";
 import { useVideoCallHangUp } from "../utils/hooks/sockets/useVideoCallHangUp";
 import { useVideoCallAccept } from "../utils/hooks/sockets/useVideoCallAccept";
 import { useFriendRequestReceived } from "../utils/hooks/sockets/friend-requests/useFriendRequestReceived";
 import { useVideoCall } from "../utils/hooks/sockets/call/useVideoCall";
+import { useVoiceCall } from "../utils/hooks/sockets/call/useVoiceCall";
+import { useVoiceCallAccepted } from "../utils/hooks/sockets/call/useVoiceCallAccepted";
+import { useVoiceCallHangUp } from "../utils/hooks/sockets/call/useVoiceCallHangUp";
+import { useVoiceCallRejected } from "../utils/hooks/sockets/call/useVoiceCallRejected";
 
 export const AppPage = () => {
   const { user } = useContext(AuthContext);
@@ -29,7 +33,7 @@ export const AppPage = () => {
   const socket = useContext(SocketContext);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { peer, call, isReceivingCall, caller, connection } = useSelector(
+  const { peer, call, isReceivingCall, caller, connection, callType } = useSelector(
     (state: RootState) => state.call
   );
   const { info } = useToast({ theme: 'dark' });
@@ -99,13 +103,16 @@ export const AppPage = () => {
     if(!peer) return;
 
     peer.on('call', async (incomingCall) => {
-      const constraints = { video: true, audio: true };
+      const constraints = { video: callType === 'video', audio: true };
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       incomingCall.answer(stream);
       dispatch(setLocalStream(stream));
       dispatch(setCall(incomingCall));
     });
-  }, [peer, dispatch]);
+    return () => {
+      peer.off('call');
+    };
+  }, [peer, callType, dispatch]);
 
   useEffect(() => {
     if (!call) return;
@@ -122,6 +129,10 @@ export const AppPage = () => {
   useVideoCallAccept();
   useVideoCallRejected();
   useVideoCallHangUp();
+  useVoiceCall();
+  useVoiceCallAccepted();
+  useVoiceCallHangUp();
+  useVoiceCallRejected();
 
   useEffect(() => {
     if(connection) {

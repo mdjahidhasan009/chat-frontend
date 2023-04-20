@@ -1,41 +1,35 @@
 import { useEffect, useRef, useState, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import {
+  AudioContainerItem,
   ConversationCallContainer,
-  VideoContainer,
+  MediaContainer,
   VideoContainerActionButtons,
-  VideoContainerItem,
 } from '../../utils/styles';
-import {
-  BiMicrophone,
-  BiMicrophoneOff,
-  BiVideo,
-  BiVideoOff,
-} from 'react-icons/bi';
-import { ImPhoneHangUp } from 'react-icons/im';
-import { resetState } from '../../store/call/callSlice';
 import { SocketContext } from '../../utils/context/SocketContext';
+import { BiMicrophone, BiMicrophoneOff, BiVideo, BiVideoOff } from 'react-icons/bi';
+import { ImPhoneHangUp } from 'react-icons/im';
+import { WebsocketEvents } from '../../utils/constants';
 
-export const ConversationCall = () => {
-  const localVideoRef = useRef<HTMLVideoElement>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement>(null);
+export const ConversationAudioCall = () => {
+  const localAudioRef = useRef<HTMLAudioElement>(null);
+  const remoteAudioRef = useRef<HTMLAudioElement>(null);
   const socket = useContext(SocketContext);
   const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
   const { localStream, remoteStream, caller, receiver } = useSelector(
     (state: RootState) => state.call
   );
-  
   useEffect(() => {
-    if (localVideoRef.current && localStream) {
-      localVideoRef.current.srcObject = localStream;
-      localVideoRef.current.muted = true;
+    if (localAudioRef.current && localStream) {
+      localAudioRef.current.srcObject = localStream;
+      localAudioRef.current.muted = true;
     }
   }, [localStream]);
   useEffect(() => {
-    if (remoteVideoRef.current && remoteStream) {
-      remoteVideoRef.current.srcObject = remoteStream;
+    if (remoteAudioRef.current && remoteStream) {
+      remoteAudioRef.current.srcObject = remoteStream;
     }
   }, [remoteStream]);
 
@@ -46,37 +40,40 @@ export const ConversationCall = () => {
       return !prev;
     });
 
-    const toggleVideo = () =>
-    localStream && setVideoEnabled((prev) => {
+  const toggleVideo = () =>
+    localStream &&
+    setVideoEnabled((prev) => {
       localStream.getVideoTracks()[0].enabled = !prev;
       return !prev;
-    });  
+    });
 
   const closeCall = () => {
-    socket.emit('videoCallHangUp', { caller, receiver });
+    socket.emit(WebsocketEvents.VOICE_CALL_HANG_UP, { caller, receiver });
   };
 
   return (
     <ConversationCallContainer>
-      <VideoContainer>
+      <div className="invisible"></div>
+      <MediaContainer>
         {localStream && (
-          <VideoContainerItem>
-            <video ref={localVideoRef} playsInline autoPlay />
-          </VideoContainerItem>
+          <AudioContainerItem>
+            {/* <audio ref={localAudioRef} playsInline autoPlay /> */}
+            <audio ref={localAudioRef} controls autoPlay />
+          </AudioContainerItem>
         )}
         {remoteStream && (
-          <VideoContainerItem>
-            <video ref={remoteVideoRef} playsInline autoPlay />
-          </VideoContainerItem>
+          <AudioContainerItem>
+            <audio ref={remoteAudioRef} controls autoPlay />
+          </AudioContainerItem>
         )}
-      </VideoContainer>
+      </MediaContainer>
       <VideoContainerActionButtons>
         <div>
-        {videoEnabled ? (
+          {videoEnabled ? (
             <BiVideo onClick={toggleVideo} />
           ) : (
             <BiVideoOff onClick={toggleVideo} />
-        )}
+          )}
         </div>
         <div>
           {microphoneEnabled ? (

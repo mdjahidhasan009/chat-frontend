@@ -109,5 +109,18 @@ export enum CDN_URL {
 
 export enum SenderEvents {
   VIDEO_CALL_INITIATE = 'onVideoCallInitiate',
+  VIDEO_CALL_ACCEPT = 'videoCallAccepted',
   VOICE_CALL_INITIATE = 'onVoiceCallInitiate',
+  VOICE_CALL_ACCEPT = 'onVoiceCallAccepted',
+}
+
+export enum ReceiverEvents {
+  VOICE_CALL = 'onVoiceCall',
+}
+
+export enum WebsocketEvents {
+  VOICE_CALL_ACCEPTED = 'onVoiceCallAccepted',
+  VOICE_CALL_HANG_UP = 'onVoiceCallHangUp',
+  VOICE_CALL_REJECTED = 'onVoiceCallRejected',
+  VIDEO_CALL_REJECTED = 'onVideoCallRejected',
 }

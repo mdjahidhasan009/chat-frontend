@@ -24,7 +24,7 @@ import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
 import { MessagePanelHeader } from './MessagePanelHeader';
 import { selectGroupById } from '../../store/groupsSlice';
-import { ConversationCall } from '../conversations/ConversationCall';
+import { ConversationAudioCall } from '../conversations/ConversationAudioCall';
 type Props = {
   sendTypingStatus: () => void;
   isRecipientTyping: boolean;

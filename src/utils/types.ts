@@ -300,7 +300,7 @@ export type UpdateStatusParams = {
 
 export type SelectableTheme = 'dark' | 'light';
 
-export type VideoCallPayload = {
+export type CallPayload = {
     recipientId: number;
     conversationId: number;
     caller: User;
@@ -308,7 +308,7 @@ export type VideoCallPayload = {
   
 export type HandleCallType = 'accept' | 'reject';
 
-export type AcceptedVideoCallPayload = {
+export type AcceptedCallPayload = {
     acceptor: User;
     caller: User;
     conversation: Conversation;
@@ -325,7 +325,7 @@ export type CallInitiatePayload = {
     activeConversationId: number;
     caller: User;
     receiver: User;
-    type: CallType;
+    callType: CallType;
 };
   
 export type CallType = 'video' | 'audio';

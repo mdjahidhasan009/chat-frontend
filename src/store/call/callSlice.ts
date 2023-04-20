@@ -61,6 +61,9 @@ export const callSlice = createSlice({
     setActiveConversationId: (state, action: PayloadAction<number>) => {
       state.activeConversationId = action.payload;
     },
+    setCallType: (state, action: PayloadAction<CallType>) => {
+      state.callType = action.payload;
+    },
     resetState: (state) => {
       state.isCalling = false;
       state.isCallInProgress = false;
@@ -94,5 +97,6 @@ export const {
   resetState,
   setReceiver,
   initiateCallState,
+  setCallType,
 } = callSlice.actions;
 export default callSlice.reducer;
