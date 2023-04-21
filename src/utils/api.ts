@@ -19,7 +19,8 @@ import {
   CancelFriendRequestResponse,
   AcceptFriendRequestResponse,
   ConversationType,
-  UpdateStatusParams
+  UpdateStatusParams,
+  UpdateGroupDetailsPayload
 } from './types';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -160,3 +161,6 @@ export const updateUserProfile = (data: FormData) =>
 
 export const updateStatusMessage = (data: UpdateStatusParams) =>
   axiosClient.patch('/users/presence/status', data, config);
+
+export const updateGroupDetails = ({ id, data }: UpdateGroupDetailsPayload) =>
+  axiosClient.patch<Group>(`/groups/${id}/details`, data, config);  

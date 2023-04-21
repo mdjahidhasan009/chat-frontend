@@ -1,4 +1,4 @@
-import {CreateGroupParams, Group, Points, RemoveGroupRecipientParams, UpdateGroupOwnerParams} from "../utils/types";
+import {CreateGroupParams, Group, Points, RemoveGroupRecipientParams, UpdateGroupDetailsPayload, UpdateGroupOwnerParams} from "../utils/types";
 import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
   fetchGroups as fetchGroupsAPI,
@@ -6,6 +6,7 @@ import {
   removeGroupRecipient as removeGroupRecipientAPI,
   updateGroupOwner as updateGroupOwnerAPI,
   leaveGroup as leaveGroupAPI,
+  updateGroupDetails as updateGroupDetailsAPI,
 } from '../utils/api';
 import {RootState} from "./index";
 
@@ -15,6 +16,7 @@ export interface GroupState {
   selectedGroupContextMenu?: Group;
   showEditGroupModal: boolean;
   points: Points;
+  isSavingChanges: boolean;
 }
 
 const initialState: GroupState = {
@@ -22,6 +24,7 @@ const initialState: GroupState = {
   showGroupContextMenu: false,
   showEditGroupModal: false,
   points: { x: 0, y: 0 },
+  isSavingChanges: false,
 };
 
 export const fetchGroupsThunk = createAsyncThunk('groups/fetch', () => {
@@ -45,6 +48,20 @@ export const updateGroupOwnerThunk = createAsyncThunk(
 
 export const leaveGroupThunk = createAsyncThunk('groups/leave', (id: number) =>
   leaveGroupAPI(id)
+);
+
+export const updateGroupDetailsThunk = createAsyncThunk(
+  'groups/update/details',
+  async (payload: UpdateGroupDetailsPayload, thunkAPI) => {
+    try {
+      const { data } = await updateGroupDetailsAPI(payload);
+      console.log('Updated Group Successful. Dispatching updateGroup');
+      thunkAPI.dispatch(updateGroup(data));
+      thunkAPI.fulfillWithValue(data);
+    } catch (err) {
+      thunkAPI.rejectWithValue(err);
+    }
+  }
 );
 
 export const groupsSlice = createSlice({
@@ -80,6 +97,9 @@ export const groupsSlice = createSlice({
     setShowEditGroupModal: (state, action: PayloadAction<boolean>) => {
       state.showEditGroupModal = action.payload;
     },
+    setIsSavingChanges: (state, action: PayloadAction<boolean>) => {
+      state.isSavingChanges = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -102,6 +122,9 @@ export const groupsSlice = createSlice({
       .addCase(leaveGroupThunk.fulfilled, (state, action) => {
 
       })
+      .addCase(updateGroupDetailsThunk.fulfilled, (state, action) => {
+        
+      });
     ;
   },
 });
@@ -122,5 +145,6 @@ export const {
   setContextMenuLocation,
   setSelectedGroup,
   setShowEditGroupModal,
+  setIsSavingChanges,
 } = groupsSlice.actions;
 export default groupsSlice.reducer;
