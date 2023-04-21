@@ -11,7 +11,9 @@ import {
   AddGroupUserMessagePayload,
   Group,
   GroupMessageEventPayload,
-  RemoveGroupUserMessagePayload
+  GroupParticipantLeftPayload,
+  RemoveGroupUserMessagePayload,
+  UpdateGroupAction
 } from "../../utils/types";
 import {addGroupMessage} from "../../store/groupMessageSlice";
 import {AuthContext} from "../../utils/context/AuthContext";
@@ -39,8 +41,9 @@ export const GroupPage = () => {
 
   useEffect(() => {
     socket.on('onGroupMessage', (payload: GroupMessageEventPayload) => {
-      const { group, message } = payload;
+      const { group } = payload;
       dispatch(addGroupMessage(payload));
+      dispatch(updateGroup({ type: UpdateGroupAction.NEW_MESSAGE, group }));
     });
 
     socket.on('onGroupCreate', (payload: Group) => {
@@ -51,13 +54,13 @@ export const GroupPage = () => {
       dispatch(addGroup(payload.group));
     });
 
-    socket.on('onGroupReceivedNewUser', (payload: AddGroupUserMessagePayload) => {
-        dispatch(updateGroup(payload.group));
+    socket.on('onGroupReceivedNewUser', ({ group }: AddGroupUserMessagePayload) => {
+        dispatch(updateGroup({ group }));
       }
     );
 
-    socket.on('onGroupRecipientRemoved', (payload: RemoveGroupUserMessagePayload) => {
-        dispatch(updateGroup(payload.group));
+    socket.on('onGroupRecipientRemoved', ({ group }: RemoveGroupUserMessagePayload) => {
+        dispatch(updateGroup({ group }));
       }
     );
 
@@ -68,17 +71,20 @@ export const GroupPage = () => {
       }
     });
 
-    socket.on('onGroupParticipantLeft', (payload) => {
-      dispatch(updateGroup(payload.group));
-      if (payload.userId === user?.id) {
-        dispatch(removeGroup(payload.group));
-        navigate('/groups');
+    socket.on(
+      'onGroupParticipantLeft',
+      ({ group, userId }: GroupParticipantLeftPayload) => {
+        dispatch(updateGroup({ group }));
+        if (userId === user?.id) {
+          dispatch(removeGroup(group));
+          navigate('/groups');
+        }
       }
-    });
+    );
 
-    socket.on('onGroupOwnerUpdate', (payload: Group) => {
-      dispatch(updateGroup(payload));
-    })
+    socket.on('onGroupOwnerUpdate', (group: Group) => {
+      dispatch(updateGroup({ group }));
+    });
 
     return () => {
       socket.off('onGroupMessage');

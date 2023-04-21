@@ -361,6 +361,7 @@ export const UserAvatarContainer = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 export const MessageItemDetails = styled.div`
@@ -676,6 +677,17 @@ export const SidebarHeader = styled.header`
   gap: 20px;
 `;
 
+export const UserSidebarHeader = styled.header`
+  height: 90px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border-bottom: 1px solid #494949a9;
+`;
+
 export const ScrollableContainer = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
@@ -683,6 +695,18 @@ export const ScrollableContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+export const UserSidebarScrollableContainer = styled(ScrollableContainer)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const UserSidebarFooter = styled.footer`
+  padding: 18px 0;
 `;
 
 export const ConversationSearchbar = styled.input`

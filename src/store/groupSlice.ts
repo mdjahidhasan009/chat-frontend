@@ -1,5 +1,19 @@
-import {CreateGroupParams, Group, Points, RemoveGroupRecipientParams, UpdateGroupDetailsPayload, UpdateGroupOwnerParams} from "../utils/types";
-import {createAsyncThunk, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {
+  CreateGroupParams,
+  Group,
+  Points,
+  RemoveGroupRecipientParams,
+  UpdateGroupAction,
+  UpdateGroupDetailsPayload,
+  UpdateGroupOwnerParams,
+  UpdateGroupPayload,
+} from "../utils/types";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import {
   fetchGroups as fetchGroupsAPI,
   createGroup as createGroupAPI,
@@ -7,8 +21,8 @@ import {
   updateGroupOwner as updateGroupOwnerAPI,
   leaveGroup as leaveGroupAPI,
   updateGroupDetails as updateGroupDetailsAPI,
-} from '../utils/api';
-import {RootState} from "./index";
+} from "../utils/api";
+import { RootState } from "./index";
 
 export interface GroupState {
   groups: Group[];
@@ -27,37 +41,36 @@ const initialState: GroupState = {
   isSavingChanges: false,
 };
 
-export const fetchGroupsThunk = createAsyncThunk('groups/fetch', () => {
+export const fetchGroupsThunk = createAsyncThunk("groups/fetch", () => {
   return fetchGroupsAPI();
 });
 
 export const createGroupThunk = createAsyncThunk(
-  'groups/create',
+  "groups/create",
   (params: CreateGroupParams) => createGroupAPI(params)
 );
 
 export const removeGroupRecipientThunk = createAsyncThunk(
-  'groups/recipients/delete',
+  "groups/recipients/delete",
   (params: RemoveGroupRecipientParams) => removeGroupRecipientAPI(params)
 );
 
 export const updateGroupOwnerThunk = createAsyncThunk(
-  'groups/owner/update',
+  "groups/owner/update",
   (params: UpdateGroupOwnerParams) => updateGroupOwnerAPI(params)
 );
 
-export const leaveGroupThunk = createAsyncThunk('groups/leave', (id: number) =>
+export const leaveGroupThunk = createAsyncThunk("groups/leave", (id: number) =>
   leaveGroupAPI(id)
 );
 
 export const updateGroupDetailsThunk = createAsyncThunk(
-  'groups/update/details',
+  "groups/update/details",
   async (payload: UpdateGroupDetailsPayload, thunkAPI) => {
     try {
-      const { data } = await updateGroupDetailsAPI(payload);
-      console.log('Updated Group Successful. Dispatching updateGroup');
-      thunkAPI.dispatch(updateGroup(data));
-      thunkAPI.fulfillWithValue(data);
+      const { data: group } = await updateGroupDetailsAPI(payload);
+      thunkAPI.dispatch(updateGroup({ group }));
+      thunkAPI.fulfillWithValue(group);
     } catch (err) {
       thunkAPI.rejectWithValue(err);
     }
@@ -65,18 +78,27 @@ export const updateGroupDetailsThunk = createAsyncThunk(
 );
 
 export const groupsSlice = createSlice({
-  name: 'groups',
+  name: "groups",
   initialState,
   reducers: {
     addGroup: (state, action: PayloadAction<Group>) => {
       state.groups.unshift(action.payload);
     },
-    updateGroup: (state, action: PayloadAction<Group>) => {
-      const updatedGroup = action.payload;
-      const existingGroup = state.groups.find((g) => g.id === updatedGroup.id);
-      const index = state.groups.findIndex((g) => g.id === updatedGroup.id);
-      if (existingGroup) {
-        state.groups[index] = updatedGroup;
+    updateGroup: (state, action: PayloadAction<UpdateGroupPayload>) => {
+      const { type, group } = action.payload;
+      const existingGroup = state.groups.find((g) => g.id === group.id);
+      const index = state.groups.findIndex((g) => g.id === group.id);
+      if (!existingGroup) return;
+      switch (type) {
+        case UpdateGroupAction.NEW_MESSAGE: {
+          state.groups.splice(index, 1);
+          state.groups.unshift(group);
+          break;
+        }
+        default: {
+          state.groups[index] = group;
+          break;
+        }
       }
     },
     removeGroup: (state, action: PayloadAction<Group>) => {
@@ -116,16 +138,9 @@ export const groupsSlice = createSlice({
           state.groups[index] = updatedGroup;
         }
       })
-      .addCase(updateGroupOwnerThunk.fulfilled, (state, action) => {
-
-      })
-      .addCase(leaveGroupThunk.fulfilled, (state, action) => {
-
-      })
-      .addCase(updateGroupDetailsThunk.fulfilled, (state, action) => {
-        
-      });
-    ;
+      .addCase(updateGroupOwnerThunk.fulfilled, (state, action) => {})
+      .addCase(leaveGroupThunk.fulfilled, (state, action) => {})
+      .addCase(updateGroupDetailsThunk.fulfilled, (state, action) => {});
   },
 });
 
@@ -135,7 +150,7 @@ const selectGroupId = (state: RootState, id: number) => id;
 export const selectGroupById = createSelector(
   [selectGroups, selectGroupId],
   (groups, groupId) => groups.find((group) => group.id === groupId)
-)
+);
 
 export const {
   addGroup,
