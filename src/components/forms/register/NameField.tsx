@@ -24,8 +24,14 @@ export const NameField: FC<RegisterFormFieldProps> = ({ register, errors }) => {
           id="firstName"
           {...register('firstName', {
             required: 'First Name is Required',
-            minLength: 2,
-            maxLength: 32,
+            minLength: {
+              value: 2,
+              message: 'Must be 2 characters long',
+            },
+            maxLength: {
+              value: 32,
+              message: 'Exceeds 32 characters',
+             },
           })}
         />
       </InputContainer>
@@ -41,8 +47,14 @@ export const NameField: FC<RegisterFormFieldProps> = ({ register, errors }) => {
           id="lastName"
           {...register('lastName', {
             required: 'Last Name is Required',
-            minLength: 2,
-            maxLength: 32,
+            minLength: {
+              value: 2,
+              message: 'Must be 2 characters long',
+            },
+            maxLength: {
+              value: 32,
+              message: 'Exceeds 32 characters',
+            }
           })}
         />
       </InputContainer>

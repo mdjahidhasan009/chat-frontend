@@ -14,7 +14,7 @@ export const UsernameField: FC<RegisterFormFieldProps> = ({
   register,
   errors,
 }) => {
-  console.log('Username Errors: ', errors.username);
+  
   return (
     <InputContainer>
       <InputContainerHeader>
@@ -25,7 +25,7 @@ export const UsernameField: FC<RegisterFormFieldProps> = ({
         type="text"
         id="username"
         {...register('username', {
-          required: 'Username is Required',
+          required: 'Username is required',
           minLength: {
             value: 3,
             message: 'Must be 3 characters long',

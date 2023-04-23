@@ -16,7 +16,6 @@ import { DarkTheme, LightTheme } from "../utils/themes";
 import { AuthContext } from "../utils/context/AuthContext";
 import Peer from "peerjs";
 import { setActiveConversationId, setCall, setCaller, setConnection, setIsCallInProgress, setIsReceivingCall, setLocalStream, setPeer, setReceiver, setRemoteStream } from "../store/call/callSlice";
-import { CallReceiveDialog } from "../components/conversations/CallReceiveDialog";
 import { useVideoCallRejected } from "../utils/hooks/sockets/useVideoCallRejected";
 import { useVideoCallHangUp } from "../utils/hooks/sockets/useVideoCallHangUp";
 import { useVideoCallAccept } from "../utils/hooks/sockets/useVideoCallAccept";
@@ -26,6 +25,7 @@ import { useVoiceCall } from "../utils/hooks/sockets/call/useVoiceCall";
 import { useVoiceCallAccepted } from "../utils/hooks/sockets/call/useVoiceCallAccepted";
 import { useVoiceCallHangUp } from "../utils/hooks/sockets/call/useVoiceCallHangUp";
 import { useVoiceCallRejected } from "../utils/hooks/sockets/call/useVoiceCallRejected";
+import { CallReceiveDialog } from "../components/calls/CallReceiveDialog";
 
 export const AppPage = () => {
   const { user } = useContext(AuthContext);
@@ -42,7 +42,7 @@ export const AppPage = () => {
 
   useEffect(() => {
     dispatch(fetchFriendRequestThunk());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if(!user) return;

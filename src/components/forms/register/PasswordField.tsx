@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import { checkUsernameExists } from '../../../utils/api';
 import {
   InputContainer,
   InputLabel,
