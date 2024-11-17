@@ -50,11 +50,22 @@ export const GroupPage = () => {
       dispatch(addGroup(payload));
     });
 
+    /**
+     * Adds the group for the user being added
+     * to the group.
+     */
     socket.on('onGroupUserAdd', (payload: AddGroupUserMessagePayload) => {
       dispatch(addGroup(payload.group));
     });
 
-    socket.on('onGroupReceivedNewUser', ({ group }: AddGroupUserMessagePayload) => {
+    /**
+     * Update all other clients in the room
+     * so that they can also see the participant
+     */
+    socket.on(
+      'onGroupReceivedNewUser',
+      ({ group }: AddGroupUserMessagePayload) => {
+        console.log('Received onGroupReceivedNewUser');
         dispatch(updateGroup({ group }));
       }
     );

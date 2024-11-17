@@ -9,7 +9,7 @@ export interface GroupRecipientSidebarState {
 }
 
 const initialState: GroupRecipientSidebarState = {
-  showSidebar: false,
+  showSidebar: true,
   showUserContextMenu: false,
   points: { x: 0, y: 0 },
 }

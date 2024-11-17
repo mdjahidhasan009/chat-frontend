@@ -16,7 +16,7 @@ export const CallReceiveDialog = () => {
     switch (type) {
       case 'accept':
         return callType === 'video'
-        ? socket.emit('videoCallAccepted', payload)
+        ? socket.emit(SenderEvents.VIDEO_CALL_ACCEPT, payload)
         : socket.emit(SenderEvents.VOICE_CALL_ACCEPT, payload);
       case 'reject':
         return callType === 'video'

@@ -46,8 +46,8 @@ export const FriendContextMenu = () => {
   return (
     <ContextMenu top={points.y} left={points.x}>
       <ContextMenuItem onClick={removeFriend}>
-        <MdPersonRemove size={20} color="#ff000" />
-        <span style={{ color: '#ff000' }}>Remove Friend</span>
+        <MdPersonRemove size={20} color="#ff0000" />
+        <span style={{ color: '#ff0000' }}>Remove Friend</span>
       </ContextMenuItem>
       <ContextMenuItem onClick={sendMessage}>
         <MdOutlineTextsms size={20} color="#fff" />

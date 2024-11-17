@@ -16,6 +16,7 @@ export const EditGroupModal = () => {
   const handleOverlayClick = (e: DivMouseEvent) =>
     ref.current &&
     ref.current === e.target &&
+    !isSavingChanges &&
     dispatch(setShowEditGroupModal(false));
 
   useKeydown(

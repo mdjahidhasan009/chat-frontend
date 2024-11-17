@@ -278,6 +278,7 @@ export const VideoContainerItem = styled.div`
     height: 400px;
     pointer-events: none;
   }
+  border-bottom: 1px solid red;
 `;
 
 export const AudioContainerItem = styled.div``;

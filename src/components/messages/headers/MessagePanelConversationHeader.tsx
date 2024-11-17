@@ -38,9 +38,10 @@ export const MessagePanelConversationHeader = () => {
     if (!recipient) return;
     socket.emit('onVideoCallInitiate', {
       conversationId: conversation!.id,
-      recipient: recipient.id,
+      recipientId: recipient.id,
     });
     const constraints = { video: true, audio: true };
+    debugger
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const payload = buildCallPayloadParams(stream, 'video');
     if(!payload) throw new Error('Video call payload is undefined');
@@ -51,9 +52,10 @@ export const MessagePanelConversationHeader = () => {
     if (!recipient) return;
     socket.emit(SenderEvents.VOICE_CALL_INITIATE, {
       conversationId: conversation!.id,
-      recipient: recipient.id,
+      recipientId: recipient.id,
     });
     const constraints = { video: false, audio: true };
+    debugger
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const payload = buildCallPayloadParams(stream, 'audio');
     if(!payload) throw new Error('Voice call payload is undefined');

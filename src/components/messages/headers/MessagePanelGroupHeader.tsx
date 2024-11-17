@@ -6,7 +6,8 @@ import { AppDispatch, RootState } from "../../../store";
 import { selectGroupById } from "../../../store/groupSlice";
 import { AddGroupRecipientModal } from "../../modals/AddGroupRecipientModal";
 import { MessagePanelHeaderIcons, MessagePanelHeaderStyle } from "../../../utils/styles";
-import { PersonAdd } from "akar-icons";
+import {PeopleGroup, PersonAdd} from "akar-icons";
+import {toggleSidebar} from "../../../store/groupRecipientsSidebarSlice";
 
 export const MessagePanelGroupHeader = () => {
   const [ showModal, setShowModal ] = useState(false);
@@ -35,8 +36,13 @@ export const MessagePanelGroupHeader = () => {
               onClick={() => setShowModal(true)}
             />
           )}
+          <PeopleGroup
+            cursor="pointer"
+            size={30}
+            onClick={() => dispatch(toggleSidebar())}
+          />
         </MessagePanelHeaderIcons>
       </MessagePanelHeaderStyle>
     </>
-  )
-}
+  );
+};

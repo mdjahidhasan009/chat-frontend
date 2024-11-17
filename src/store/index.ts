@@ -4,7 +4,7 @@ import messageReducer from './messages/messageSlice';
 import selectedTypeReducer from './selectedSlice';
 import groupsReducer from './groupSlice';
 import groupMessagesReducer from './groupMessageSlice';
-import groupContainerReducer from './messageContainerSlice';
+import messageContainerReducer from './messageContainerSlice';
 import groupSidebarReducer from './groupRecipientsSidebarSlice';
 import friendsReducer from './friends/friendsSlice';
 import rateLimitReducer from './rate-limit/rateLimitSlice';
@@ -20,7 +20,7 @@ export const store = configureStore({
     selectedConversationType: selectedTypeReducer,
     groups: groupsReducer,
     groupMessages: groupMessagesReducer,
-    messageContainer: groupContainerReducer,
+    messageContainer: messageContainerReducer,
     groupSidebar: groupSidebarReducer,
     friends: friendsReducer,
     rateLimit: rateLimitReducer,
