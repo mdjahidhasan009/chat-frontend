@@ -101,9 +101,12 @@ export const AppPage = () => {
    */
   useEffect(() => {
     if(!peer) return;
+    console.log('peer')
+    debugger
 
     peer.on('call', async (incomingCall) => {
       const constraints = { video: callType === 'video', audio: true };
+      debugger
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       incomingCall.answer(stream);
       dispatch(setLocalStream(stream));

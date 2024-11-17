@@ -1,10 +1,11 @@
 import { User } from "../types";
 import { createContext } from "react";
 
-type AuthContext = {
+type AuthContextType = {
   user?: User;
   updateAuthUser: (data: User) => void;
-}
-export const AuthContext = createContext<AuthContext>({
+};
+
+export const AuthContext = createContext<AuthContextType>({
   updateAuthUser: () => {},
 });

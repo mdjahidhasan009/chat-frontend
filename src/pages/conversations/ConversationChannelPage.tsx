@@ -29,7 +29,7 @@ export const ConversationChannelPage = () => {
 
   useEffect(() => {
     const conversationId = parseInt(id!);
-    socket.emit('onConversation', { conversationId });
+    socket.emit('onConversationJoin', { conversationId });
     socket.on('userJoin', () => {
       console.log('User joined');
     });
@@ -68,7 +68,7 @@ export const ConversationChannelPage = () => {
       setTimer(
         setTimeout(() => {
           setIsTyping(false);
-          socket.emit('onTypingStop');
+          socket.emit('onTypingStop', { conversationId: id });
         }, 2000)
       );
     } else {

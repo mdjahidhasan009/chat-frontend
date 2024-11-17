@@ -1,5 +1,5 @@
 import {
-  DeleteMessageParams,
+  DeleteGroupMessageParams,
   EditMessagePayload,
   GroupMessage,
   GroupMessageEventPayload,
@@ -28,7 +28,7 @@ export const fetchGroupMessagesThunk = createAsyncThunk(
 
 export const deleteGroupMessageThunk = createAsyncThunk(
   'groupMessages/delete',
-  (params: DeleteMessageParams) => deleteGroupMessageAPI(params)
+  (params: DeleteGroupMessageParams) => deleteGroupMessageAPI(params)
 );
 
 export const editGroupMessageThunk = createAsyncThunk(

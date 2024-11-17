@@ -7,10 +7,10 @@ import { FriendsNavbar, FriendsNavbarItem } from '../../utils/styles/friends';
 import { CreateFriendRequestModal } from '../modals/CreateFriendRequestModal';
 
 export const FriendPageNavbar = () => {
-  const [showModal, setShowModal] = useState(false);
-
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>

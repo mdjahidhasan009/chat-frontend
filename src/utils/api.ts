@@ -1,7 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
 import {
+  AcceptFriendRequestResponse,
   AddGroupRecipientParams,
+  CancelFriendRequestResponse,
   Conversation,
+  ConversationType,
   CreateConversationParams,
   CreateGroupParams,
   CreateMessageParams,
@@ -13,21 +16,18 @@ import {
   EditMessagePayload,
   FetchGroupMessagePayload,
   FetchMessagePayload,
+  Friend,
+  FriendRequest,
   Group,
   GroupMessageType,
   MessageType,
   RemoveGroupRecipientParams,
+  UpdateGroupDetailsPayload,
   UpdateGroupOwnerParams,
+  UpdateStatusParams,
   User,
   UserCredentialsParams,
-  Friend,
-  FriendRequest,
-  CancelFriendRequestResponse,
-  AcceptFriendRequestResponse,
-  ConversationType,
-  UpdateStatusParams,
-  UpdateGroupDetailsPayload,
-} from "./types";
+} from './types';
 
 const API_URL = process.env.REACT_APP_API_URL;
 

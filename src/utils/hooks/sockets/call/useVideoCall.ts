@@ -19,7 +19,7 @@ export function useVideoCall() {
       dispatch(setCaller(data.caller));
       dispatch(setReceiver(user!));
       dispatch(setIsReceivingCall(true));
-      dispatch(setCallType('audio'));
+      dispatch(setCallType('video'));
     });
 
     return () => {
