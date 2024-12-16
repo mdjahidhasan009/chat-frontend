@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { RootState } from '../../store';
 import { CallReceiveDialogContainer } from '../../utils/styles';
 import { UserAvatar } from '../users/UserAvatar';
@@ -7,11 +7,18 @@ import { HandleCallType } from '../../utils/types';
 import { useContext } from 'react';
 import { SocketContext } from '../../utils/context/SocketContext';
 import { SenderEvents, WebsocketEvents } from '../../utils/constants';
+import {setCall, setLocalStream} from "../../store/call/callSlice";
 
 export const CallReceiveDialog = () => {
   const { caller, callType } = useSelector((state: RootState) => state.call);
   const socket = useContext(SocketContext);
-  const handleCall = (type: HandleCallType) => {
+  const dispatch = useDispatch();
+
+  //Step 6: Handle video call accepted by the receiver
+  const handleCall = async (type: HandleCallType) => {
+
+      console.log('caller', caller)
+
     const payload = { caller };
     switch (type) {
       case 'accept':

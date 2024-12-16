@@ -63,6 +63,7 @@ export const createMessage = (
     type === "private"
       ? `/conversations/${id}/messages`
       : `/groups/${id}/messages`;
+
   return axiosClient.post(url, data, {
     headers: { "Content-Type": "multipart/form-data" },
     ...config,

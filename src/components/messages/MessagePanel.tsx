@@ -61,16 +61,19 @@ export const MessagePanel: FC<Props> = ({
       dispatch(removeAllAttachments());
     };
   }, []);
+
   const sendMessage = async () => {
     const trimmedContent = content.trim();
     if (!routeId) return;
     if (!trimmedContent && !attachments.length) return;
+
     const formData = new FormData();
     formData.append('id', routeId);
     trimmedContent && formData.append('content', trimmedContent);
     attachments.forEach((attachment) =>
       formData.append('attachments', attachment.file)
     );
+
     try {
       await createMessage(routeId, selectedType, formData);
       setContent('');
@@ -99,6 +102,7 @@ export const MessagePanel: FC<Props> = ({
       }
     }
   };
+
   return (
     <>
       <MessagePanelStyle>

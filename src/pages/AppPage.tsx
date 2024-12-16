@@ -44,22 +44,36 @@ export const AppPage = () => {
     dispatch(fetchFriendRequestThunk());
   }, [dispatch]);
 
-  useEffect(() => {
-    if(!user) return;
-    const newPeer = new Peer(user.peer.id, {
-      config: {
-        iceServers: [
-          {
-            url: 'stun:stun.l.google.com:19302',
-          },
-          {
-            url: 'stun:stun1.l.google.com:19302',
-          },
-        ],
-      },
-    });
-    dispatch(setPeer(newPeer));
-  }, []);
+  // useEffect(() => {
+  //   if(!user) return;
+  //   const newPeer = new Peer(user.peer.id, {
+  //     config: {
+  //       iceServers: [
+  //         {
+  //           url: 'stun:stun.l.google.com:19302',
+  //         },
+  //         {
+  //           url: 'stun:stun1.l.google.com:19302',
+  //         },
+  //       ],
+  //     },
+  //   });
+  //
+  //   peer?.on('error', (err) => {
+  //     console.error('PeerJS Error:', err);
+  //   });
+  //
+  //   peer?.on('disconnected', () => {
+  //     console.warn('Peer disconnected. Attempting reconnect...');
+  //     peer.reconnect(); // Attempt to reconnect
+  //   });
+  //
+  //   peer?.on('open', (id) => {
+  //     console.log('Peer connection established with ID:', id);
+  //   });
+  //   // debugger
+  //   dispatch(setPeer(newPeer));
+  // }, []);
 
   useFriendRequestReceived();
   useVideoCall();
@@ -99,36 +113,39 @@ export const AppPage = () => {
    *
    * The user who is calling will have its own instance of MediaConnection/Call
    */
-  useEffect(() => {
-    if(!peer) return;
-    console.log('peer')
-    debugger
+  // useEffect(() => {
+  //   if(!peer) return;
+  //   console.log('peer')
+  //   // debugger
+  //   debugger
+  //
+  //   peer.on('call', async (incomingCall) => {
+  //     const constraints = { video: callType === 'video', audio: true };
+  //     // debugger
+  //     debugger
+  //     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+  //     incomingCall.answer(stream);
+  //     dispatch(setLocalStream(stream));
+  //     dispatch(setCall(incomingCall));
+  //   });
+  //   return () => {
+  //     peer.off('call');
+  //   };
+  // }, [peer, callType, dispatch]);
 
-    peer.on('call', async (incomingCall) => {
-      const constraints = { video: callType === 'video', audio: true };
-      debugger
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      incomingCall.answer(stream);
-      dispatch(setLocalStream(stream));
-      dispatch(setCall(incomingCall));
-    });
-    return () => {
-      peer.off('call');
-    };
-  }, [peer, callType, dispatch]);
+  // useEffect(() => {
+  //   if (!call) return;
+  //   call.on('stream', (remoteStream) =>
+  //     dispatch(setRemoteStream(remoteStream))
+  //   );
+  //   call.on('close', () => console.log('call was closed'));
+  //   return () => {
+  //     call.off('stream');
+  //     call.off('close');
+  //   };
+  // }, [call]);
 
-  useEffect(() => {
-    if (!call) return;
-    call.on('stream', (remoteStream) =>
-      dispatch(setRemoteStream(remoteStream))
-    );
-    call.on('close', () => console.log('call was closed'));
-    return () => {
-      call.off('stream');
-      call.off('close');
-    };
-  }, [call]);
-
+  console.log('AppPage.tsx')
   useVideoCallAccept();
   useVideoCallRejected();
   useVideoCallHangUp();
@@ -137,27 +154,27 @@ export const AppPage = () => {
   useVoiceCallHangUp();
   useVoiceCallRejected();
 
-  useEffect(() => {
-    if(connection) {
-      connection.on('open', () => {
-        console.log('connection opened');
-      });
-      connection.on('error', () => {
-        console.log('connection error');
-      });
-      connection.on('data', (data) => {
-        console.log('data received', data);
-      })
-      connection.on('close', () => {
-        console.log('connection closed');
-      });
-    };
-    return () => {
-      connection?.off('open');
-      connection?.off('error');
-      connection?.off('data');
-    };
-  }, [connection]);
+  // useEffect(() => {
+  //   if(connection) {
+  //     connection.on('open', () => {
+  //       console.log('connection opened');
+  //     });
+  //     connection.on('error', () => {
+  //       console.log('connection error');
+  //     });
+  //     connection.on('data', (data) => {
+  //       console.log('data received', data);
+  //     })
+  //     connection.on('close', () => {
+  //       console.log('connection closed');
+  //     });
+  //   };
+  //   return () => {
+  //     connection?.off('open');
+  //     connection?.off('error');
+  //     connection?.off('data');
+  //   };
+  // }, [connection]);
 
   return (
     <ThemeProvider

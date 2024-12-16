@@ -15,7 +15,7 @@ export const ConversationVideoCall = () => {
   const { localStream, remoteStream, caller, receiver } = useSelector((state: RootState) => state.call);
 
   useEffect(() => {
-    if (localVideoRef.current && localStream) {;
+    if (localVideoRef.current && localStream) {
       localVideoRef.current.srcObject = localStream;
       localVideoRef.current.muted = true;
     }
@@ -42,23 +42,31 @@ export const ConversationVideoCall = () => {
     });
 
   const closeCall = () => {
+    debugger
     socket.emit('videoCallHangUp', { caller, receiver });
   };
 
   return (
     <ConversationCallContainer>
       <MediaContainer>
-        {localStream && (
-          <VideoContainerItem>
-            <video ref={localVideoRef} playsInline autoPlay />
-          </VideoContainerItem>
-        )}
-        {remoteStream && (
-          <VideoContainerItem>
-            <video ref={remoteVideoRef} playsInline autoPlay />
-          </VideoContainerItem>
-        )}
+        <>
+          {/*{console.log('localStream')}*/}
+          {/*{console.log(localStream)}*/}
+          {localStream && (
+              <VideoContainerItem>
+                <video ref={localVideoRef} playsInline autoPlay />
+              </VideoContainerItem>
+          )}
+          {/*{console.log('remoteStream')}*/}
+          {/*{console.log(remoteStream)}*/}
+          {remoteStream && (
+              <VideoContainerItem>
+                <video ref={remoteVideoRef} playsInline autoPlay />
+              </VideoContainerItem>
+          )}
+        </>
       </MediaContainer>
+
       <VideoContainerActionButtons>
         <div>
           {videoEnabled ? (
