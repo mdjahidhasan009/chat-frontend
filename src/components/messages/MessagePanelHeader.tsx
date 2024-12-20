@@ -6,11 +6,14 @@ import { MessagePanelConversationHeader } from './headers/MessagePanelConversati
 import { MessagePanelGroupHeader } from './headers/MessagePanelGroupHeader';
 import { ConversationVideoCall } from '../conversations/ConversationVideoCall';
 import { ConversationAudioCall } from '../conversations/ConversationAudioCall';
+// import {useVideoCallAccept} from "../../utils/hooks/sockets/useVideoCallAccept";
 
 export const MessagePanelHeader = () => {
   const { id: routeId } = useParams();
   const { isCalling, isCallInProgress, activeConversationId, callType } =
     useSelector((state: RootState) => state.call);
+
+  // useVideoCallAccept();
 
   const type = useSelector(selectType);
   const showCallPanel = isCalling || isCallInProgress;

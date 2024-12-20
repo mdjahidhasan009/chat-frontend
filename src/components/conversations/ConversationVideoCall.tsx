@@ -42,7 +42,7 @@ export const ConversationVideoCall = () => {
     });
 
   const closeCall = () => {
-    debugger
+    // debugger
     socket.emit('videoCallHangUp', { caller, receiver });
   };
 
