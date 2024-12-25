@@ -7,7 +7,8 @@ export interface CallState {
   isCallInProgress: boolean;
   caller?: User;
   receiver?: User;
-  peer?: Peer;
+  // peer?: Peer;
+  peer?: any; ////TODO: Will fix this later
   call?: MediaConnection;
   connection?: DataConnection;
   isReceivingCall: boolean;
@@ -15,12 +16,16 @@ export interface CallState {
   localStream?: MediaStream;
   activeConversationId?: number;
   callType?: CallType;
+  callerObj: object; ////TODO: Will fix this later
+  callerSignalObj: object ////TODO: Will fix this later
 }
 
 const initialState: CallState = {
   isCalling: false,
   isCallInProgress: false,
   isReceivingCall: false,
+  callerObj: {},
+  callerSignalObj: {}
 };
 
 export const callSlice = createSlice({
@@ -30,7 +35,7 @@ export const callSlice = createSlice({
     setIsCalling: (state, action: PayloadAction<boolean>) => {
       state.isCalling = action.payload;
     },
-    setPeer: (state, action: PayloadAction<Peer>) => {
+    setPeer: (state, action) => { ////TODO: Will fix this later
       state.peer = action.payload;
     },
     setCall: (state, action: PayloadAction<MediaConnection>) => {
@@ -81,6 +86,13 @@ export const callSlice = createSlice({
       ...state,
       ...action.payload,
     }),
+
+    setCallerObj: (state, action: PayloadAction<object>) => { ////TODO: Will fix this later
+      state.callerObj = action.payload;
+    },
+    setCallerSignalObj: (state, action: PayloadAction<object>) => { ////TODO: Will fix this later
+      state.callerSignalObj = action.payload;
+    },
   },
 });
 export const {

@@ -13,6 +13,8 @@ export function useVideoCall() {
   const { isReceivingCall } = useSelector((state: RootState) => state.call);
 
   useEffect(() => {
+    // Step 5: Listen for the onVideoCall event from the server after initiating a video call from caller server send
+    // this event to the receiver to notify them about the video call
     socket.on('onVideoCall', (data: CallPayload) => {
       if (isReceivingCall) return;
 

@@ -1,21 +1,17 @@
-import { LayoutPage, Page } from "../utils/styles";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { LayoutPage } from "../utils/styles";
+import { Outlet, useNavigate } from "react-router-dom";
 import { UserSidebar} from "../components/sidebars/UserSidebar";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SocketContext } from "../utils/context/SocketContext";
 import { AppDispatch, RootState } from "../store";
-import { AcceptFriendRequestResponse, AcceptedCallPayload, FriendRequest, SelectableTheme, CallPayload } from "../utils/types";
-import { addFriendRequest, removeFriendRequest } from "../store/friends/friendsSlice";
+import { AcceptFriendRequestResponse, FriendRequest, SelectableTheme } from "../utils/types";
+import { removeFriendRequest } from "../store/friends/friendsSlice";
 import { useToast } from "../utils/hooks/useToast";
-import { IoMdPersonAdd } from 'react-icons/io';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 import { fetchFriendRequestThunk } from "../store/friends/friendsThunk";
 import { ThemeProvider } from "styled-components";
 import { DarkTheme, LightTheme } from "../utils/themes";
-import { AuthContext } from "../utils/context/AuthContext";
-import Peer from "peerjs";
-import { setActiveConversationId, setCall, setCaller, setConnection, setIsCallInProgress, setIsReceivingCall, setLocalStream, setPeer, setReceiver, setRemoteStream } from "../store/call/callSlice";
 import { useVideoCallRejected } from "../utils/hooks/sockets/useVideoCallRejected";
 import { useVideoCallHangUp } from "../utils/hooks/sockets/useVideoCallHangUp";
 import { useVideoCallAccept } from "../utils/hooks/sockets/useVideoCallAccept";
@@ -28,12 +24,10 @@ import { useVoiceCallRejected } from "../utils/hooks/sockets/call/useVoiceCallRe
 import { CallReceiveDialog } from "../components/calls/CallReceiveDialog";
 
 export const AppPage = () => {
-  const { user } = useContext(AuthContext);
-  const { pathname } = useLocation();
   const socket = useContext(SocketContext);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { peer, call, isReceivingCall, caller, connection, callType } = useSelector(
+  const { isReceivingCall, caller } = useSelector(
     (state: RootState) => state.call
   );
   const { info } = useToast({ theme: 'dark' });
@@ -43,23 +37,6 @@ export const AppPage = () => {
   useEffect(() => {
     dispatch(fetchFriendRequestThunk());
   }, [dispatch]);
-
-  useEffect(() => {
-    if(!user) return;
-    const newPeer = new Peer(user.peer.id, {
-      config: {
-        iceServers: [
-          {
-            url: 'stun:stun.l.google.com:19302',
-          },
-          {
-            url: 'stun:stun1.l.google.com:19302',
-          },
-        ],
-      },
-    });
-    dispatch(setPeer(newPeer));
-  }, []);
 
   useFriendRequestReceived();
   useVideoCall();
@@ -92,43 +69,7 @@ export const AppPage = () => {
     };
   }, [socket, isReceivingCall]);
 
-    /**
-   * This useEffect hook is for the user who is receiving the call.
-   * So we must dispatch the appropriate actions to set the state
-   * for the user receiving the call.
-   *
-   * The user who is calling will have its own instance of MediaConnection/Call
-   */
-  useEffect(() => {
-    if(!peer) return;
-    console.log('peer')
-    debugger
-
-    peer.on('call', async (incomingCall) => {
-      const constraints = { video: callType === 'video', audio: true };
-      debugger
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      incomingCall.answer(stream);
-      dispatch(setLocalStream(stream));
-      dispatch(setCall(incomingCall));
-    });
-    return () => {
-      peer.off('call');
-    };
-  }, [peer, callType, dispatch]);
-
-  useEffect(() => {
-    if (!call) return;
-    call.on('stream', (remoteStream) =>
-      dispatch(setRemoteStream(remoteStream))
-    );
-    call.on('close', () => console.log('call was closed'));
-    return () => {
-      call.off('stream');
-      call.off('close');
-    };
-  }, [call]);
-
+  console.log('AppPage.tsx')
   useVideoCallAccept();
   useVideoCallRejected();
   useVideoCallHangUp();
@@ -136,28 +77,6 @@ export const AppPage = () => {
   useVoiceCallAccepted();
   useVoiceCallHangUp();
   useVoiceCallRejected();
-
-  useEffect(() => {
-    if(connection) {
-      connection.on('open', () => {
-        console.log('connection opened');
-      });
-      connection.on('error', () => {
-        console.log('connection error');
-      });
-      connection.on('data', (data) => {
-        console.log('data received', data);
-      })
-      connection.on('close', () => {
-        console.log('connection closed');
-      });
-    };
-    return () => {
-      connection?.off('open');
-      connection?.off('error');
-      connection?.off('data');
-    };
-  }, [connection]);
 
   return (
     <ThemeProvider

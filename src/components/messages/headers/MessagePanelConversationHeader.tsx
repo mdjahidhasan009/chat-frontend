@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "../../../store";
 import { selectConversationById } from "../../../store/conversationSlice";
 import { getRecipientFromConversation } from "../../../utils/helpers";
 import { CallInitiatePayload, CallType } from "../../../utils/types";
-import { initiateCallState } from "../../../store/call/callSlice";
+import {initiateCallState, setPeer, setRemoteStream} from "../../../store/call/callSlice";
 import { SenderEvents } from "../../../utils/constants";
 import { MessagePanelHeaderIcons, MessagePanelHeaderStyle } from "../../../utils/styles";
 import { FaPhoneAlt, FaVideo } from "react-icons/fa";
@@ -21,6 +21,7 @@ export const MessagePanelConversationHeader = () => {
   const conversation = useSelector((state: RootState) => selectConversationById(state, parseInt(id!)));
 
   const recipient = getRecipientFromConversation(conversation, user);
+
   const buildCallPayloadParams = (
     stream: MediaStream,
     type: CallType
@@ -34,14 +35,18 @@ export const MessagePanelConversationHeader = () => {
       callType: type
     };
 
+
+  // Step 1: Initiate a video call from frontend on click of the video icon
   const videoCallUser = async() => {
     if (!recipient) return;
+
+    // Step 2: Emit an event to the server to initiate a video call with the recipient
     socket.emit('onVideoCallInitiate', {
       conversationId: conversation!.id,
       recipientId: recipient.id,
     });
+
     const constraints = { video: true, audio: true };
-    debugger
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const payload = buildCallPayloadParams(stream, 'video');
     if(!payload) throw new Error('Video call payload is undefined');
@@ -55,7 +60,6 @@ export const MessagePanelConversationHeader = () => {
       recipientId: recipient.id,
     });
     const constraints = { video: false, audio: true };
-    debugger
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const payload = buildCallPayloadParams(stream, 'audio');
     if(!payload) throw new Error('Voice call payload is undefined');
