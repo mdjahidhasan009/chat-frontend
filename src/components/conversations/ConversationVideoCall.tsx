@@ -42,7 +42,6 @@ export const ConversationVideoCall = () => {
     });
 
   const closeCall = () => {
-    // debugger
     socket.emit('videoCallHangUp', { caller, receiver });
   };
 
@@ -50,15 +49,11 @@ export const ConversationVideoCall = () => {
     <ConversationCallContainer>
       <MediaContainer>
         <>
-          {/*{console.log('localStream')}*/}
-          {/*{console.log(localStream)}*/}
           {localStream && (
               <VideoContainerItem>
                 <video ref={localVideoRef} playsInline autoPlay />
               </VideoContainerItem>
           )}
-          {/*{console.log('remoteStream')}*/}
-          {/*{console.log(remoteStream)}*/}
           {remoteStream && (
               <VideoContainerItem>
                 <video ref={remoteVideoRef} playsInline autoPlay />

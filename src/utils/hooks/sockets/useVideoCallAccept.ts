@@ -59,8 +59,6 @@ export function useVideoCallAccept() {
   // Handle 'onVideoCallAccept' event
   useEffect(() => {
     const handleVideoCallAccept = async (data: AcceptedCallPayload) => {
-      console.log('Received onVideoCallAccept:', data);
-
       // Prevent multiple initializations
       if (connectionInitiatedRef.current) {
         console.warn('Connection already initiated.');
@@ -242,27 +240,24 @@ export function useVideoCallAccept() {
         return;
       }
 
-      console.log('receiverPeer => returningSignalOfReceiverToCaller', { signal, callerId: caller.id });
       socket.emit('returningSignalOfReceiverToCaller', { signal, callerId: caller.id });
       tempPeerSignalRef.current = true;
     });
 
     // Signal the initial data
     if (!signalingAcceptingFromReceiverRef.current) {
-      console.log('receiverPeer => signaling with caller');
       receiverPeer.signal(data.signal);
       signalingAcceptingFromReceiverRef.current = true;
     }
 
     // Receive remote stream
     receiverPeer.on('stream', (remoteStream) => {
-      console.log('receiverPeer => received remote stream:', remoteStream);
       dispatch(setRemoteStream(remoteStream));
     });
 
     // Handle connection events
     receiverPeer.on('connect', () => {
-      console.log('Receiver Peer Connected');
+      console.info('Receiver Peer Connected');
     });
 
     receiverPeer.on('error', (err) => {
@@ -271,11 +266,10 @@ export function useVideoCallAccept() {
     });
 
     receiverPeer.on('close', () => {
-      console.log('Receiver Peer Connection Closed');
+      console.info('Receiver Peer Connection Closed');
       responderConnectionInitiatedRef.current = false;
     });
 
-    console.log('done-setupResponderConnection');
   };
 
   // Cleanup Peer instances on unmount

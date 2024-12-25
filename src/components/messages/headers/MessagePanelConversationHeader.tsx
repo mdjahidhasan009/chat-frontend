@@ -11,7 +11,6 @@ import {initiateCallState, setPeer, setRemoteStream} from "../../../store/call/c
 import { SenderEvents } from "../../../utils/constants";
 import { MessagePanelHeaderIcons, MessagePanelHeaderStyle } from "../../../utils/styles";
 import { FaPhoneAlt, FaVideo } from "react-icons/fa";
-import Peer from "simple-peer";
 
 export const MessagePanelConversationHeader = () => {
   const user = useContext(AuthContext).user!;
@@ -48,7 +47,6 @@ export const MessagePanelConversationHeader = () => {
     });
 
     const constraints = { video: true, audio: true };
-    // debugger
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const payload = buildCallPayloadParams(stream, 'video');
     if(!payload) throw new Error('Video call payload is undefined');
@@ -62,7 +60,6 @@ export const MessagePanelConversationHeader = () => {
       recipientId: recipient.id,
     });
     const constraints = { video: false, audio: true };
-    // debugger
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     const payload = buildCallPayloadParams(stream, 'audio');
     if(!payload) throw new Error('Voice call payload is undefined');
