@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { AuthenticatedRoute } from './components/AuthenticatedRoute';
@@ -8,9 +8,9 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AuthContext } from './utils/context/AuthContext';
 import { socket, SocketContext } from './utils/context/SocketContext';
-import { FriendRequest, User } from './utils/types';
-import { Provider as ReduxProvider, useDispatch } from 'react-redux';
-import { AppDispatch, store } from './store';
+import { User } from './utils/types';
+import { Provider as ReduxProvider } from 'react-redux';
+import { store } from './store';
 import { enableMapSet } from 'immer';
 import {GroupPage} from "./pages/group/GroupPage";
 import {GroupChannelPage} from "./pages/group/GroupChannelPage";
