@@ -17,7 +17,6 @@ import {CreateConversationModal} from "../modals/CreateConversationModal";
 import {CreateGroupModal} from "../modals/CreateGroupModal";
 import {ContextMenuEvent, Group} from "../../utils/types";
 import {setContextMenuLocation, setSelectedGroup, toggleContextMenu} from "../../store/groupSlice";
-import {toggleSidebar} from "../../store/groupRecipientsSidebarSlice";
 import {GroupSidebarContextMenu} from "../context-menus/GroupSidebarContextMenu";
 
 export const ConversationSidebar = () => {

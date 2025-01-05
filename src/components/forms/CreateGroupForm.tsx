@@ -51,6 +51,8 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
     e.preventDefault();
     if (selectedRecipients.length === 0 || !message || !title) return;
     const users = selectedRecipients.map((user) => user.username);
+
+
     return dispatch(createGroupThunk({ title, users }))
       .unwrap()
       .then(({ data }) => {
@@ -104,7 +106,7 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
           />
         </InputContainer>
       </section>
-      <Button>Create Conversation</Button>
+      <Button>Create Conversation3</Button>
     </form>
   );
 };

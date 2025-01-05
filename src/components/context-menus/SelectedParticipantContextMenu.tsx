@@ -60,6 +60,7 @@ export const SelectedParticipantContextMenu: FC<Props> = ({ points }) => {
         <Person size={20} color="#7c7c7c" />
         <span style={{ color: '#7c7c7c' }}>Profile</span>
       </ContextMenuItem>
+
       {isOwner && user?.id !== selectedUser?.id && (
         <>
           <ContextMenuItem onClick={kickUser}>

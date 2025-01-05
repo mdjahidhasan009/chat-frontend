@@ -12,11 +12,13 @@ export const ConversationSelected = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+
   const onSelectType = (chat: ConversationTypeData) => {
     dispatch(updateType(chat.type));
     if (chat.type === 'group') navigate('/groups');
     else navigate('/conversations');
   };
+
   return (
     <ConversationSelectedStyle>
       {chatTypes.map((chat) => (

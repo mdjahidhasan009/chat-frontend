@@ -11,9 +11,11 @@ import { Conversation } from '../../utils/types';
 import defaultAvatar from '../../__assets__/default_avatar.jpg';
 
 import styles from './index.module.scss';
+
 type Props = {
   conversation: Conversation;
 };
+
 export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
   const MESSAGE_LENGTH_MAX = 50;
   const { id } = useParams();

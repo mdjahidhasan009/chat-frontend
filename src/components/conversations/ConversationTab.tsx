@@ -15,11 +15,13 @@ export const ConversationTab = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+
   const onSelectType = (chat: ConversationTypeData) => {
     dispatch(updateType(chat.type));
     if (chat.type === 'group') navigate('/groups');
     else navigate('/conversations');
   };
+
   return (
     <ConversationTabStyle>
       {chatTypes.map((chat) => (

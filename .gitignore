@@ -27,3 +27,5 @@ yarn-error.log*
 
 .env
 .env.*
+
+latest_commit_diff.txt

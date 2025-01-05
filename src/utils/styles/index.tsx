@@ -16,7 +16,7 @@ import {
 export const SIDEBAR_WIDTH = 400;
 
 export const InputField = styled.input`
-  font-family: 'Inter';
+  font-family: 'Inter', 'sans-serif';
   outline: none;
   border: none;
   background-color: inherit;
@@ -34,10 +34,19 @@ export const InputField = styled.input`
 
 export const InputContainer = styled.div<InputContainerProps>`
   background-color: ${(prop) => prop.backgroundColor || '#131313'};
-  padding: 12px 16px;
+  padding: 23px 16px 5px 16px;
   border-radius: 10px;
+  border: 1px solid #3b3b3b;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  margin-bottom: 15px;
+
+  // Apply styles to the label when the input is focused
+  &:focus-within label {
+    top: -13px;
+    padding: 0 8px;
+  }
 `;
 
 export const RecipientChipContainer = styled.div`
@@ -56,9 +65,14 @@ export const InputContainerHeader = styled.div`
 
 export const InputLabel = styled.label`
   display: block;
-  color: #8f8f8f;
-  font-size: 14px;
+  color: #8e8e8e;
+  font-size: 16px;
   margin: 4px 0;
+  position: absolute;
+  top: 3px; /* Default position */
+  left: 16px; /* Match padding of InputContainer */
+  transition: all 0.3s ease; /* Smooth animation for label movement */
+  background-color: #131313;
 `;
 
 export const InputError = styled.span`

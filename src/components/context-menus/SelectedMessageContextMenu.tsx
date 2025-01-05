@@ -23,8 +23,8 @@ export const SelectedMessageContextMenu = () => {
 
   const deleteMessage = () => {
     const id = parseInt(routeId!);
-    console.log(`Delete message ${message?.id}`);
     if (!message) return;
+
     const messageId = message.id;
     return conversationType === 'private'
       ? dispatch(deleteMessageThunk({ id, messageId: message.id }))

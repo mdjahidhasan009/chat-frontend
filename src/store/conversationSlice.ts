@@ -37,11 +37,9 @@ export const conversationsSlice = createSlice({
   initialState,
   reducers: {
     addConversation: (state, action: PayloadAction<Conversation>) => {
-      console.log('addConversation');
       state.conversations.unshift(action.payload);
     },
     updateConversation: (state, action: PayloadAction<Conversation>) => {
-      console.log('Inside updateConversation');
       const conversation = action.payload;
       const index = state.conversations.findIndex(
         (c) => c.id === conversation.id
@@ -60,8 +58,6 @@ export const conversationsSlice = createSlice({
         state.loading = true;
       })
       .addCase(createConversationThunk.fulfilled, (state, action) => {
-        console.log('Fulfilled');
-        console.log(action.payload.data);
         state.conversations.unshift(action.payload.data);
       });
   },

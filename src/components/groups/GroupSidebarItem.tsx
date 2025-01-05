@@ -14,7 +14,6 @@ type Props = {
 export const GroupSidebarItem: React.FC<Props> = ({ group, onContextMenu }) => {
   const { id } = useParams();
   const MAX_TITLE_LENGTH = 20;
-  const MAX_MESSAGE_LENGTH = 50;
   const navigate = useNavigate();
 
   const getTransformedTitle = () => {

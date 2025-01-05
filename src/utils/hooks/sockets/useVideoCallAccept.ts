@@ -19,7 +19,6 @@ import Peer from 'simple-peer';
  * accepted the call.
  */
 export function useVideoCallAccept() {
-  console.log('init-useVideoCallAccept');
 
   const { user } = useContext(AuthContext);
   const socket = useContext(SocketContext);

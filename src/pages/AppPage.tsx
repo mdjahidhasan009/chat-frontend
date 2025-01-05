@@ -69,7 +69,6 @@ export const AppPage = () => {
     };
   }, [socket, isReceivingCall]);
 
-  console.log('AppPage.tsx')
   useVideoCallAccept();
   useVideoCallRejected();
   useVideoCallHangUp();
