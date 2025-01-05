@@ -6,7 +6,11 @@ import { useForm } from "react-hook-form";
 import { UserCredentialsParams } from "../../../utils/types";
 import {postLoginUser} from "../../../utils/api";
 import {SocketContext} from "../../../utils/context/SocketContext";
+import Loader from '../../ui/Loader'
+
 export const LoginForm = () => {
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
+
     const {
         register,
         handleSubmit,
@@ -16,13 +20,15 @@ export const LoginForm = () => {
     const socket = useContext(SocketContext);
 
     const onSubmit = async (data: UserCredentialsParams) => {
-        // event.preventDefault();
         try {
+          setIsSubmitting(true);
           await postLoginUser(data);
           socket.connect()
           navigate('/conversations');
         } catch (e) {
           console.log(e);
+        } finally {
+          setIsSubmitting(false);
         }
     }
 
@@ -49,7 +55,18 @@ export const LoginForm = () => {
                     })}
                 />
             </InputContainer>
-            <Button className={styles.button}>Login</Button>
+
+            <Button
+                className={styles.button}
+                type="submit"
+                disabled={isSubmitting}
+            >
+                <div>
+                    {isSubmitting ? <span><Loader /></span> : ""}
+                    <span>Login</span>
+                </div>
+            </Button>
+
             <div className={styles.footerText}>
                 <span>Don't have an account? </span>
                 <Link to="/register">
