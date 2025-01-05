@@ -1,4 +1,4 @@
-import { InputContainer, InputField, InputLabel, Button } from "../../../utils/styles";
+import {InputContainer, InputField, InputLabel, Button, InputError} from "../../../utils/styles";
 import styles from '../index.module.scss';
 import {Link, useNavigate} from "react-router-dom";
 import React, {useContext} from "react";
@@ -7,9 +7,11 @@ import { UserCredentialsParams } from "../../../utils/types";
 import {postLoginUser} from "../../../utils/api";
 import {SocketContext} from "../../../utils/context/SocketContext";
 import Loader from '../../ui/Loader'
+import axios from "axios";
 
 export const LoginForm = () => {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [serverErrorMsg, setServerMsg] = React.useState('');
 
     const {
         register,
@@ -26,7 +28,14 @@ export const LoginForm = () => {
           socket.connect()
           navigate('/conversations');
         } catch (e) {
-          console.log(e);
+          console.error(e);
+            if (axios.isAxiosError(e)) {
+                const message = e.response?.data?.message || e?.message;
+                console.error("Error Message:", message);
+                setServerMsg(message);
+            } else {
+                console.error("An unexpected error occurred:", e);
+            }
         } finally {
           setIsSubmitting(false);
         }
@@ -55,6 +64,8 @@ export const LoginForm = () => {
                     })}
                 />
             </InputContainer>
+
+            {serverErrorMsg && <InputError>{serverErrorMsg}</InputError>}
 
             <Button
                 className={styles.button}

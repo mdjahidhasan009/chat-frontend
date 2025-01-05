@@ -17,15 +17,15 @@ export const RegisterForm = () => {
   } = useForm<CreateUserParams>({ reValidateMode: 'onBlur' });
 
   const navigate = useNavigate();
+
   const onSubmit = async (data: CreateUserParams) => {
-    console.log(data);
     try {
       await postRegisterUser(data);
       navigate('/login');
       toast.clearWaitingQueue();
       toast('Account created!', { type: 'success', icon: true });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.clearWaitingQueue();
       toast('Error creating user', { type: 'error', icon: true });
     }
