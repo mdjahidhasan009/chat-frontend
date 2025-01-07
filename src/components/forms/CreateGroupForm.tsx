@@ -39,7 +39,6 @@ export const CreateGroupForm: FC<Props> = ({ setShowModal }) => {
       setSearching(true);
       searchUsers(debouncedQuery)
         .then(({ data }) => {
-          console.log(data);
           setResults(data);
         })
         .catch((err) => console.log(err))

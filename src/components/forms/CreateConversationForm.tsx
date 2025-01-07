@@ -15,6 +15,7 @@ import {useDebounce} from "../../utils/hooks/useDebounce";
 import {searchUsers} from "../../utils/api";
 import {RecipientField} from "../recipients/RecipientField";
 import {RecipientResultContainer} from "../recipients/RecipientResultContainer";
+import Loader from "../ui/Loader";
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +26,7 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   const [userResults, setUserResults] = useState<User[]>([]);
   const [message, setMessage] = useState('');
   const [selectedUser, setSelectedUser] = useState<User>();
+  const [conversationCreating, setConversationCreating] = useState(false);
   // const [searching, setSearching] = useState(false);
 
   const debouncedQuery = useDebounce(query, 1000);
@@ -46,6 +48,8 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message || !selectedUser) return;
+
+    setConversationCreating(true);
     return dispatch(
       createConversationThunk({ username: selectedUser.username, message })
     )
@@ -54,7 +58,8 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
         setShowModal(false);
         navigate(`/conversations/${data.id}`);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setConversationCreating(false));
   };
 
   const handleUserSelect = (user: User) => {
@@ -87,7 +92,13 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
           />
         </InputContainer>
       </section>
-      <Button>Create Conversation</Button>
+      <Button
+        type="submit"
+        disabled={!selectedUser || conversationCreating}
+      >
+        {conversationCreating ? <Loader /> : ''}
+        Create Conversation
+      </Button>
     </form>
   )
 }
